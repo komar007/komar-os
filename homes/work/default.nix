@@ -26,6 +26,7 @@ in
 
   home.pointerCursor.size = 16;
 
+  quirks.gitBranchSymbol = "⎇ ";
   alacritty.font = "Terminess Nerd Font Mono";
   alacritty.fontItalic = "ZedMono Nerd Font";
   alacritty.fontSize = 9.0;

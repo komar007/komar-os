@@ -282,7 +282,7 @@ function set_title() {
 	fi
 	TITLE="bash: $(basename "$DIR")"
 	if [[ -n "$(git rev-parse --git-dir 2>/dev/null)" ]]; then
-		TITLE+=" on ⎇ $(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+		TITLE+=" on ${__BASHRC_GIT_BRANCH_SYMBOL__:-branch} $(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 	fi
 	echo -n "$(tput tsl)$TITLE$(tput fsl)"
 }

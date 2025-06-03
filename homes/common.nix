@@ -29,6 +29,7 @@ in
   };
 
   imports = [
+    ./modules/quirks.nix
     ./modules/bash
     ./modules/xdg.nix
     nvimModule

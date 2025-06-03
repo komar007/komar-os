@@ -47,7 +47,7 @@ symbol = " 󰌠 "
 [git_branch]
 format = "[$symbol $branch]($style)"
 style = "bg:236 fg:yellow"
-symbol = "⎇"
+symbol = "__should_be_overridden__"
 
 [git_metrics]
 disabled = false
