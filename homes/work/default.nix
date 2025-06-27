@@ -35,7 +35,13 @@
   alacritty.font-size = 9.0;
   alacritty.font-offset = -2;
   alacritty.glyph-offset = -1;
-  programs.alacritty.settings.font.builtin_box_drawing = false;
+  programs.alacritty.settings = {
+    font.builtin_box_drawing = false;
+    window.padding = {
+      x = 0;
+      y = 0;
+    };
+  };
 
   xdg.default-browser-app = "firefox.desktop";
 
