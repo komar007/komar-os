@@ -18,7 +18,7 @@
   ];
 
   dot-tmux.session-shells = {
-    btop = "exec btop";
+    btop = "btop";
   };
 
   programs.home-manager.enable = true;
