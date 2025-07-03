@@ -69,10 +69,10 @@ disabled = false
 
 [fill]
 symbol = '┈'
-style = "236"
+style = "240"
 
 [cmd_duration]
-format = " [ $duration ]($style)[┈┈](236)"
+format = " [ $duration ]($style)[┈┈](240)"
 style = "0"
 min_time = 1
 show_milliseconds = true
