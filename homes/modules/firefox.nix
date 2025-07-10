@@ -15,6 +15,22 @@ let
       platforms = platforms.all;
     };
   };
+  ffAddonId = pkg:
+  let
+    entries = builtins.readDir "${pkg}/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/";
+    files = builtins.attrNames (lib.filterAttrs (_: type: type == "regular") entries);
+    xpis = builtins.filter
+      (name: (builtins.match ".*\\.xpi$" name) != null)
+      files;
+    xpi = builtins.elemAt xpis 0;
+  in
+    lib.strings.removeSuffix ".xpi" xpi;
+  ffAddonIconEntry = pkg:
+  let
+    id = ffAddonId pkg;
+    escaped-id = builtins.replaceStrings [ "{" "}" "@" "." ] [ "_" "_" "_" "_" ] id;
+  in
+    "${lib.strings.toLower escaped-id}-browser-action";
 in
 {
   programs.firefox.enable = true;
@@ -44,10 +60,10 @@ in
             "urlbar-container"
             "customizableui-special-spring2"
             "downloads-button"
-            "ublock0_raymondhill_net-browser-action"
+            (ffAddonIconEntry firefox-addons.ublock-origin)
             "unified-extensions-button"
             "fxa-toolbar-menu-button"
-            "home-assistant_bokub_dev-browser-action"
+            (ffAddonIconEntry home-assistant)
           ];
           "toolbar-menubar" = [ "menubar-items" ];
           "vertical-tabs" = [ "tabbrowser-tabs" ];
@@ -107,6 +123,7 @@ in
         ];
       }];
     };
+
     extensions.packages = with firefox-addons; [
       firenvim
       ublock-origin
