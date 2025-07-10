@@ -62,6 +62,7 @@ in
             "urlbar-container"
             "customizableui-special-spring2"
             "downloads-button"
+            (ffAddonIconEntry firefox-addons.dark-mode-webextension)
             (ffAddonIconEntry firefox-addons.ublock-origin)
             "unified-extensions-button"
             "fxa-toolbar-menu-button"
@@ -131,6 +132,7 @@ in
       ublock-origin
       home-assistant
       container-proxy
+      dark-mode-webextension
     ];
   };
 }
