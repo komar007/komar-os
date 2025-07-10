@@ -94,7 +94,7 @@ in
         template = "https://home-manager-options.extranix.com/";
         params = [
           { name = "query"; value = "{searchTerms}"; }
-          { name = "release"; value = "release-24.11"; }
+          { name = "release"; value = "release-25.05"; }
         ];
       }];
     };
