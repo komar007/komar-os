@@ -24,10 +24,48 @@ in
     isDefault = true;
 
     settings = {
+      "browser.aboutwelcome.enabled" = false;
       "extensions.autoDisableScopes" = 0;
       "ui.key.menuAccessKeyFocuses" = false;
       "browser.aboutConfig.showWarning" = false;
       "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
+      "sidebar.verticalTabs" = true;
+      "sidebar.animation.expand-on-hover.duration-ms" = 150;
+      "sidebar.main.tools" = "syncedtabs,history,bookmarks";
+      "browser.uiCustomization.state" = {
+        "placements" = {
+          "nav-bar" = [
+            "sidebar-button"
+            "back-button"
+            "forward-button"
+            "stop-reload-button"
+            "customizableui-special-spring1"
+            "vertical-spacer"
+            "urlbar-container"
+            "customizableui-special-spring2"
+            "downloads-button"
+            "ublock0_raymondhill_net-browser-action"
+            "unified-extensions-button"
+            "fxa-toolbar-menu-button"
+            "home-assistant_bokub_dev-browser-action"
+          ];
+          "toolbar-menubar" = [ "menubar-items" ];
+          "vertical-tabs" = [ "tabbrowser-tabs" ];
+          "PersonalToolbar" = [ "personal-bookmarks" ];
+        };
+        "currentVersion" = 22;
+        "newElementCount" = 5;
+      };
+      "privacy.userContext.newTabContainerOnLeftClick.enabled" = true;
+    };
+
+    containersForce = true;
+    containers = {
+      work = {
+        id = 2;
+        color = "red";
+        icon = "briefcase";
+      };
     };
 
     search.force = true;
@@ -73,6 +111,7 @@ in
       firenvim
       ublock-origin
       home-assistant
+      container-proxy
     ];
   };
 }
