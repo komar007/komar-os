@@ -15,6 +15,19 @@
 
   xdg.default-browser-app = "firefox.desktop";
 
+  programs.ssh.matchBlocks.work-pc = {
+    host = "work";
+    hostname = "192.168.134.42";
+    port = 22;
+    user = "komar";
+  };
+  programs.ssh.matchBlocks.work-jumphost = {
+    host = "J";
+    hostname = "192.168.5.68";
+    port = 22;
+    user = "M.Trybus";
+  };
+
   home.packages = with pkgs; [
     geeqie
     feh

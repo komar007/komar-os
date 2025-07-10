@@ -15,6 +15,7 @@
     ./modules/starship
     ./modules/git
     ./modules/tig
+    ./modules/ssh.nix
   ];
 
   dot-tmux.session-shells = {
