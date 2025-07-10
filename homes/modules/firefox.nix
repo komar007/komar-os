@@ -44,6 +44,8 @@ in
       "extensions.autoDisableScopes" = 0;
       "ui.key.menuAccessKeyFocuses" = false;
       "browser.aboutConfig.showWarning" = false;
+      "browser.tabs.closeWindowWithLastTab" = false;
+      "browser.tabs.fadeOutUnloadedTabs" = true;
       "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       "sidebar.verticalTabs" = true;
       "sidebar.animation.expand-on-hover.duration-ms" = 150;
