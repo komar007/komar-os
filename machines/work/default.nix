@@ -10,6 +10,7 @@
     ../modules/xserver.nix
     ../modules/intel.nix
     ../modules/audio.nix
+    ../modules/maintain-ssh-connection
   ];
 
   fileSystems = {
@@ -38,6 +39,9 @@
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 80 ];
   };
+
+  maintain-ssh-connection.user = "komar";
+  maintain-ssh-connection.host = "thinkcentre-tunnel";
 
   services.udisks2.enable = true;
 
