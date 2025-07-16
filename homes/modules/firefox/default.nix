@@ -1,6 +1,8 @@
 { lib, pkgs, ... }:
 let
+  ff-utils = import ./utils.nix { inherit lib; };
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
+
   home-assistant = firefox-addons.buildFirefoxXpiAddon {
     pname = "home-assistant";
     version = "0.5.0";
@@ -15,22 +17,6 @@ let
       platforms = platforms.all;
     };
   };
-  ffAddonId = pkg:
-  let
-    entries = builtins.readDir "${pkg}/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/";
-    files = builtins.attrNames (lib.filterAttrs (_: type: type == "regular") entries);
-    xpis = builtins.filter
-      (name: (builtins.match ".*\\.xpi$" name) != null)
-      files;
-    xpi = builtins.elemAt xpis 0;
-  in
-    lib.strings.removeSuffix ".xpi" xpi;
-  ffAddonIconEntry = pkg:
-  let
-    id = ffAddonId pkg;
-    escaped-id = builtins.replaceStrings [ "{" "}" "@" "." ] [ "_" "_" "_" "_" ] id;
-  in
-    "${lib.strings.toLower escaped-id}-browser-action";
 in
 {
   programs.firefox.enable = true;
@@ -62,11 +48,11 @@ in
             "urlbar-container"
             "customizableui-special-spring2"
             "downloads-button"
-            (ffAddonIconEntry firefox-addons.dark-mode-webextension)
-            (ffAddonIconEntry firefox-addons.ublock-origin)
+            (ff-utils.extensionIconEntry firefox-addons.dark-mode-webextension)
+            (ff-utils.extensionIconEntry firefox-addons.ublock-origin)
             "unified-extensions-button"
             "fxa-toolbar-menu-button"
-            (ffAddonIconEntry home-assistant)
+            (ff-utils.extensionIconEntry home-assistant)
           ];
           "toolbar-menubar" = [ "menubar-items" ];
           "vertical-tabs" = [ "tabbrowser-tabs" ];
@@ -79,35 +65,6 @@ in
     };
 
     containersForce = true;
-    containers = {
-      home = {
-        id = 1;
-        color = "blue";
-        icon = "chill";
-      };
-      work = {
-        id = 2;
-        color = "red";
-        icon = "briefcase";
-      };
-    };
-
-    extensions.settings."${ffAddonId firefox-addons.container-proxy}".settings = {
-      proxies = [
-        {
-          id = "8b1964af-23a7-43c7-b7cb-828ad3f2ab31";
-          title = "home";
-          type = "socks";
-          host = "localhost";
-          port = 9998;
-          doNotProxyLocal = true;
-          proxyDNS = true;
-        }
-      ];
-      relations = {
-        "firefox-container-1" = [ "8b1964af-23a7-43c7-b7cb-828ad3f2ab31" ];
-      };
-    };
 
     search.force = true;
     search.engines."Nix Packages" = {

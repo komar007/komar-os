@@ -1,6 +1,7 @@
 { lib, pkgs, nixpkgs-unstable, config, nixgl, ... }: {
   imports = [
-    ../modules/firefox.nix
+    ../modules/firefox
+    ../modules/firefox/containers/home.nix
     ../modules/qutebrowser.nix
     ../modules/xmonad.nix
     ../modules/mpv.nix

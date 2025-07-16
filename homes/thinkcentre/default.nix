@@ -1,6 +1,7 @@
 { lib, pkgs, ... }: {
   imports = [
-    ../modules/firefox.nix
+    ../modules/firefox
+    ../modules/firefox/containers/home.nix
     ../modules/chromium.nix
     ../modules/xmonad.nix
     ../modules/mpv.nix
