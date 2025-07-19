@@ -21,6 +21,7 @@
     hostname = "192.168.134.42";
     port = 22;
     user = "komar";
+    forwardX11 = true;
   };
   programs.ssh.matchBlocks.work-jumphost = {
     host = "J";
