@@ -32,6 +32,7 @@ in
       "browser.aboutConfig.showWarning" = false;
       "browser.tabs.closeWindowWithLastTab" = false;
       "browser.tabs.fadeOutUnloadedTabs" = true;
+      "browser.ctrlTab.sortByRecentlyUsed" = true;
       "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       "sidebar.verticalTabs" = true;
       "sidebar.animation.expand-on-hover.duration-ms" = 150;
