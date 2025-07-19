@@ -14,7 +14,7 @@
   boot.loader.grub2-theme.customResolution = "2256x1504";
 
   services.libinput.touchpad.disableWhileTyping = true;
-  services.libinput.touchpad.accelSpeed = "0.7";
+  services.libinput.touchpad.accelSpeed = "0.6";
 
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
