@@ -15,6 +15,14 @@
   alacritty.font = "JetBrainsMono Nerd Font";
   alacritty.font-size = 7.0;
 
+  programs.ssh.matchBlocks.thinkcentre = {
+    host = "thinkcentre";
+    hostname = "192.168.88.2";
+    port = 22;
+    user = "komar";
+    forwardX11 = true;
+  };
+
   home.packages = with pkgs; [
     geeqie
     feh
