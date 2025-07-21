@@ -35,7 +35,7 @@ in
       "browser.ctrlTab.sortByRecentlyUsed" = true;
       "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       "sidebar.verticalTabs" = true;
-      "sidebar.animation.expand-on-hover.duration-ms" = 150;
+      "sidebar.animation.expand-on-hover.duration-ms" = 66;
       "sidebar.main.tools" = "syncedtabs,history,bookmarks";
       "browser.uiCustomization.state" = {
         "placements" = {
