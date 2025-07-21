@@ -20,6 +20,7 @@
 
   dot-tmux.session-shells = {
     btop = "btop";
+    bc = "bc -l";
   };
 
   programs.home-manager.enable = true;
