@@ -29,6 +29,7 @@ in
       "browser.aboutwelcome.enabled" = false;
       "extensions.autoDisableScopes" = 0;
       "ui.key.menuAccessKeyFocuses" = false;
+      "browser.startup.page" = 3; # resume previous session
       "browser.aboutConfig.showWarning" = false;
       "browser.tabs.closeWindowWithLastTab" = false;
       "browser.tabs.fadeOutUnloadedTabs" = true;
