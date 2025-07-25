@@ -26,8 +26,6 @@ HISTCONTROL=
 unalias -a
 alias ls="lsd -Fg"
 alias grep="grep --colour=auto"
-alias e="e -F"
-alias t="ps -p $$ -o start_time"
 
 function less_set_title()
 {
