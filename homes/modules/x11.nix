@@ -5,4 +5,8 @@
     name = "DMZ-Black";
     package = pkgs.vanilla-dmz;
   };
+
+  home.packages = with pkgs; [
+    xclip
+  ];
 }
