@@ -17,17 +17,24 @@
   xdg.default-browser-app = "firefox.desktop";
 
   programs.ssh.matchBlocks.work-pc = {
-    host = "work";
+    host = "work-vpn";
     hostname = "192.168.134.42";
+    proxyJump = "work-jumphost";
     port = 22;
     user = "komar";
     forwardX11 = true;
   };
   programs.ssh.matchBlocks.work-jumphost = {
-    host = "J";
+    host = "work-jumphost";
     hostname = "192.168.5.68";
     port = 22;
     user = "M.Trybus";
+  };
+  programs.ssh.matchBlocks.work-pc-tunnel = {
+    host = "work";
+    hostname = "localhost";
+    port = 9022;
+    user = "komar";
   };
 
   home.packages = with pkgs; [
