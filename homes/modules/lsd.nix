@@ -2,12 +2,12 @@
 {
   programs.lsd.enable = true;
   programs.lsd.colors = {
-    user = 230;
-    group = 187;
+    user = 247;
+    group = 244;
     permission = {
-      read = 0;
-      write = "red";
-      exec = "green";
+      read = 247;
+      write = 199;
+      exec = 118;
       exec-sticky = 5;
       no-access = 245;
       octal = 6;
