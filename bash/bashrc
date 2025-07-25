@@ -24,7 +24,7 @@ HISTCONTROL=
 # ALIASES
 
 unalias -a
-alias ls="ls --color=always"
+alias ls="lsd -Fg"
 alias grep="grep --colour=auto"
 alias e="e -F"
 alias t="ps -p $$ -o start_time"

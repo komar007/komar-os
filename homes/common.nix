@@ -16,6 +16,7 @@
     ./modules/git
     ./modules/tig
     ./modules/ssh.nix
+    ./modules/lsd.nix
   ];
 
   dot-tmux.session-shells = {
