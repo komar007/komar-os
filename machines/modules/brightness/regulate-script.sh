@@ -1,11 +1,11 @@
 IN_DEV="iio:device0"
 OUT_DEV="amdgpu_bl1"
 
-HI_IN=172
-HI_OUT=70
+HI_IN=220
+HI_OUT=85
 
-LO_IN=45
-LO_OUT=20
+LO_IN=6
+LO_OUT=10
 
 MIN_BR=5
 USER_MAX_BR=256
