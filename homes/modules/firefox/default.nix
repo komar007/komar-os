@@ -77,7 +77,7 @@ in
           { name = "query"; value = "{searchTerms}"; }
         ];
       }];
-      icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+      iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
     };
     search.engines."Nix Options" = {
       definedAliases = [ "@no" ];
@@ -87,6 +87,7 @@ in
           { name = "query"; value = "{searchTerms}"; }
         ];
       }];
+      iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
     };
     search.engines."Home Manager Options" = {
       definedAliases = [ "@hmo" ];
@@ -97,6 +98,7 @@ in
           { name = "release"; value = "release-25.05"; }
         ];
       }];
+      iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
     };
     search.engines."crates.io" = {
       definedAliases = [ "@c" ];
@@ -106,6 +108,7 @@ in
           { name = "q"; value = "{searchTerms}"; }
         ];
       }];
+      iconMapObj."227" = "https://crates.io/assets/cargo.png";
     };
 
     extensions.packages = with firefox-addons; [
