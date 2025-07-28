@@ -201,6 +201,15 @@ in
       ];
       iconMapObj."227" = "https://crates.io/assets/cargo.png";
     };
+    search.engines."jira.adbglobal.com" = {
+      definedAliases = [ "@jira" ];
+      urls = [
+        {
+          template = "https://jira.adbglobal.com/browse/{searchTerms}";
+        }
+      ];
+      iconMapObj."128" = "https://jira.adbglobal.com/s/-mn5en6/820014/avp4c6/_/images/fav-jsw.png";
+    };
 
     extensions.force = true;
     extensions.packages = with firefox-addons; [
