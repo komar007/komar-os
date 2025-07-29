@@ -19,9 +19,12 @@
     ./modules/lsd.nix
   ];
 
-  dot-tmux.session-shells = {
+  dot-tmux.session-shells = let
+    bc = pkgs.lib.getExe pkgs.bc;
+  in
+  {
     btop = "btop";
-    bc = "bc -l";
+    bc = "${bc} -l";
   };
 
   programs.home-manager.enable = true;
