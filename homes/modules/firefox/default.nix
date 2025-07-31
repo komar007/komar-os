@@ -38,6 +38,7 @@ in
       "sidebar.verticalTabs" = true;
       "sidebar.animation.expand-on-hover.duration-ms" = 66;
       "sidebar.main.tools" = "syncedtabs,history,bookmarks";
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       "browser.uiCustomization.state" = {
         "placements" = {
           "nav-bar" = [
