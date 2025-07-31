@@ -31,6 +31,8 @@
 
     cursor.style.blinking = "Always";
 
+    mouse.hide_when_typing = true;
+
     colors = {
       cursor.cursor = "CellForeground";
       cursor.text = "CellBackground";
