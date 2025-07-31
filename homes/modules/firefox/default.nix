@@ -66,6 +66,13 @@ in
       "privacy.userContext.newTabContainerOnLeftClick.enabled" = true;
     };
 
+    # non-clickable "mute/unmute" playback buttons on background tabs
+    userChrome = ''
+      tab.tabbrowser-tab:not([selected="true"]) image.tab-icon-overlay[role="presentation"] {
+        pointer-events: none;
+      }
+    '';
+
     containersForce = true;
 
     search.force = true;
