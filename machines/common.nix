@@ -63,4 +63,12 @@
     enable = true;
     nssmdns4 = true;
   };
+
+  virtualisation.docker = {
+    enable = false;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 }
