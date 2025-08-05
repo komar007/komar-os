@@ -30,11 +30,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1749645696,
-        "narHash": "sha256-bhLpUCuetT+WEp7tuSGO8NVn79ldi6NrE793KwS2tng=",
+        "lastModified": 1754423836,
+        "narHash": "sha256-A4bQw+rV0UO252oiJjFYg5dOSqiijlko47zUI5jmXiE=",
         "owner": "komar007",
         "repo": "dot-tmux",
-        "rev": "7d123024f795e2b92b9c05f0b7c7850e25c0d924",
+        "rev": "064f15eb5552c0090c8811d26b10a1d9a4da67aa",
         "type": "github"
       },
       "original": {

@@ -277,6 +277,11 @@ export GDK_DPI_SCALE=1.5
 export QT_SCALE_FACTOR=$GDK_DPI_SCALE
 
 function set_title() {
+	case "$SHELL_SESSION_RECORDED_BY" in
+	script)
+		return # script cannot handle setting title well
+		;;
+	esac
 	if [ "$PWD" = "$HOME" ]; then
 		DIR="~"
 	else
