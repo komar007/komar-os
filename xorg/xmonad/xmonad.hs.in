@@ -82,6 +82,16 @@ myLayoutHook = workspaceDir "~" $ smartBorders $
     web      = defaultWSet golden 1
     norm r n = avoidStruts $ defaultSet r n
 
+toggleStrutsOn :: [WorkspaceId] -> X ()
+toggleStrutsOn wss = do
+    cur <- gets (W.currentTag . windowset)
+    mapM_ (\ws -> windows (W.view ws) >> sendMessage ToggleStruts) wss
+    windows (W.view cur)
+
+setStrutsDefaults :: X ()
+setStrutsDefaults = do
+    toggleStrutsOn ["c1", "c2", "c3"]
+
 #ifdef CONFIG_WORK
 iconDir = "/home/komar/.xmonad/dzen2_img_small/"
 #else
@@ -198,7 +208,7 @@ myTopicConfig = def
 myConf xmproc =
     docks $
     def {
-        startupHook = setWMName "LG3D",
+        startupHook = setWMName "LG3D" <+> setStrutsDefaults,
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
         layoutHook = myLayoutHook,
         logHook = myLogHook xmproc,
