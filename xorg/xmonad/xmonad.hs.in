@@ -65,16 +65,11 @@ tall ratio numMaster = R.ResizableTall numMaster delta ratio []
 myTall r n = named "tall" $ tall r n
 myWide r n = named "wide" $ Mirror $ tall r n
 myFull     = named "full" $ noBorders (tabbedBottom shrinkText tabTheme)
-mySimpleFull  = named "full" $ noBorders Full
 
 defaultSet r n =
     myTall r n ||| myWide r n ||| myFull
-defaultMSet r n =
-    myWide r n ||| myTall r n ||| myFull
 defaultWSet r n =
     myFull   ||| myTall r n ||| myWide r n
-defaultVSet r n =
-    mySimpleFull ||| myTall r n ||| myWide r n
 
 webSpaces = ["web1", "web2"]
 
@@ -82,7 +77,6 @@ webSpaces = ["web1", "web2"]
 myLayoutHook = workspaceDir "~" $ smartBorders $
     (onWorkspaces webSpaces $ avoidStruts web) $
     (onWorkspace "mail" $ avoidStruts web) $
-    (onWorkspace "temp" $ norm 0.5 2) $
     (norm golden 1)
     where
     web      = defaultWSet golden 1
@@ -130,7 +124,6 @@ scratchpads = [
 myScratchpadManageHook = namedScratchpadManageHook scratchpads
 myManageHook = myScratchpadManageHook <+> manageDocks <+> myConditions <+> manageHook def
 myConditions = composeAll [
-    resource  =? "tempterm"   --> doF (W.shift "temp"),
     isMail                    --> doF (W.shift "mail"),
     isFullscreen              --> doFullFloat]
     where isMail = className =? "Thunderbird"
