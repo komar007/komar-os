@@ -71,16 +71,14 @@ defaultSet r n =
 defaultWSet r n =
     myFull   ||| myTall r n ||| myWide r n
 
-webSpaces = ["web1", "web2"]
+fullscreenPreferredSpaces = ["web1", "web2", "mail"]
 
 -- FIXME dynamically create workspacedirs from topics configuration
-myLayoutHook = workspaceDir "~" $ smartBorders $
-    (onWorkspaces webSpaces $ avoidStruts web) $
-    (onWorkspace "mail" $ avoidStruts web) $
-    (norm golden 1)
-    where
-    web      = defaultWSet golden 1
-    norm r n = avoidStruts $ defaultSet r n
+myLayoutHook =
+    workspaceDir "~" $
+    smartBorders $
+    (onWorkspaces fullscreenPreferredSpaces $ avoidStruts $ defaultWSet golden 1) $
+    (avoidStruts $ defaultSet golden 1)
 
 toggleStrutsOn :: [WorkspaceId] -> X ()
 toggleStrutsOn wss = do
