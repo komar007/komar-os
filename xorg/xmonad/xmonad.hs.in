@@ -203,10 +203,17 @@ myTopicConfig = def
     , topicActions = M.fromList $ map (\(Main.TI n _ a) -> (n,a)) myTopics
     }
 
+setDefaultWs :: String -> X ()
+setDefaultWs ws = do
+    windows (W.view ws)
+
 myConf xmproc =
     docks $
     def {
-        startupHook = setWMName "LG3D" <+> setStrutsDefaults,
+        startupHook =
+            setWMName "LG3D" <+>
+            setStrutsDefaults <+>
+            setDefaultWs "c1",
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
         layoutHook = myLayoutHook,
         logHook = myLogHook xmproc,
