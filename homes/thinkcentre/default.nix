@@ -45,7 +45,7 @@
     gnuplot
     xcolor
 
-    super-slicer-beta
+    super-slicer
 
     esphome
 
