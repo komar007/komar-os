@@ -34,6 +34,10 @@ in
       "browser.tabs.closeWindowWithLastTab" = false;
       "browser.tabs.fadeOutUnloadedTabs" = true;
       "browser.ctrlTab.sortByRecentlyUsed" = true;
+      "browser.toolbars.bookmarks.visibility" = "never";
+      "browser.newtabpage.activity-stream.showSponsored" = false;
+      "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+      "browser.newtabpage.activity-stream.newtabWallpapers.wallpaper" = "solid-color-picker-#171717";
       "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       "sidebar.verticalTabs" = true;
       "sidebar.animation.expand-on-hover.duration-ms" = 66;
