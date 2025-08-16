@@ -23,9 +23,20 @@ Config {
             "-t", "<usedratio>%",
             "--low", "#777777", "--normal", "#aaaaaa", "--high", "#a53333"
         ] 10
+#ifdef CONFIG_LAPTOP
+        , Run Battery [
+            "-t", "<icon=bat.xbm/><left>% <watts>W ",
+            "-L", "25", "-H", "70",
+            "--low", "#a53333", "--normal", "#aaaaaa", "--high", "#777777"
+        ] 10
+#endif
     ],
     sepChar = "X",
+#ifdef CONFIG_LAPTOP
+    template = "XmemoryX/XswapX XcpuX XbatteryX"
+#else
     template = "XmemoryX/XswapX XcpuX"
+#endif
 }
 
 -- vim:ft=haskell

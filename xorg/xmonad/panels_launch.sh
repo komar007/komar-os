@@ -58,8 +58,8 @@ elif [[ $CONFIG == work ]]; then
     echo $! >> $PIDS
 elif [[ $CONFIG == laptop ]]; then
     ICON_ROOT="$HOME/.xmonad/dzen2_img_large/"
-    cpp -P -I"$DIR" -DICON_ROOT=\"$ICON_ROOT\" -DCONFIG_DESKTOP -DPOS=0    -DWIDTH=400  ~/.xmonad/xmobar-info.in               > /tmp/xmobar-info-laptop
-    cpp -P -I"$DIR" -DICON_ROOT=\"$ICON_ROOT\" -DCONFIG_DESKTOP -DPOS=1856 -DWIDTH=400  ~/.xmonad/xmobar-clock.in              > /tmp/xmobar-clock
+    cpp -P -I"$DIR" -DICON_ROOT=\"$ICON_ROOT\" -DCONFIG_LAPTOP  -DPOS=0    -DWIDTH=400  ~/.xmonad/xmobar-info.in               > /tmp/xmobar-info-laptop
+    cpp -P -I"$DIR" -DICON_ROOT=\"$ICON_ROOT\" -DCONFIG_LAPTOP  -DPOS=1856 -DWIDTH=400  ~/.xmonad/xmobar-clock.in              > /tmp/xmobar-clock
     xmobar /tmp/xmobar-info-laptop &
     echo $! >> $PIDS
     xmobar /tmp/xmobar-clock &
