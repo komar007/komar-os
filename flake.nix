@@ -5,7 +5,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    flake-utils.url = "github:numtide/flake-utils";
+    systems.url = "github:nix-systems/default-linux";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
     nixgl = {
       url = "github:nix-community/nixGL";
@@ -15,6 +19,11 @@
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wiremix = {
+      url = "github:tsowell/wiremix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -50,6 +59,7 @@
       tmux-module = system: inputs.dot-tmux.homeManagerModules.${system}.default;
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       grub-themes-module = system: inputs.grub-themes.nixosModules.default;
+      wiremix = system: inputs.wiremix.packages.${system};
 
       nixosConfiguration = name: system: nixpkgs.lib.nixosSystem {
         specialArgs = {
@@ -67,6 +77,7 @@
         pkgs = nixpkgs-stable system;
         extraSpecialArgs = {
           nixpkgs-unstable = nixpkgs-unstable system;
+          wiremix = wiremix system;
           nvim-module = nvim-module system;
           tmux-module = tmux-module system;
           tmux-alacritty-module = tmux-alacritty-module system;

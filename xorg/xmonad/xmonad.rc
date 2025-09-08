@@ -8,4 +8,4 @@
 #define HEIGHT 18
 #define YPOS 0
 #define BROWSER_CMD "firefox"
-#define MIXER_CMD "pulsemixer"
+#define MIXER_CMD "wiremix"
