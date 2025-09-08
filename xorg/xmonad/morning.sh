@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-WORK_TIME=$[8*3600]
+WORK_TIME=$((8 * 3600))
 SHOULD_START="08:30:00"
-MAXDIFF=$[5*60]
-LEAVE_EXTRA=$[10*60]
+MAXDIFF=$((5 * 60))
+LEAVE_EXTRA=$((10 * 60))
 
-function color_xmobar()
-{
+function color_xmobar() {
 	text=$1
 	color=$2
 	if [ -n "$color" ]; then
@@ -16,8 +15,7 @@ function color_xmobar()
 	fi
 }
 
-function low_mid_high()
-{
+function low_mid_high() {
 	value=$1
 	low=$2
 	high=$3
@@ -33,13 +31,12 @@ function low_mid_high()
 	fi
 }
 
-#            2d ago   yesterday        today
-WKTM_LOW=("#6a2119"   "#93352a"    ""       )
-WKTM_MID=("#2a2c28"   "#40423d"    "#719a4b")
- WKTM_HI=("#364924"   "#456429"    "#fb4934")
+# (2d ago  yesterday  today)
+WKTM_LOW=("#6a2119" "#93352a" "")
+WKTM_MID=("#2a2c28" "#40423d" "#719a4b")
+WKTM_HI=("#364924" "#456429" "#fb4934")
 
-function balance()
-{
+function balance() {
 	B=$1
 	COL=$2
 
@@ -49,8 +46,8 @@ function balance()
 		S=-
 		M=$((-$M))
 	fi
-	H=$(($M/60))
-	M=$(($M-$H*60))
+	H=$(($M / 60))
+	M=$(($M - $H * 60))
 	text=$(printf "%c%d:%02d\n" "$S" "$H" "$M")
 	color_xmobar "$text" "$COL"
 }
@@ -61,12 +58,12 @@ if [ -x "$HOME/.slock/antime.sh" ]; then
 	"$HOME/.slock/antime.sh" | head -n 3 | tac | while read data; do
 		time_start=$(echo "$data" | cut -d " " -f 1)
 		day=$(echo "$data" | cut -d " " -f 2)
-		start_diff=$[$time_start - $should_start]
+		start_diff=$(($time_start - $should_start))
 		time_now=$(date +%s)
 
 		color_time=$(low_mid_high $start_diff -$MAXDIFF $MAXDIFF "#719a4b" "" "#fb4934")
-		color_day=$(low_mid_high $day $WORK_TIME $[$WORK_TIME+$LEAVE_EXTRA]\
-			                 "${WKTM_LOW[$num]}" "${WKTM_MID[$num]}" "${WKTM_HI[$num]}")
+		color_day=$(low_mid_high $day $WORK_TIME $(($WORK_TIME + $LEAVE_EXTRA)) \
+			"${WKTM_LOW[$num]}" "${WKTM_MID[$num]}" "${WKTM_HI[$num]}")
 
 		time_start_h=$(date +%R -d @$time_start)
 		day_h=$(TZ= date +%R -d @$day)
@@ -81,6 +78,6 @@ if [ -x "$HOME/.slock/antime.sh" ]; then
 			bal_text=$(balance "$bal" "$color_bal")
 			echo -n "<fc=#cccccc><icon=enter.xbm/></fc> [$bal_text] $time_part ($day_part)"
 		fi
-		num=$[$num+1]
+		num=$(($num + 1))
 	done
 fi

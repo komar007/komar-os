@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 last_lock1=""
 last_lock2=""

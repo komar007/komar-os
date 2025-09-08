@@ -6,6 +6,8 @@
     dzen2
     xmobar
     xwallpaper
+    xsecurelock
+    xautolock
   ];
 
   home.file.".wallpaper.png".source = builtins.fetchurl {
