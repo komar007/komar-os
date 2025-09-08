@@ -5,6 +5,7 @@
     ../modules/grub2.nix
     ../modules/splashscreen.nix
 
+    ../modules/openssh.nix
     ../modules/brightness
     ../modules/xserver.nix
     ../modules/amd.nix
@@ -44,8 +45,6 @@
   services.udisks2.enable = true;
 
   services.printing.enable = true;
-
-  services.openssh.enable = true;
 
   services.lighttpd = {
     enable = true;

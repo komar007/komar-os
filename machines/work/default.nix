@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     ../modules/splashscreen.nix
 
+    ../modules/openssh.nix
     ../modules/xserver.nix
     ../modules/intel.nix
     ../modules/audio.nix
@@ -33,13 +34,6 @@
   services.udisks2.enable = true;
 
   services.printing.enable = true;
-
-  services.openssh.enable = true;
-  services.openssh.settings = {
-    ClientAliveInterval = 15;
-    ClientAliveCountMax = 3;
-    X11Forwarding = true;
-  };
 
   services.lighttpd = {
     enable = true;
