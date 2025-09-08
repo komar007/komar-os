@@ -27,6 +27,8 @@
   };
   console.keyMap = "pl2";
 
+  fonts.fontconfig.useEmbeddedBitmaps = true;
+
   environment.systemPackages = with pkgs; [
     home-manager
 

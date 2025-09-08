@@ -54,6 +54,8 @@
     gnuplot
     xcolor
 
+    thunderbird
+
     uv
     temporal-cli
 

@@ -82,6 +82,7 @@
       nixosConfigurations = {
         thinkcentre = nixosConfiguration "thinkcentre" "x86_64-linux";
         framework = nixosConfiguration "framework" "x86_64-linux";
+        work = nixosConfiguration "work" "x86_64-linux";
       };
       homeConfigurations = {
         thinkcentre = homeConfiguration "thinkcentre" "x86_64-linux";
