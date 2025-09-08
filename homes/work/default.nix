@@ -53,12 +53,15 @@
     imagemagick
     gnuplot
     xcolor
-    nixpkgs-unstable.aider-chat
-    nixpkgs-unstable.codex
+
+    uv
+    temporal-cli
 
     kanata
 
     nerd-fonts.zed-mono
+
+    xorg.xset
   ];
 
   home.stateVersion = "24.11";
