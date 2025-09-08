@@ -78,6 +78,10 @@
       glyph_offset.y = config.alacritty.glyph-offset;
     };
 
+    window = {
+      opacity = 0.7;
+    };
+
     keyboard.bindings = [
       # unbind unnecessary defaults
       {

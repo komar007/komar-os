@@ -7,4 +7,15 @@
     xmobar
     htop
   ];
+
+  services.picom.enable = true;
+  services.picom = {
+    backend = "glx";
+    settings = {
+      blur = {
+        method = "dual_kawase";
+        strength = 5;
+      };
+    };
+  };
 }
