@@ -6,6 +6,7 @@
 #define DEFAULT_FONT JetBrainsMono Nerd Font:pixelsize=16
 #define ICON_OFFSET -2
 #define HEIGHT 18
+#define HEIGHT_TABS 24
 #define YPOS 0
 #define BROWSER_CMD "firefox"
 #define MIXER_CMD "wiremix"

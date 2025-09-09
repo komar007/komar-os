@@ -149,7 +149,7 @@ tabTheme = def {
     activeTextColor      = "#c4a000",
     inactiveTextColor    = "#aaaaaa",
     urgentTextColor      = "#dd0000",
-    decoHeight           = HEIGHT
+    decoHeight           = HEIGHT_TABS
 }
 
 xpconfig = def {
