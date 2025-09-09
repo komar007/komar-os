@@ -12,6 +12,7 @@
   services.picom = {
     backend = "glx";
     settings = {
+      vsync = true;
       blur = {
         method = "dual_kawase";
         strength = 5;
