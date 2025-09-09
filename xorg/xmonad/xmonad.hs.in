@@ -118,7 +118,7 @@ myLogHook pipe = dynamicLogWithPP $ dzenPP {
 scratchpads = [
     NS "scratchpad"     "~/.xmonad/terminal.sh scratchpad tmux new-session -A -s scratch"
         (resource =? "scratchpad")   (terminalFloating 0 0.5 1 0.5),
-    NS MIXER_CMD ("~/.xmonad/terminal.sh scratchmixer " ++ MIXER_CMD)
+    NS MIXER_CMD ("TERMINAL_PADDING=y ~/.xmonad/terminal.sh scratchmixer " ++ MIXER_CMD)
         (resource =? "scratchmixer") (terminalFloating 0.15 0.08 0.7 0.3),
     NS "bc"        "~/.xmonad/terminal.sh bc tmux new-session -A -s bc ~/.tmux/bin/spawn_shell.sh bc"
         (resource =? "bc")           (terminalFloating 0.67 0.2 0.3 0.6),
