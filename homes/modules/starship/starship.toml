@@ -4,7 +4,7 @@ scan_timeout = 10
 add_newline = false
 
 format = '''
-$character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](inverted bg:236 fg:16))([](bg:236 fg:16)$git_branch$git_metrics[](inverted bg:236 fg:16))([](bg:236 fg:16)${env_var.NIX_SHELL_NAME}[](inverted bg:236 fg:16))([](bg:236 fg:16)$python[](inverted bg:236 fg:16)) $username[@](0)$hostname[:](0)$directory$fill$cmd_duration$time [](241)
+$character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](fg:236 bg:16))([](bg:236 fg:16)$git_branch$git_metrics[](fg:236 bg:16))([](bg:236 fg:16)${env_var.NIX_SHELL_NAME}[](fg:236 bg:16))([](bg:236 fg:16)$python[](fg:236 bg:16)) $username[@](0)$hostname[:](0)$directory$fill$cmd_duration$time [](241)
  [\$ ](bold blue)
 '''
 
@@ -15,7 +15,7 @@ error_symbol = ""
 
 [status]
 format = "[$status]($style)[]($style inverted)"
-success_style = "bg:241 fg:16"
+success_style = "fg:241"
 failure_style = "bg:red fg:16"
 disabled = false
 
