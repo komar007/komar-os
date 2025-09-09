@@ -19,6 +19,9 @@ let
   };
 in
 {
+  imports = [
+    ./extensions/darkmode.nix
+  ];
   programs.firefox.enable = true;
   programs.firefox.profiles."default-release" = {
     id = 0;
@@ -123,14 +126,20 @@ in
       iconMapObj."227" = "https://crates.io/assets/cargo.png";
     };
 
+    extensions.force = true;
     extensions.packages = with firefox-addons; [
       firenvim
       ublock-origin
       home-assistant
       container-proxy
-      dark-mode-webextension
     ];
-
-    extensions.force = true;
   };
+
+  firefox-darkmode.exclude = [
+    "teams.microsoft.com"
+    "github.com"
+    "developer.mozilla.org"
+    "reddit.com"
+    "chatgpt.com"
+  ];
 }
