@@ -1,4 +1,9 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{
+  config,
+  pkgs,
+  nixpkgs-unstable,
+  ...
+}:
 let
   utils = import ../modules/k3s/utils.nix { pkgs = nixpkgs-unstable; };
 in
@@ -39,6 +44,30 @@ in
   dot-tmux.top.windows = [
     (utils.kubetui-with-namespace "prisme")
   ];
+
+  # requires sops secrets definition in ./ssh/default.nix
+  firefox-darkmode.exclude =
+    let
+      p = config.sops.placeholder;
+    in
+    [
+      p."public_addr/prisme_integration"
+      p."public_addr/prisme_nightly"
+      "i.pl.adbglobal.com"
+    ];
+
+  # FIXME: generalize
+  sops.templates."firefox/extensions/darkmode/settings".content =
+    config.home.file.".mozilla/firefox/default/browser-extension-data/{174b2d58-b983-4501-ab4b-07e71203cb43}/storage.js".text;
+  home.file.".mozilla/firefox/default/browser-extension-data/{174b2d58-b983-4501-ab4b-07e71203cb43}/storage.js".enable =
+    false;
+
+  home.file."___firefox/extensions/darkmode/settings" = {
+    target = ".mozilla/firefox/default/browser-extension-data/{174b2d58-b983-4501-ab4b-07e71203cb43}/storage.js";
+    source =
+      config.lib.file.mkOutOfStoreSymlink
+        config.sops.templates."firefox/extensions/darkmode/settings".path;
+  };
 
   xdg.default-browser-app = "firefox.desktop";
 
