@@ -21,6 +21,7 @@
     let
       script = lib.getExe (pkgs.writeShellApplication {
         name = "maintain-ssh-connection";
+        runtimeInputs = [ pkgs.openssh ];
         text = builtins.readFile ./maintain-ssh-connection.sh;
       });
     in "${script} ${config.maintain-ssh-connection.host}";
