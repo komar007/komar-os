@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Set REMOTE_CMD to non-empty string to execute its content on the remote side for all ssh
+# connections that don't have 'RemoteCommand' defined in .ssh/config.
+
 # shellcheck disable=SC2016
 REMOTE_CMD=${REMOTE_CMD:-''}
 
@@ -64,10 +67,14 @@ N=$(
 			IFS=: read -r M ARG <<< "$E"; \
 			echo -n "$(tput setaf 4)$(tput sgr0) "; \
 			if [ "$M" = R ]; then \
-				echo ssh $ARG -t "'\''"'\'"$REMOTE_CMD"\''"'\''"; \
+				if ssh -TG "$ARG" | grep -qE "^remotecommand " || [ -z "$REMOTE_CMD" ]; then \
+					echo ssh $ARG; \
+				else \
+					echo ssh $ARG -t "'\''$REMOTE_CMD'\''"; \
+				fi; \
 				echo; \
 				tput setaf 8; \
-				ssh -TG "$ARG" | grep -E "^(user|hostname|port|forwardx11) "; \
+				ssh -TG "$ARG" | grep -E "^(user|hostname|port|forwardx11|requesttty|remotecommand) "; \
 			else \
 				echo "$ARG"; \
 				echo; \
@@ -84,7 +91,11 @@ fi
 ENTRY=$(sed -n $((N + 1))p <<< "$ENTRIES" | cut -f 1 -d " ")
 IFS=: read -r M ARG <<< "$ENTRY"
 if [ "$M" = R ]; then
-	exec ssh "$ARG" -t "$REMOTE_CMD"
+	if ssh -TG "$ARG" | grep -qE "^remotecommand " || [ -z "$REMOTE_CMD" ]; then
+		exec ssh "$ARG"
+	else
+		exec ssh "$ARG" -t "$REMOTE_CMD"
+	fi
 else
 	exec "$ARG"
 fi
