@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2016
+REMOTE_CMD='tmux a || exec "$SHELL"'
+
+HOSTS=$(grep -E 'Host [^*]' ~/.ssh/config | cut -f 2 -d ' ')
+
+ENTRIES=$(
+	echo "L:$SHELL [$(basename "$SHELL")],$SHELL"
+	for host in $HOSTS; do
+		vars=$(ssh -G "$host" | grep -E '^(user|hostname|host|port|forwardx11) ' | tr ' ' =)
+		eval "$vars"
+
+		X11=""
+		# shellcheck disable=SC2154
+		if [ "$forwardx11" = yes ]; then
+			X11=" (X11)"
+		fi
+		# shellcheck disable=SC2154
+		echo "R:$host [ssh:$host],$user@$hostname:$port$X11"
+	done
+)
+
+N=$(
+	# shellcheck disable=SC2016
+	echo "$ENTRIES" | cut -f 2- -d ' ' | column -dt -C left -s, | fzf \
+		--height=100% \
+		--delimiter=' ' \
+		--accept-nth='{n}' \
+		--color=border:'#c39f00' \
+		--border double \
+		--margin 30%,20% \
+		--padding 2,4 \
+		--preview-window=top,wrap,border-none \
+		--preview ' \
+			E=$(sed -n $(({n}+1))p <<< "'"$ENTRIES"'" | cut -f 1 -d " "); \
+			IFS=: read -r M ARG <<< "$E"; \
+			echo -n "$(tput setaf 4)$(tput sgr0) "; \
+			if [ "$M" = R ]; then \
+				echo ssh $ARG -t "'\''"'\'"$REMOTE_CMD"\''"'\''"; \
+				echo; \
+				tput setaf 8; \
+				ssh -TG "$ARG" | grep -E "^(user|hostname|port|forwardx11) "; \
+			else \
+				echo "$ARG"; \
+				echo; \
+				tput setaf 8; \
+				"$ARG" --version; \
+			fi \
+		'
+)
+
+if [ -z "$N" ]; then
+	exit
+fi
+
+ENTRY=$(sed -n $((N + 1))p <<< "$ENTRIES" | cut -f 1 -d " ")
+IFS=: read -r M ARG <<< "$ENTRY"
+if [ "$M" = R ]; then
+	exec ssh "$ARG" -t "$REMOTE_CMD"
+else
+	exec "$ARG"
+fi

@@ -305,7 +305,7 @@ myKeys xmproc = [
                               spawnHere "~/.xmonad/noblink.sh"
                               ),
     ("M-S-<Return>",      currentTopicAction myTopicConfig),
-    ("M-S-C-<Return>",    spawnHere "~/.xmonad/terminal.sh terminal"),
+    ("M-S-C-<Return>",    spawnHere "~/.xmonad/terminal.sh terminal session-chooser"),
     ("M-<Backspace>",     myToggle)]
     ++
     [(sc, withNthWorkspace W.greedyView n) | (sc, n) <- zip workspaceKeys [0..]]

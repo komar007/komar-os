@@ -8,6 +8,10 @@
     htop
   ];
 
+  imports = [
+    ./session-chooser
+  ];
+
   services.picom.enable = true;
   services.picom = {
     backend = "glx";
