@@ -5,8 +5,31 @@ REMOTE_CMD='tmux a || exec "$SHELL"'
 
 HOSTS=$(grep -E 'Host [^*]' ~/.ssh/config | cut -f 2 -d ' ')
 
+format_shell_entry() {
+	local ABS
+	ABS=$(realpath "$1")
+	LNK=""
+	if [ "$ABS" != "$1" ]; then
+		LNK=" ( 󰁔 $ABS)"
+	fi
+	echo "L:$1 [$(basename "$1")],$1$LNK"
+}
+
 ENTRIES=$(
-	echo "L:$SHELL [$(basename "$SHELL")],$SHELL"
+	cur_shell_abs=$(realpath "$SHELL")
+	format_shell_entry "$SHELL"
+	if [ -f /etc/shells ]; then
+		while read -r shell; do
+			shell_abs=$(realpath "$shell")
+			if [ "$shell_abs" = "$cur_shell_abs" ]; then
+				continue
+			fi
+			echo -n "$shell_abs " && format_shell_entry "$shell"
+		done < /etc/shells \
+			| sort -k 1,1 -u \
+			| cut -d " " -f 2-
+
+	fi
 	for host in $HOSTS; do
 		vars=$(ssh -G "$host" | grep -E '^(user|hostname|host|port|forwardx11) ' | tr ' ' =)
 		eval "$vars"
