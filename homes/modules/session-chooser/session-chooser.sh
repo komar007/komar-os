@@ -18,6 +18,8 @@ format_shell_entry() {
 	echo "L:$1 $(tput setaf 2)$(basename "$1")$(tput sgr0),$1$LNK"
 }
 
+# L:<shell-cmd> <fzf-column-1>,<fzf-column-2>
+# R:<ssh-host-name> <fzf-column-1>,<fzf-column-2>
 ENTRIES=$(
 	cur_shell_abs=$(realpath "$SHELL")
 	format_shell_entry "$SHELL"
@@ -51,8 +53,10 @@ ENTRIES=$(
 )
 
 N=$(
+	# columnize the <fzf-column-1>,<fzf-column-2> part
+	ENTRIES_FZF=$(echo "$ENTRIES" | cut -f 2- -d ' ' | column -dt -C left -s,)
 	# shellcheck disable=SC2016
-	echo "$ENTRIES" | cut -f 2- -d ' ' | column -dt -C left -s, | fzf \
+	fzf \
 		--ansi \
 		--height=100% \
 		--delimiter=' ' \
@@ -82,7 +86,8 @@ N=$(
 				tput setaf 8; \
 				"$ARG" --version; \
 			fi \
-		'
+		' \
+		<<< "$ENTRIES_FZF"
 )
 
 if [ -z "$N" ]; then
