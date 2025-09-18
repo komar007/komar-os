@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # shellcheck disable=SC2016
-REMOTE_CMD='tmux a || exec "$SHELL"'
+REMOTE_CMD=${REMOTE_CMD:-''}
 
 HOSTS=$(grep -E 'Host [^*]' ~/.ssh/config | cut -f 2 -d ' ')
 
