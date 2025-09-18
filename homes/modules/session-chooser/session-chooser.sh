@@ -10,9 +10,9 @@ format_shell_entry() {
 	ABS=$(realpath "$1")
 	LNK=""
 	if [ "$ABS" != "$1" ]; then
-		LNK=" ( 󰁔 $ABS)"
+		LNK=" $(tput setaf 6)󰁔 $ABS$(tput sgr0)"
 	fi
-	echo "L:$1 [$(basename "$1")],$1$LNK"
+	echo "L:$1 $(tput setaf 2)$(basename "$1")$(tput sgr0),$1$LNK"
 }
 
 ENTRIES=$(
@@ -39,14 +39,18 @@ ENTRIES=$(
 		if [ "$forwardx11" = yes ]; then
 			X11=" (X11)"
 		fi
+		echo -n "R:$host "
+		echo -n "$(tput setaf 3)ssh:$(tput sgr0)$host,"
 		# shellcheck disable=SC2154
-		echo "R:$host [ssh:$host],$user@$hostname:$port$X11"
+		echo -n "$(tput sitm)$user$(tput ritm; tput setaf 8)@$(tput sgr0; tput setaf 3)$hostname$(tput sgr0; tput setaf 8):$(tput sgr0)$port"
+		echo "$X11"
 	done
 )
 
 N=$(
 	# shellcheck disable=SC2016
 	echo "$ENTRIES" | cut -f 2- -d ' ' | column -dt -C left -s, | fzf \
+		--ansi \
 		--height=100% \
 		--delimiter=' ' \
 		--accept-nth='{n}' \
