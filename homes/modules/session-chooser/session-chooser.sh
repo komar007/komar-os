@@ -79,7 +79,8 @@ N=$(
 		--height=100% \
 		--delimiter=' ' \
 		--accept-nth='{n}' \
-		--color='bg:#222222' \
+		--color='bg:#222222,current-bg:#555555,gutter:#333333' \
+		--highlight-line \
 		--border top \
 		--border-label "$(yes ' ' | head -n "$(tput cols)" | tr -d '\n')" \
 		--margin 30%,20% \
