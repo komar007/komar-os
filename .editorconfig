@@ -1,0 +1,4 @@
+[*.sh]
+binary_next_line = true
+space_redirects = true
+switch_case_indent = false
