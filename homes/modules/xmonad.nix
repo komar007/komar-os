@@ -38,4 +38,16 @@
       crop-shadow-to-monitor = true;
     };
   };
+
+  # picom v12.5 sometimes crashes on amdgpu, the version below from master has been more stable so far...
+  services.picom.package = pkgs.picom.overrideAttrs (old: {
+    version = "v12";
+    src = pkgs.fetchFromGitHub {
+      owner = "yshui";
+      repo = "picom";
+      rev = "69539ed";
+      hash = "sha256-mGEQSbSlurqim6JFhshsqypIDYXcTok8ySPMD/ee2fA=";
+      fetchSubmodules = true;
+    };
+  });
 }
