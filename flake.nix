@@ -16,6 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    grub-themes = {
+      url = "github:vinceliuice/grub2-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,6 +33,7 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     dot-nvim = {
       url = "github:komar007/dot-nvim";
       inputs.flake-utils.follows = "flake-utils";
@@ -36,10 +41,6 @@
     dot-tmux = {
       url = "github:komar007/dot-tmux";
       inputs.flake-utils.follows = "flake-utils";
-    };
-    grub-themes = {
-      url = "github:vinceliuice/grub2-themes";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
