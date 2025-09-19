@@ -5,7 +5,6 @@
     xsel
     dzen2
     xmobar
-    htop
     xwallpaper
   ];
 

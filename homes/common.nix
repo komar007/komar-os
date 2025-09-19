@@ -47,6 +47,7 @@
     bacon
 
     btop
+    htop
 
     # Cascadia Code contains Symbols for Legacy Computing, required for example by dot-tmux ribbons.
     cascadia-code
