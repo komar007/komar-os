@@ -20,13 +20,13 @@
   programs.ssh.matchBlocks.work-pc = {
     host = "work-vpn";
     hostname = "192.168.134.42";
-    proxyJump = "work-jumphost";
+    proxyJump = "adb-jumphost";
     port = 22;
     user = "komar";
     forwardX11 = true;
   };
-  programs.ssh.matchBlocks.work-jumphost = {
-    host = "work-jumphost";
+  programs.ssh.matchBlocks.adb-jumphost = {
+    host = "adb-jumphost";
     hostname = "192.168.5.68";
     port = 22;
     user = "M.Trybus";
@@ -36,6 +36,7 @@
     hostname = "localhost";
     port = 9022;
     user = "komar";
+    forwardX11 = true;
   };
 
   home.packages = with pkgs; [
