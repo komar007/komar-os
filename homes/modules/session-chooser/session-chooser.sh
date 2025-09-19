@@ -28,6 +28,38 @@ format_shell_entry() {
 }
 
 ENTRY_REQUIRED_SSH_VARS="user hostname host port forwardx11 proxyjump"
+format_remote_host_entry() {
+	# shellcheck disable=SC2086
+	local $ENTRY_REQUIRED_SSH_VARS
+	for var in $ENTRY_REQUIRED_SSH_VARS; do
+		declare -n V=$var
+		# shellcheck disable=SC2034
+		V=""
+	done
+	eval "$1"
+
+	echo -n "R:$host "
+	echo -n "$(tput setaf 3)ssh:$(tput sgr0)$host,"
+	# shellcheck disable=SC2154
+	echo -n "$(tput sitm)$user$(
+		tput ritm
+		tput setaf 8
+	)@$(
+		tput sgr0
+		tput setaf 3
+	)$hostname$(
+		tput sgr0
+		tput setaf 8
+	):$(tput sgr0)$port"
+	if [ -n "$proxyjump" ]; then
+		echo -n " via $(tput sitm) $proxyjump$(tput ritm)"
+	fi
+	# shellcheck disable=SC2154
+	if [ "$forwardx11" = yes ]; then
+		echo -n " (X11)"
+	fi
+	echo
+}
 
 # L:<shell-cmd> <fzf-column-1>,<fzf-column-2>
 # R:<ssh-host-name> <fzf-column-1>,<fzf-column-2>
@@ -48,25 +80,7 @@ ENTRIES=$(
 	fi
 	for host in $HOSTS; do
 		vars=$(ssh -G "$host" | grep -E "^(${ENTRY_REQUIRED_SSH_VARS// /|}) " | tr ' ' =)
-		for var in $ENTRY_REQUIRED_SSH_VARS; do
-			declare -n V=$var
-			# shellcheck disable=SC2034
-			V=""
-		done
-		eval "$vars"
-
-		echo -n "R:$host "
-		echo -n "$(tput setaf 3)ssh:$(tput sgr0)$host,"
-		# shellcheck disable=SC2154
-		echo -n "$(tput sitm)$user$(tput ritm; tput setaf 8)@$(tput sgr0; tput setaf 3)$hostname$(tput sgr0; tput setaf 8):$(tput sgr0)$port"
-		if [ -n "$proxyjump" ]; then
-			echo -n " via $(tput sitm) $proxyjump$(tput ritm)"
-		fi
-		# shellcheck disable=SC2154
-		if [ "$forwardx11" = yes ]; then
-			echo -n " (X11)"
-		fi
-		echo
+		format_remote_host_entry "$vars"
 	done
 )
 
