@@ -84,6 +84,7 @@ N=$(
 		--border top \
 		--border-label "$(yes ' ' | head -n "$(tput cols)" | tr -d '\n')" \
 		--margin 30%,20% \
+		--algo v1 \
 		--padding 2,4 \
 		--preview-window=top,wrap,border-none \
 		--preview ' \
