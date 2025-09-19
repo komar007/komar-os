@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 
-# Set REMOTE_CMD to non-empty string to execute its content on the remote side for all ssh
+# Environment variables:
+#
+# REMOTE_CMD
+# Set to non-empty string to execute its content on the remote side for all ssh
 # connections that don't have 'RemoteCommand' defined in .ssh/config.
+#
+# PAUSE_AFTER_SSH_FAIL
+# Set to 0 to disable pausing and waiting for return key after unsuccessful ssh
+# exit status
 
 # shellcheck disable=SC2016
 REMOTE_CMD=${REMOTE_CMD:-''}
+
+PAUSE_AFTER_SSH_FAIL=${PAUSE_AFTER_SSH_FAIL:-1}
+
+set -e
 
 HOSTS=$(grep -E 'Host [^*]' ~/.ssh/config | cut -f 2 -d ' ')
 
@@ -97,10 +108,20 @@ fi
 ENTRY=$(sed -n $((N + 1))p <<< "$ENTRIES" | cut -f 1 -d " ")
 IFS=: read -r M ARG <<< "$ENTRY"
 if [ "$M" = R ]; then
+	SSH_STATUS=0
 	if ssh -TG "$ARG" | grep -qE "^remotecommand " || [ -z "$REMOTE_CMD" ]; then
-		exec ssh "$ARG"
+		if ! ssh "$ARG"; then
+			SSH_STATUS=1
+		fi
 	else
-		exec ssh "$ARG" -t "$REMOTE_CMD"
+		if ! ssh "$ARG" -t "$REMOTE_CMD"; then
+			SSH_STATUS=1
+		fi
+	fi
+	# shellcheck disable=SC2181
+	if [ "$SSH_STATUS" -ne 0 ] && [ "$PAUSE_AFTER_SSH_FAIL" = 1 ]; then
+		read -r -p "$(tput setaf 1)ssh failed, press return...$(tput sgr0)"
+		exit "$SSH_STATUS"
 	fi
 else
 	exec "$ARG"
