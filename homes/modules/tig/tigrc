@@ -17,7 +17,7 @@ set commit-order = author-date
 # Color base: https://github.com/ninjabreakbot/tig-gruvbox
 
 # General colors
-color default         246      16 # was 235
+color default         246 default
 color cursor          223     236
 color status      default default
 color title-focus default default
