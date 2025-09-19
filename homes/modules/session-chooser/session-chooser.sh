@@ -27,6 +27,8 @@ format_shell_entry() {
 	echo "L:$1 $(tput setaf 2)$(basename "$1")$(tput sgr0),$1$LNK"
 }
 
+ENTRY_REQUIRED_SSH_VARS="user hostname host port forwardx11 proxyjump"
+
 # L:<shell-cmd> <fzf-column-1>,<fzf-column-2>
 # R:<ssh-host-name> <fzf-column-1>,<fzf-column-2>
 ENTRIES=$(
@@ -45,14 +47,19 @@ ENTRIES=$(
 
 	fi
 	for host in $HOSTS; do
-		vars=$(ssh -G "$host" | grep -E '^(user|hostname|host|port|forwardx11|proxyjump) ' | tr ' ' =)
+		vars=$(ssh -G "$host" | grep -E "^(${ENTRY_REQUIRED_SSH_VARS// /|}) " | tr ' ' =)
+		for var in $ENTRY_REQUIRED_SSH_VARS; do
+			declare -n V=$var
+			# shellcheck disable=SC2034
+			V=""
+		done
 		eval "$vars"
 
 		echo -n "R:$host "
 		echo -n "$(tput setaf 3)ssh:$(tput sgr0)$host,"
 		# shellcheck disable=SC2154
 		echo -n "$(tput sitm)$user$(tput ritm; tput setaf 8)@$(tput sgr0; tput setaf 3)$hostname$(tput sgr0; tput setaf 8):$(tput sgr0)$port"
-		if [ -n "${proxyjump:-""}" ]; then
+		if [ -n "$proxyjump" ]; then
 			echo -n " via $(tput sitm) $proxyjump$(tput ritm)"
 		fi
 		# shellcheck disable=SC2154
