@@ -24,6 +24,15 @@
     forwardX11 = true;
   };
 
+  programs.ssh.matchBlocks.work-via-thinkcentre = {
+    host = "work-via-thinkcentre";
+    proxyJump = "thinkcentre";
+    hostname = "localhost";
+    port = 9022;
+    user = "komar";
+    forwardX11 = true;
+  };
+
   home.packages = with pkgs; [
     geeqie
     feh
