@@ -256,8 +256,8 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;4;34m' # underline
 
 export FZF_DEFAULT_OPTS=" \
-	--color=hl:yellow:bold:underline \
-	--color=hl+:yellow:bold \
+	--color=hl:yellow:underline \
+	--color=hl+:yellow:bold:underline \
 	--bind=\"ctrl-u:preview-up\"
 	--bind=\"ctrl-d:preview-down\"
 "
