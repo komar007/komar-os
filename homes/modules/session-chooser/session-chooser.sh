@@ -9,13 +9,11 @@
 # PAUSE_AFTER_SSH_FAIL
 # Set to 0 to disable pausing and waiting for return key after unsuccessful ssh
 # exit status
-
-# shellcheck disable=SC2016
-REMOTE_CMD=${REMOTE_CMD:-''}
-
-PAUSE_AFTER_SSH_FAIL=${PAUSE_AFTER_SSH_FAIL:-1}
-
+#
 set -e
+
+REMOTE_CMD=${REMOTE_CMD:-''}
+PAUSE_AFTER_SSH_FAIL=${PAUSE_AFTER_SSH_FAIL:-1}
 
 HOSTS=$(grep -E 'Host [^*]' ~/.ssh/config | cut -f 2 -d ' ')
 
@@ -47,19 +45,21 @@ ENTRIES=$(
 
 	fi
 	for host in $HOSTS; do
-		vars=$(ssh -G "$host" | grep -E '^(user|hostname|host|port|forwardx11) ' | tr ' ' =)
+		vars=$(ssh -G "$host" | grep -E '^(user|hostname|host|port|forwardx11|proxyjump) ' | tr ' ' =)
 		eval "$vars"
 
-		X11=""
-		# shellcheck disable=SC2154
-		if [ "$forwardx11" = yes ]; then
-			X11=" (X11)"
-		fi
 		echo -n "R:$host "
 		echo -n "$(tput setaf 3)ssh:$(tput sgr0)$host,"
 		# shellcheck disable=SC2154
 		echo -n "$(tput sitm)$user$(tput ritm; tput setaf 8)@$(tput sgr0; tput setaf 3)$hostname$(tput sgr0; tput setaf 8):$(tput sgr0)$port"
-		echo "$X11"
+		if [ -n "${proxyjump:-""}" ]; then
+			echo -n " via $(tput sitm) $proxyjump$(tput ritm)"
+		fi
+		# shellcheck disable=SC2154
+		if [ "$forwardx11" = yes ]; then
+			echo -n " (X11)"
+		fi
+		echo
 	done
 )
 
@@ -90,7 +90,7 @@ N=$(
 				fi; \
 				echo; \
 				tput setaf 8; \
-				ssh -TG "$ARG" | grep -E "^(user|hostname|port|forwardx11|requesttty|remotecommand) "; \
+				ssh -TG "$ARG" | grep -E "^(user|hostname|port|forwardx11|requesttty|remotecommand|proxyjump) "; \
 			else \
 				echo "$ARG"; \
 				echo; \
