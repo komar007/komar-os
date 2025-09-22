@@ -2,11 +2,6 @@
 
 DIR="$HOME/.xmonad"
 
-if [ -f ~/.wallpaper.png ]; then
-	xwallpaper --zoom ~/.wallpaper.png
-fi
-
-cpp -P -I"$DIR" ~/.Xdefaults.edit > ~/.Xdefaults
 if [ -f ~/.desktop_type ]; then
 	CONFIG=`cat ~/.desktop_type`
 elif [ -f /proc/acpi/battery/BAT0/ ]; then
@@ -25,6 +20,13 @@ if [ "$CONFIG" = work ]; then
 	xrandr --output HDMI-1 --rotate left --left-of DP-3
 	xrandr --output DP-1 --rotate left --right-of DP-3
 fi
+
+if [ -f ~/.wallpaper.png ]; then
+	xwallpaper --zoom ~/.wallpaper.png
+fi
+
+cpp -P -I"$DIR" ~/.Xdefaults.edit > ~/.Xdefaults
+
 xrdb ~/.Xresources
 xsetroot -cursor_name left_ptr -solid '#000000'
 setxkbmap pl
