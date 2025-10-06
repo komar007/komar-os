@@ -49,11 +49,15 @@
     openconnect
   ];
 
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="input", TAG+="uaccess"
+  '';
+
   users.users.komar = {
     initialPassword = "test";
     isNormalUser = true;
     description = "Michał Trybus";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "input" ];
   };
 
   services.kanata = {

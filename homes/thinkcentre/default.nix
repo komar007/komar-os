@@ -6,6 +6,7 @@
     ../modules/chromium.nix
     ../modules/xmonad.nix
     ../modules/mpv.nix
+    ../modules/vial
   ];
 
   home.pointerCursor.size = 32;

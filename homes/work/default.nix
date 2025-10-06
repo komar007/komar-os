@@ -5,6 +5,7 @@
     ../modules/qutebrowser.nix
     ../modules/xmonad.nix
     ../modules/mpv.nix
+    ../modules/vial
   ];
 
   nixGL.packages = nixgl.packages;
