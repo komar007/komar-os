@@ -143,5 +143,8 @@ in
     "developer.mozilla.org"
     "reddit.com"
     "chatgpt.com"
+    "monkeytype.com"
+    "nix.dev"
+    "doc.rust-lang.org"
   ];
 }
