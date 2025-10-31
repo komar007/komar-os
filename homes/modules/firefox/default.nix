@@ -72,6 +72,8 @@ in
         "newElementCount" = 5;
       };
       "privacy.userContext.newTabContainerOnLeftClick.enabled" = true;
+      "devtools.debugger.remote-enabled" = true;
+      "devtools.chrome.enabled" = true;
     };
 
     # non-clickable "mute/unmute" playback buttons on background tabs
