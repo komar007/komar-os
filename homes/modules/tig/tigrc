@@ -1,6 +1,7 @@
 bind main R ?git revert %(commit)
 bind main P ?git pg %(commit)
 bind main Y @bash -c "tmux set-buffer %(commit) && xsel --primary -i <<< %(commit)"
+bind reflog Y @bash -c "tmux set-buffer %(commit) && xsel --primary -i <<< %(commit)"
 bind main F ?git commit --fixup %(commit)
 set show-untracked = false
 set vertical-split = false
