@@ -50,9 +50,6 @@
 
     super-slicer
 
-    esphome
-
-    #davinci-resolve
     exiftool
     blender
     gimp
