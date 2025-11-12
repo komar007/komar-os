@@ -17,6 +17,7 @@
     ./modules/tig
     ./modules/ssh.nix
     ./modules/lsd.nix
+    ./modules/rust.nix
   ];
 
   dot-tmux.session-shells = let
@@ -43,7 +44,6 @@
     gnumake
     cmake
     gcc
-    rustup
     bacon
 
     btop

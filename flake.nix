@@ -33,6 +33,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";
@@ -51,6 +55,7 @@
         overlays = [
           inputs.nur.overlays.default
           inputs.nixgl.overlay
+          inputs.rust-overlay.overlays.default
         ];
       };
       nixpkgs-unstable = system: import inputs.nixpkgs-unstable {
