@@ -3,11 +3,18 @@
     tig
   ];
 
-  home.file.".config/tig/config".text = ''
+  home.file.".config/tig/config".text =
+  let
+      yank = (pkgs.writeShellApplication {
+        name = "yank";
+        runtimeInputs = with pkgs; [ tmux xsel ];
+        text = ''tmux set-buffer "$1" && xsel --primary -i <<< "$1"'';
+      });
+  in ''
     bind main R ?git revert %(commit)
     bind main P ?git pg %(commit)
-    bind main Y @bash -c "tmux set-buffer %(commit) && xsel --primary -i <<< %(commit)"
-    bind reflog Y @bash -c "tmux set-buffer %(commit) && xsel --primary -i <<< %(commit)"
+    bind main Y @${pkgs.lib.getExe yank} %(commit)
+    bind reflog Y @${pkgs.lib.getExe yank} %(commit)
     bind main F ?git commit --fixup %(commit)
     set show-untracked = false
     set vertical-split = false
