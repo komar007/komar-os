@@ -1,5 +1,6 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, nixpkgs-unstable, config, ... }:
 {
+  home.packages = [ nixpkgs-unstable.youtube-tui ];
   home.file.".config/youtube-tui/main.yml".source =
   let
     mpv-ytdl = (pkgs.writeShellApplication {
