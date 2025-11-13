@@ -5,6 +5,15 @@
 
   home.file.".config/tig/config".text =
   let
+      show-jira-issue = (pkgs.writeShellApplication {
+        name = "show-jira-issue";
+        runtimeInputs = with pkgs; [ jira-cli-go ];
+        text = ''
+          SUBJECT=$(git show -s --format=%s "$1")
+          ISSUE=$(sed -r 's/^(Revert(\^[0-9]+)? ")?\[[BIOF]\] *\[?([A-Z]+-[0-9]+).*/\3/' <<< "$SUBJECT")
+          jira issue view --comments 100 "$ISSUE"
+        '';
+      });
       yank = (pkgs.writeShellApplication {
         name = "yank";
         runtimeInputs = with pkgs; [ tmux xsel ];
@@ -15,6 +24,8 @@
     bind main P ?git pg %(commit)
     bind main Y @${pkgs.lib.getExe yank} %(commit)
     bind reflog Y @${pkgs.lib.getExe yank} %(commit)
+    bind main J >${pkgs.lib.getExe show-jira-issue} %(commit)
+    bind reflog J >${pkgs.lib.getExe show-jira-issue} %(commit)
     bind main F ?git commit --fixup %(commit)
     set show-untracked = false
     set vertical-split = false
