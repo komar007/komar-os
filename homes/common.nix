@@ -18,6 +18,7 @@
     ./modules/ssh.nix
     ./modules/lsd.nix
     ./modules/rust.nix
+    ./modules/youtube-tui.nix
   ];
 
   dot-tmux.session-shells = let
