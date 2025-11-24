@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, nixpkgs-unstable, config, ... }:
 {
   home.packages =
   let
@@ -6,5 +6,10 @@
       extensions = [ "rust-src" "rust-analyzer" ];
     };
   in
-    [ latest-stable-rust ];
+    with nixpkgs-unstable; [
+      latest-stable-rust
+
+      cargo-machete
+      cargo-nextest
+    ];
 }
