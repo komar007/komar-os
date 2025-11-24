@@ -5,7 +5,7 @@
   let
     mpv-ytdl = (pkgs.writeShellApplication {
       name = "mpv-ytdl";
-      runtimeInputs = with pkgs; [ mpv yt-dlp ];
+      runtimeInputs = [ pkgs.mpv ];
       text = ''
         mpv ytdl://"$1"
       '';
