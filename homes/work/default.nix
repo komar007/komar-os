@@ -32,8 +32,6 @@
     temporal-cli
     mosquitto
 
-    kanata
-
     nerd-fonts.zed-mono
   ];
 
