@@ -34,13 +34,6 @@
   };
 
   home.packages = with pkgs; [
-    geeqie
-    feh
-    scrot
-    imagemagick
-    gnuplot
-    xcolor
-
     exiftool
   ];
 

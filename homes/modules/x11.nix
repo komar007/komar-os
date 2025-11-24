@@ -8,5 +8,13 @@
 
   home.packages = with pkgs; [
     xclip
+    xorg.xset
+
+    geeqie
+    feh
+    scrot
+    imagemagick
+    gnuplot
+    xcolor
   ];
 }

@@ -26,13 +26,6 @@
   xdg.default-browser-app = "firefox.desktop";
 
   home.packages = with pkgs; [
-    geeqie
-    feh
-    scrot
-    imagemagick
-    gnuplot
-    xcolor
-
     thunderbird
 
     uv
@@ -41,8 +34,6 @@
     kanata
 
     nerd-fonts.zed-mono
-
-    xorg.xset
   ];
 
   home.stateVersion = "24.11";
