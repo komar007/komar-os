@@ -30,6 +30,7 @@
 
     uv
     temporal-cli
+    mosquitto
 
     kanata
 
