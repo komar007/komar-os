@@ -48,8 +48,8 @@
     src = pkgs.fetchFromGitHub {
       owner = "yshui";
       repo = "picom";
-      rev = "69539ed";
-      hash = "sha256-mGEQSbSlurqim6JFhshsqypIDYXcTok8ySPMD/ee2fA=";
+      rev = "90e537110aa7125ad97aa781fdf956c93fa12436";
+      hash = "sha256-lfusMFzfQwk97a4gyJwxQEuMlo1rWgoQR4H1wgyx7Bg=";
       fetchSubmodules = true;
     };
   });
