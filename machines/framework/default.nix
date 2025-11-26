@@ -1,4 +1,5 @@
-{ lib, config, pkgs, nixos-hardware, nixpkgs-unstable, ...}: {
+{ nixos-hardware, ... }:
+{
   imports = [
     ./hardware-configuration.nix
     nixos-hardware.nixosModules.framework-13-7040-amd

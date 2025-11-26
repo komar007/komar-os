@@ -1,4 +1,5 @@
-{ lib, config, pkgs, ... }: {
+{ lib, config, ... }:
+{
   options.alacritty = {
     font = lib.mkOption {
       type = lib.types.str;
@@ -111,17 +112,20 @@
         action = "ResetFontSize";
       }
 
-      { # nvim: yank deleted lines in git diff
+      {
+        # nvim: yank deleted lines in git diff
         mods = "Control|Shift";
         key = "y";
         chars = "\\uE105";
       }
-      { # nvim: history back in picker
+      {
+        # nvim: history back in picker
         mods = "Control|Shift";
         key = "p";
         chars = "\\uE106";
       }
-      { # nvim: history forward in picker
+      {
+        # nvim: history forward in picker
         mods = "Control|Shift";
         key = "n";
         chars = "\\uE107";

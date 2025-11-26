@@ -1,4 +1,5 @@
-{ config, pkgs, nixpkgs-unstable, ...}: {
+{ ... }:
+{
   services.openssh.enable = true;
 
   services.openssh.settings = {

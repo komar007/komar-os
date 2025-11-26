@@ -1,5 +1,11 @@
 # TODO: support multiple parallel connections
-{ lib, config, pkgs, ...}: {
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
   options.maintain-ssh-connection = {
     host = lib.mkOption {
       type = lib.types.str;
@@ -18,12 +24,15 @@
       User = config.maintain-ssh-connection.user;
     };
     script =
-    let
-      script = lib.getExe (pkgs.writeShellApplication {
-        name = "maintain-ssh-connection";
-        runtimeInputs = [ pkgs.openssh ];
-        text = builtins.readFile ./maintain-ssh-connection.sh;
-      });
-    in "${script} ${config.maintain-ssh-connection.host}";
+      let
+        script = lib.getExe (
+          pkgs.writeShellApplication {
+            name = "maintain-ssh-connection";
+            runtimeInputs = [ pkgs.openssh ];
+            text = builtins.readFile ./maintain-ssh-connection.sh;
+          }
+        );
+      in
+      "${script} ${config.maintain-ssh-connection.host}";
   };
 }

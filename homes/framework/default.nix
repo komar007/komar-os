@@ -1,4 +1,5 @@
-{ lib, pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ../modules/firefox
     ../modules/firefox/pinned-sites-home.nix

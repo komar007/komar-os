@@ -1,5 +1,9 @@
-{ config, pkgs, nixpkgs-unstable, ...}: {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+{ pkgs, ... }:
+{
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nixpkgs.config.allowUnfree = true;
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -57,7 +61,11 @@
     initialPassword = "test";
     isNormalUser = true;
     description = "Michał Trybus";
-    extraGroups = [ "networkmanager" "wheel" "input" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "input"
+    ];
   };
 
   services.kanata = {

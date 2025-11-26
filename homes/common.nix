@@ -1,4 +1,5 @@
-{ lib, pkgs, nvim-module, nixpkgs-unstable, ... }: {
+{ pkgs, nvim-module, ... }:
+{
   nixpkgs.config.allowUnfree = true;
 
   home = {
@@ -21,13 +22,14 @@
     ./modules/youtube-tui.nix
   ];
 
-  dot-tmux.session-shells = let
-    bc = pkgs.lib.getExe pkgs.bc;
-  in
-  {
-    btop = "btop";
-    bc = "${bc} -l";
-  };
+  dot-tmux.session-shells =
+    let
+      bc = pkgs.lib.getExe pkgs.bc;
+    in
+    {
+      btop = "btop";
+      bc = "${bc} -l";
+    };
 
   programs.home-manager.enable = true;
 

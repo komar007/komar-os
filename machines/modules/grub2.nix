@@ -1,4 +1,5 @@
-{ lib, grub-themes-module, ...}: {
+{ lib, grub-themes-module, ... }:
+{
   imports = [
     grub-themes-module
   ];

@@ -10,6 +10,10 @@
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixgl = {
       url = "github:nix-community/nixGL";
@@ -48,52 +52,67 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
+  outputs =
+    { self, ... }@inputs:
     let
-      nixpkgs-stable = system: import inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          inputs.nur.overlays.default
-          inputs.nixgl.overlay
-          inputs.rust-overlay.overlays.default
-        ];
-      };
-      nixpkgs-unstable = system: import inputs.nixpkgs-unstable {
-        inherit system;
-      };
+      nixpkgs-stable =
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          overlays = [
+            inputs.nur.overlays.default
+            inputs.nixgl.overlay
+            inputs.rust-overlay.overlays.default
+          ];
+        };
+      nixpkgs-unstable =
+        system:
+        import inputs.nixpkgs-unstable {
+          inherit system;
+        };
       nvim-module = system: inputs.dot-nvim.homeManagerModules.${system}.default;
       tmux-module = system: inputs.dot-tmux.homeManagerModules.${system}.default;
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       grub-themes-module = system: inputs.grub-themes.nixosModules.default;
       wiremix = system: inputs.wiremix.packages.${system};
 
-      nixosConfiguration = name: system: nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          nixos-hardware = inputs.nixos-hardware;
-          nixpkgs-unstable = nixpkgs-unstable system;
-          grub-themes-module = grub-themes-module system;
+      nixosConfiguration =
+        name: system:
+        inputs.nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            nixos-hardware = inputs.nixos-hardware;
+            nixpkgs-unstable = nixpkgs-unstable system;
+            grub-themes-module = grub-themes-module system;
+          };
+          modules = [
+            ./machines/common.nix
+            ./machines/${name}
+          ];
         };
-        modules = [
-          ./machines/common.nix
-          ./machines/${name}
-        ];
-      };
 
-      homeConfiguration = name: system: home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs-stable system;
-        extraSpecialArgs = {
-          nixpkgs-unstable = nixpkgs-unstable system;
-          wiremix = wiremix system;
-          nvim-module = nvim-module system;
-          tmux-module = tmux-module system;
-          tmux-alacritty-module = tmux-alacritty-module system;
-          nixgl = inputs.nixgl;
+      homeConfiguration =
+        name: system:
+        inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs-stable system;
+          extraSpecialArgs = {
+            nixpkgs-unstable = nixpkgs-unstable system;
+            wiremix = wiremix system;
+            nvim-module = nvim-module system;
+            tmux-module = tmux-module system;
+            tmux-alacritty-module = tmux-alacritty-module system;
+            nixgl = inputs.nixgl;
+          };
+          modules = [
+            ./homes/common.nix
+            ./homes/${name}
+          ];
         };
-        modules = [
-          ./homes/common.nix
-          ./homes/${name}
-        ];
-      };
+      eachSystem =
+        f:
+        inputs.nixpkgs.lib.genAttrs (import inputs.systems) (
+          system: f inputs.nixpkgs.legacyPackages.${system}
+        );
+      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
     {
       nixosConfigurations = {
@@ -106,5 +125,9 @@
         framework = homeConfiguration "framework" "x86_64-linux";
         work = homeConfiguration "work" "x86_64-linux";
       };
+      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+      checks = eachSystem (pkgs: {
+        formatting = treefmtEval.${pkgs.system}.config.build.check self;
+      });
     };
 }

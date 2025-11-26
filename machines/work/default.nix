@@ -1,4 +1,5 @@
-{ config, pkgs, nixpkgs-unstable, ...}: {
+{ ... }:
+{
   imports = [
     ./hardware-configuration.nix
     ../modules/splashscreen.nix
@@ -12,14 +13,19 @@
   fileSystems = {
     "/".options = [ "compress=zstd" ];
     "/home".options = [ "compress=zstd" ];
-    "/nix".options = [ "compress=zstd" "noatime" ];
+    "/nix".options = [
+      "compress=zstd"
+      "noatime"
+    ];
     "/swap".options = [ "noatime" ];
   };
 
-  swapDevices = [{
-    device = "/swap/swapfile";
-    size = 64*1024;
-  }];
+  swapDevices = [
+    {
+      device = "/swap/swapfile";
+      size = 64 * 1024;
+    }
+  ];
 
   services.power-profiles-daemon.enable = true;
 
@@ -44,8 +50,8 @@
     bip = "10.9.1.5/24";
     default-address-pools = [
       {
-          base = "10.10.0.0/16";
-          size = 24;
+        base = "10.10.0.0/16";
+        size = 24;
       }
     ];
   };

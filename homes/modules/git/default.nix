@@ -1,4 +1,5 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }:
+{
   programs.git.enable = true;
   programs.git.aliases = {
     uncommit = "!git reset --soft HEAD^ && git reset";
@@ -11,11 +12,18 @@
         exit 1
       fi
     ''}";
-    pg = "!${lib.getExe (pkgs.writeShellApplication {
-      name = "git-pg";
-      runtimeInputs = with pkgs; [ cowsay lolcat ];
-      text = builtins.readFile ./pg.sh;
-    })}";
+    pg = "!${
+      lib.getExe (
+        pkgs.writeShellApplication {
+          name = "git-pg";
+          runtimeInputs = with pkgs; [
+            cowsay
+            lolcat
+          ];
+          text = builtins.readFile ./pg.sh;
+        }
+      )
+    }";
     as = "!${pkgs.writeShellScript "git-as" ''
       if [ -n "$1" ]; then
         BASE="$1"

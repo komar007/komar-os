@@ -1,4 +1,5 @@
-{ config, pkgs, nixpkgs-unstable, ...}: {
+{ pkgs, ... }:
+{
   imports = [
     ./hardware-configuration.nix
     ../modules/grub2.nix
@@ -53,7 +54,6 @@
         script = "${pkgs.lib.getExe reconnect-bt}";
       };
     };
-
 
   networking = {
     hostName = "nixos-thnkctre";

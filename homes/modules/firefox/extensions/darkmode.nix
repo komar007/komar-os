@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   ff-utils = import ../utils.nix { inherit lib; };
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
@@ -37,7 +42,7 @@ in
         "preferredmode:dark"
         "preferredmode:night"
       ];
-      "inclusivelist" = [];
+      "inclusivelist" = [ ];
       "toggleaction" = false;
       "inclusiveaction" = false;
       "scheduleon" = "";
@@ -151,7 +156,7 @@ in
       "colortemperature-blue" = 199;
       "colortemperature-green" = 227;
       "colortemperature-opacity" = 100;
-      "colortemperature-whitelist" = [];
+      "colortemperature-whitelist" = [ ];
       "section-1" = false;
       "section-2" = false;
       "section-3" = false;

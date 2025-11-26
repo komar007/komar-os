@@ -1,4 +1,5 @@
-{ lib, config, pkgs, nixpkgs-unstable, ...}: {
+{ lib, pkgs, ... }:
+{
   systemd.services.regulate-brightness = {
     description = "adjust screen brightness based on illuminance";
     wantedBy = [ "multi-user.target" ];
@@ -6,10 +7,12 @@
       Type = "simple";
       Restart = "always";
     };
-    script = lib.getExe (pkgs.writeShellApplication {
-      name = "regulate-script";
-      runtimeInputs = [ pkgs.bc ];
-      text = builtins.readFile ./regulate-script.sh;
-    });
+    script = lib.getExe (
+      pkgs.writeShellApplication {
+        name = "regulate-script";
+        runtimeInputs = [ pkgs.bc ];
+        text = builtins.readFile ./regulate-script.sh;
+      }
+    );
   };
 }

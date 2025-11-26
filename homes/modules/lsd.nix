@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ ... }:
 {
   programs.lsd.enable = true;
   programs.lsd.colors = {

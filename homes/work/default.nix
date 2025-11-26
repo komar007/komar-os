@@ -1,4 +1,5 @@
-{ lib, pkgs, nixpkgs-unstable, config, nixgl, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ../modules/firefox
     ../modules/firefox/containers/home.nix

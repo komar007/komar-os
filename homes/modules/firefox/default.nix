@@ -13,7 +13,7 @@ let
       homepage = "https://github.com/bokub/home-assistant-extension#readme";
       description = "";
       license = licenses.mit;
-      mozPermissions = [];
+      mozPermissions = [ ];
       platforms = platforms.all;
     };
   };
@@ -88,43 +88,66 @@ in
     search.force = true;
     search.engines."Nix Packages" = {
       definedAliases = [ "@np" ];
-      urls = [{
-        template = "https://search.nixos.org/packages";
-        params = [
-          { name = "query"; value = "{searchTerms}"; }
-        ];
-      }];
+      urls = [
+        {
+          template = "https://search.nixos.org/packages";
+          params = [
+            {
+              name = "query";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
       iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
     };
     search.engines."Nix Options" = {
       definedAliases = [ "@no" ];
-      urls = [{
-        template = "https://search.nixos.org/options";
-        params = [
-          { name = "query"; value = "{searchTerms}"; }
-        ];
-      }];
+      urls = [
+        {
+          template = "https://search.nixos.org/options";
+          params = [
+            {
+              name = "query";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
       iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
     };
     search.engines."Home Manager Options" = {
       definedAliases = [ "@hmo" ];
-      urls = [{
-        template = "https://home-manager-options.extranix.com/";
-        params = [
-          { name = "query"; value = "{searchTerms}"; }
-          { name = "release"; value = "release-25.05"; }
-        ];
-      }];
+      urls = [
+        {
+          template = "https://home-manager-options.extranix.com/";
+          params = [
+            {
+              name = "query";
+              value = "{searchTerms}";
+            }
+            {
+              name = "release";
+              value = "release-25.05";
+            }
+          ];
+        }
+      ];
       iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
     };
     search.engines."crates.io" = {
       definedAliases = [ "@c" ];
-      urls = [{
-        template = "https://crates.io/search";
-        params = [
-          { name = "q"; value = "{searchTerms}"; }
-        ];
-      }];
+      urls = [
+        {
+          template = "https://crates.io/search";
+          params = [
+            {
+              name = "q";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
       iconMapObj."227" = "https://crates.io/assets/cargo.png";
     };
 

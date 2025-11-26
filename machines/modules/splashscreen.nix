@@ -1,4 +1,5 @@
-{ config, pkgs, nixpkgs-unstable, ...}: {
+{ ... }:
+{
   boot.plymouth.enable = true;
   boot.plymouth.theme = "breeze";
 

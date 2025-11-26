@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ ... }:
 {
   programs.qutebrowser.enable = true;
   programs.qutebrowser.loadAutoconfig = true;

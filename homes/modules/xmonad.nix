@@ -1,4 +1,5 @@
-{ lib, pkgs, wiremix, ... }: {
+{ pkgs, wiremix, ... }:
+{
   home.packages = with pkgs; [
     xmonad-with-packages
     wiremix.default
