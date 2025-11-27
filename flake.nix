@@ -45,6 +45,8 @@
     dot-nvim = {
       url = "github:komar007/dot-nvim";
       inputs.flake-utils.follows = "flake-utils";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+      inputs.systems.follows = "systems";
     };
     dot-tmux = {
       url = "github:komar007/dot-tmux";

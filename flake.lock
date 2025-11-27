@@ -6,14 +6,20 @@
           "flake-utils"
         ],
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "systems": [
+          "systems"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
       },
       "locked": {
-        "lastModified": 1762520503,
-        "narHash": "sha256-bSNXGzgNTe2vrCviNCFC0uXt6ey1eyAhrM9xsEM3ZgI=",
+        "lastModified": 1764191697,
+        "narHash": "sha256-cZIyPNRS3Z8/x3RiWSdCfRx4GH54LSLYTpZ9inz/IXI=",
         "owner": "komar007",
         "repo": "dot-nvim",
-        "rev": "71e6bf0c7a1e79730822d62860664cf2a3e4d6ee",
+        "rev": "e8d6c89d8a9bc26dcd8ebeda25c9bd1307309663",
         "type": "github"
       },
       "original": {
