@@ -75,5 +75,10 @@
     document-root = "/var/www";
   };
 
+  programs.virt-manager.enable = true;
+  users.users.komar.extraGroups = [ "libvirtd" ];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
   system.stateVersion = "23.11";
 }
