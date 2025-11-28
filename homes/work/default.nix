@@ -17,7 +17,6 @@
   alacritty.font-offset = -2;
   alacritty.glyph-offset = -1;
   programs.alacritty.settings = {
-    font.builtin_box_drawing = false;
     window.padding = {
       x = 0;
       y = 0;

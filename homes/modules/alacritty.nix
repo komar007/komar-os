@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, nixpkgs-unstable, ... }:
 {
   options.alacritty = {
     font = lib.mkOption {
@@ -21,6 +21,8 @@
     };
   };
 
+  # FIXME: switch from unstable to 25.11 after upgrade
+  config.programs.alacritty.package = nixpkgs-unstable.alacritty;
   config.programs.alacritty.enable = true;
   config.programs.alacritty.settings = {
     scrolling.history = 32768;
