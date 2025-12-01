@@ -9,7 +9,7 @@
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-compute-runtime
-      intel-media-sdk
+      vpl-gpu-rt
       intel-media-driver
       libvdpau-va-gl
     ];

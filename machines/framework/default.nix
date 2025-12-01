@@ -18,9 +18,9 @@
   services.libinput.touchpad.disableWhileTyping = true;
   services.libinput.touchpad.accelSpeed = "0.6";
 
-  services.logind = {
-    lidSwitch = "suspend-then-hibernate";
-    powerKey = "hibernate";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandlePowerKey = "hibernate";
   };
   systemd.sleep.extraConfig = ''
     HibernateDelaySec=1800

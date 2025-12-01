@@ -2,8 +2,11 @@
 {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
 
-    serverAliveInterval = 100;
-    serverAliveCountMax = 3;
+    matchBlocks."*" = {
+      serverAliveInterval = 100;
+      serverAliveCountMax = 3;
+    };
   };
 }

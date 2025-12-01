@@ -15,8 +15,8 @@
 
   services.power-profiles-daemon.enable = true;
 
-  services.logind = {
-    powerKey = "hibernate";
+  services.logind.settings.Login = {
+    HandlePowerKey = "hibernate";
   };
 
   services.xserver.videoDrivers = [ "modesetting" ];
