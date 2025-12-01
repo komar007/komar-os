@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 {
   programs.git.enable = true;
-  programs.git.aliases = {
+  programs.git.settings.alias = {
     uncommit = "!git reset --soft HEAD^ && git reset";
     wip = "commit -a -m wip";
     unwip = "!${pkgs.writeShellScript "git-unwip" ''
@@ -44,7 +44,7 @@
   programs.git.includes = [
     { path = "~/.gitconfig.local"; }
   ];
-  programs.git.extraConfig = {
+  programs.git.settings = {
     color = {
       ui = "auto";
     };
