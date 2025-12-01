@@ -47,7 +47,6 @@
     gnumake
     cmake
     gcc
-    bacon
 
     btop
     htop

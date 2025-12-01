@@ -15,5 +15,6 @@
 
       cargo-machete
       cargo-nextest
+      bacon
     ];
 }
