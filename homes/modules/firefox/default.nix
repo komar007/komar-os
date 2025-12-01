@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   ff-utils = import ./utils.nix { inherit lib; };
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
@@ -19,11 +24,17 @@ let
   };
 in
 {
+  options.firefox = {
+    userContent = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+    };
+  };
+
   imports = [
     ./extensions/darkmode.nix
   ];
-  programs.firefox.enable = true;
-  programs.firefox.profiles."default-release" = {
+  config.programs.firefox.enable = true;
+  config.programs.firefox.profiles."default-release" = {
     id = 0;
     path = "default";
     isDefault = true;
@@ -82,6 +93,8 @@ in
         pointer-events: none;
       }
     '';
+
+    userContent = lib.strings.concatStringsSep "\n" config.firefox.userContent;
 
     containersForce = true;
 
@@ -160,7 +173,7 @@ in
     ];
   };
 
-  firefox-darkmode.exclude = [
+  config.firefox-darkmode.exclude = [
     "teams.microsoft.com"
     "github.com"
     "developer.mozilla.org"
