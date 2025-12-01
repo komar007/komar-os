@@ -5,6 +5,7 @@
   ...
 }:
 let
+  nixpkgsBaseVersion = builtins.head (builtins.match ''([0-9]+\.[0-9]+).*'' pkgs.lib.version);
   ff-utils = import ./utils.nix { inherit lib; };
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
 
@@ -109,6 +110,10 @@ in
               name = "query";
               value = "{searchTerms}";
             }
+            {
+              name = "channel";
+              value = nixpkgsBaseVersion;
+            }
           ];
         }
       ];
@@ -123,6 +128,10 @@ in
             {
               name = "query";
               value = "{searchTerms}";
+            }
+            {
+              name = "channel";
+              value = nixpkgsBaseVersion;
             }
           ];
         }
@@ -141,7 +150,7 @@ in
             }
             {
               name = "release";
-              value = "release-25.05";
+              value = "release-${nixpkgsBaseVersion}";
             }
           ];
         }
