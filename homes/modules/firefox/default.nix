@@ -193,4 +193,14 @@ in
     "nix.dev"
     "doc.rust-lang.org"
   ];
+
+  config.firefox.userContent = [
+    ''
+      @-moz-document domain("teams.microsoft.com") {
+        .fui-TeachingPopoverSurface {
+          display: none !important;
+        }
+      }
+    ''
+  ];
 }
