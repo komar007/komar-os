@@ -29,6 +29,8 @@
       );
     in
     ''
+      set mouse = true
+
       bind main R ?git revert %(commit)
       bind main P ?git pg %(commit)
       bind main Y @${pkgs.lib.getExe yank} %(commit)
