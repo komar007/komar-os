@@ -82,7 +82,7 @@
     };
 
     window = {
-      opacity = 0.7;
+      opacity = 0.8;
     };
 
     keyboard.bindings = [
