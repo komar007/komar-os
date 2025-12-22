@@ -31,6 +31,9 @@
     ''
       set mouse = true
 
+      bind generic <Ctrl-f> move-page-down
+      bind generic <Ctrl-b> move-page-up
+
       bind main R ?git revert %(commit)
       bind main P ?git pg %(commit)
       bind main Y @${pkgs.lib.getExe yank} %(commit)
@@ -38,6 +41,7 @@
       bind main J >${pkgs.lib.getExe show-jira-issue} %(commit)
       bind reflog J >${pkgs.lib.getExe show-jira-issue} %(commit)
       bind main F ?git commit --fixup %(commit)
+
       set show-untracked = false
       set vertical-split = false
 
