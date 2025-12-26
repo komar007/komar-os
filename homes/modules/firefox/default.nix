@@ -89,10 +89,26 @@ in
       "devtools.chrome.enabled" = true;
     };
 
-    # non-clickable "mute/unmute" playback buttons on background tabs
     userChrome = ''
+      /* non-clickable "mute/unmute" playback buttons on background tabs */
       tab.tabbrowser-tab:not([selected="true"]) image.tab-icon-overlay[role="presentation"] {
         pointer-events: none;
+      }
+
+      /* semi-transparent side bar and top bar */
+      #browser, body, #main-window, #nav-bar, #navigator-toolbox {
+        background-color: rgba(0, 0, 0, 0) !important;
+      }
+      #nav-bar {
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0.7) 70%,
+          rgba(0, 0, 0, 1.0) 100%
+        );
+      }
+      #sidebar-main, #sidebar-launcher-splitter {
+        background-color: rgba(0, 0, 0, 0.7) !important;
       }
     '';
 
