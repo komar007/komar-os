@@ -6,13 +6,13 @@ add_newline = false
 continuation_prompt = "[ ┊ ](blue)"
 
 format = '''
-$character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](fg:236 bg:16))([](bg:236 fg:16)$git_branch$git_metrics[](fg:236 bg:16))([](bg:236 fg:16)${env_var.NIX_SHELL_NAME}[](fg:236 bg:16))([](bg:236 fg:16)$python[](fg:236 bg:16)) $username[@](0)$hostname[:](0)$directory$fill$cmd_duration$time [](241)
+$character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](fg:236))([](bg:236 fg:16)$git_branch$git_metrics[](fg:236))([](bg:236 fg:16)${env_var.NIX_SHELL_NAME}[](fg:236))([](bg:236 fg:16)$python[](fg:236)) $username[@](0)$hostname[:](0)$directory$fill$cmd_duration$time [](241)
  [\$ ](bold blue)
 '''
 
 [character]
 format = "$symbol"
-success_symbol = "[](fg:241 bg:16)"
+success_symbol = "[](fg:241)"
 error_symbol = ""
 
 [status]
