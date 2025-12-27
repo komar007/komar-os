@@ -1,0 +1,8 @@
+keys:
+  - &framework_komar ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIanZqcz9tRNzoo9OTeTuuo4daRkhkv+uuJXdd24lpL1 root@nixos-framework
+
+creation_rules:
+  - path_regex: machines/framework/secrets\.yaml$
+    key_groups:
+    - age:
+      - *framework_komar

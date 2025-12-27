@@ -41,6 +41,10 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";
@@ -77,14 +81,18 @@
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       grub-themes-module = system: inputs.grub-themes.nixosModules.default;
       wiremix = system: inputs.wiremix.packages.${system};
+      sops-pkgs = system: inputs.sops-nix.packages.${system};
 
       nixosConfiguration =
         name: system:
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = {
+            configuration-name = name;
             nixos-hardware = inputs.nixos-hardware;
             nixpkgs-unstable = nixpkgs-unstable system;
             grub-themes-module = grub-themes-module system;
+            sops-pkgs = sops-pkgs system;
+            sops-nix = inputs.sops-nix;
           };
           modules = [
             ./machines/common.nix
