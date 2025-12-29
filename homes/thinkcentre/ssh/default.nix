@@ -1,4 +1,7 @@
-{ ... }:
+{ lib, pkgs, ... }:
+let
+  utils = import ../../modules/ssh/utils.nix { };
+in
 {
   home.file.".ssh/id_rsa.pub".source = ./ssh_id;
 
@@ -27,4 +30,10 @@
     user = "komar";
     forwardX11 = true;
   };
+
+  ssh.authorizedKeys = [
+    (utils.ssh-pub-key-for "framework")
+    (utils.ssh-pub-key-for "work")
+    (builtins.readFile ./kpiano_ssh_id)
+  ];
 }

@@ -16,7 +16,7 @@
     ./modules/starship
     ./modules/git
     ./modules/tig
-    ./modules/ssh.nix
+    ./modules/ssh
     ./modules/lsd.nix
     ./modules/rust.nix
     ./modules/youtube-tui.nix
