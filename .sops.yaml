@@ -1,8 +1,13 @@
 keys:
   - &framework_komar ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIanZqcz9tRNzoo9OTeTuuo4daRkhkv+uuJXdd24lpL1 root@nixos-framework
+  - &thinkcentre_komar ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINClfpakh5bEla1IcBg2/zzfgi9S6RNGnJnsjsd8dL2P root@nixos
 
 creation_rules:
   - path_regex: machines/framework/secrets\.yaml$
     key_groups:
     - age:
       - *framework_komar
+  - path_regex: machines/thinkcentre/secrets\.yaml$
+    key_groups:
+    - age:
+      - *thinkcentre_komar

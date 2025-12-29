@@ -5,6 +5,7 @@
     ../modules/grub2.nix
     ../modules/splashscreen.nix
 
+    ../modules/sops.nix
     ../modules/openssh.nix
     ../modules/xserver.nix
     ../modules/intel.nix

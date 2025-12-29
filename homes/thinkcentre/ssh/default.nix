@@ -1,5 +1,11 @@
 { ... }:
 {
+  home.file.".ssh/id_rsa.pub".source = ./id_rsa.pub;
+
+  programs.ssh.matchBlocks."*" = {
+    identityFile = "/run/secrets/users/komar/ssh_key";
+  };
+
   programs.ssh.matchBlocks.work-pc = {
     host = "work-vpn";
     hostname = "192.168.134.42";
