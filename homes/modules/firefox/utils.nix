@@ -1,5 +1,6 @@
 { lib, ... }:
 rec {
+  # the firefox extension id of the firefox extension contained in pkg.
   extensionId =
     pkg:
     let
@@ -11,6 +12,8 @@ rec {
     in
     lib.strings.removeSuffix ".xpi" xpi;
 
+  # an element of config.programs.firefox.profiles.*.settings."browser.uiCustomization.state".placements.nav-bar
+  # that produces an access icon for the firefox extension contained in pkg.
   extensionIconEntry =
     pkg:
     let
