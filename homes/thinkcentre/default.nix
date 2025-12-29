@@ -8,6 +8,8 @@
     ../modules/xmonad.nix
     ../modules/mpv.nix
     ../modules/vial
+
+    ./ssh
   ];
 
   home.pointerCursor.size = 32;
@@ -18,28 +20,6 @@
   chromium.enable-vaapi-intel-features = true;
 
   xdg.default-browser-app = "firefox.desktop";
-
-  programs.ssh.matchBlocks.work-pc = {
-    host = "work-vpn";
-    hostname = "192.168.134.42";
-    proxyJump = "adb-jumphost";
-    port = 22;
-    user = "komar";
-    forwardX11 = true;
-  };
-  programs.ssh.matchBlocks.adb-jumphost = {
-    host = "adb-jumphost";
-    hostname = "192.168.5.68";
-    port = 22;
-    user = "M.Trybus";
-  };
-  programs.ssh.matchBlocks.work-pc-tunnel = {
-    host = "work";
-    hostname = "localhost";
-    port = 9022;
-    user = "komar";
-    forwardX11 = true;
-  };
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
