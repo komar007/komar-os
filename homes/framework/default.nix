@@ -17,6 +17,8 @@
   alacritty.font = "JetBrainsMono Nerd Font";
   alacritty.font-size = 7.0;
 
+  home.file.".ssh/id_ed25519.pub".source = ./id_ed25519.pub;
+
   programs.ssh.matchBlocks.thinkcentre = {
     host = "thinkcentre";
     hostname = "192.168.88.2";
