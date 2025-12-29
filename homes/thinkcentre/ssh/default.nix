@@ -1,6 +1,6 @@
 { ... }:
 {
-  home.file.".ssh/id_rsa.pub".source = ./id_rsa.pub;
+  home.file.".ssh/id_rsa.pub".source = ./ssh_id;
 
   programs.ssh.matchBlocks."*" = {
     identityFile = "/run/secrets/users/komar/ssh_key";
