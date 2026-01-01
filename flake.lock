@@ -286,8 +286,7 @@
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "systems": "systems",
-        "treefmt-nix": "treefmt-nix",
-        "wiremix": "wiremix"
+        "treefmt-nix": "treefmt-nix"
       }
     },
     "rust-overlay": {
@@ -362,29 +361,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "wiremix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1761538858,
-        "narHash": "sha256-jgwa9ogSKYMuIDnVNC+S4VSHSVRjRAwuohvLdO8P9rw=",
-        "owner": "tsowell",
-        "repo": "wiremix",
-        "rev": "bc015f83ab345e930bfb2dbb2bf295407232a73a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tsowell",
-        "repo": "wiremix",
         "type": "github"
       }
     }

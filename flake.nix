@@ -28,11 +28,6 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    wiremix = {
-      url = "github:tsowell/wiremix";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
-    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -80,7 +75,6 @@
       tmux-module = system: inputs.dot-tmux.homeManagerModules.${system}.default;
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       grub-themes-module = system: inputs.grub-themes.nixosModules.default;
-      wiremix = system: inputs.wiremix.packages.${system};
       sops-pkgs = system: inputs.sops-nix.packages.${system};
 
       nixosConfiguration =
@@ -106,7 +100,6 @@
           pkgs = nixpkgs-stable system;
           extraSpecialArgs = {
             nixpkgs-unstable = nixpkgs-unstable system;
-            wiremix = wiremix system;
             nvim-module = nvim-module system;
             tmux-module = tmux-module system;
             tmux-alacritty-module = tmux-alacritty-module system;

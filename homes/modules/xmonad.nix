@@ -1,8 +1,8 @@
-{ pkgs, wiremix, ... }:
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
     xmonad-with-packages
-    wiremix.default
+    wiremix
     xsel
     dzen2
     xmobar
