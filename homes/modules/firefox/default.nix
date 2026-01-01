@@ -110,6 +110,18 @@ in
       #sidebar-main, #sidebar-launcher-splitter {
         background-color: rgba(0, 0, 0, 0.7) !important;
       }
+
+      /* semi-transparent "tabs from other devices" et al. */
+      #sidebar {
+        outline: 0 !important;
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        border-radius: 0 !important;
+        margin: 0px !important;
+      }
+      #sidebar-splitter {
+        border-inline: none !important;
+        background-color: rgba(0, 0, 0, 0.7) !important;
+      }
     '';
 
     userContent = lib.strings.concatStringsSep "\n" config.firefox.userContent;
