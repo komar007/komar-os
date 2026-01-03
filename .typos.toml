@@ -1,0 +1,10 @@
+[default]
+extend-ignore-identifiers-re = [
+  "mosquitto",
+  "LESS_TERMCAP_ue",
+]
+
+[files]
+extend-exclude = [
+  "machines/*/secrets.yaml",
+]
