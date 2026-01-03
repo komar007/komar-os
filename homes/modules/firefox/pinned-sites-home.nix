@@ -12,7 +12,7 @@
       }
       {
         label = "Messenger";
-        url = "https://www.facebook.com/messages";
+        url = "https://www.messenger.com/";
       }
       { }
       {
