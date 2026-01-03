@@ -1,4 +1,9 @@
-{ lib, config, nixpkgs-unstable, ... }:
+{
+  lib,
+  config,
+  nixpkgs-unstable,
+  ...
+}:
 {
   options.alacritty = {
     font = lib.mkOption {
