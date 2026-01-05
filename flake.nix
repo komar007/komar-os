@@ -40,6 +40,11 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    direnv-instant = {
+      url = "github:Mic92/direnv-instant";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";
@@ -104,6 +109,7 @@
             tmux-module = tmux-module system;
             tmux-alacritty-module = tmux-alacritty-module system;
             nixgl = inputs.nixgl;
+            direnv-instant = inputs.direnv-instant;
           };
           modules = [
             ./homes/common.nix

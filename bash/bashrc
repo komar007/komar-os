@@ -297,6 +297,9 @@ function set_title() {
 starship_precmd_user_func="set_title"
 eval "$(starship init bash)"
 
+export DIRENV_WARN_TIMEOUT=0
+eval "$(direnv-instant hook bash)"
+
 _BASHRC_RELOADED=1
 # start prompt from the bottom (currently not used)
 #[ -z "$_BASHRC_RELOADED" ] && seq "$(tput lines)" | sed 's/.//g'
