@@ -8,6 +8,7 @@
   };
 
   imports = [
+    ./modules/bash
     ./modules/x11.nix
     ./modules/xdg.nix
     nvim-module

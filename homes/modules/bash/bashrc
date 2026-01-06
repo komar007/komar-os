@@ -24,7 +24,6 @@ HISTCONTROL=
 # ALIASES
 
 unalias -a
-alias ls="lsd -Fg"
 alias grep="grep --colour=auto"
 
 function less_set_title()
@@ -296,13 +295,10 @@ function set_title() {
 	fi
 	echo -n "$(tput tsl)$TITLE$(tput fsl)"
 }
-
-export DIRENV_WARN_TIMEOUT=0
-eval "$(direnv-instant hook bash)"
-
 # shellcheck disable=SC2034
 starship_precmd_user_func="set_title"
-eval "$(starship init bash)"
+
+export DIRENV_WARN_TIMEOUT=0
 
 _BASHRC_RELOADED=1
 # start prompt from the bottom (currently not used)

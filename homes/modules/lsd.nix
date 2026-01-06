@@ -1,6 +1,18 @@
 { ... }:
 {
   programs.lsd.enable = true;
+  programs.lsd.settings = {
+    indicators = true;
+    blocks = [
+      "permission"
+      "user"
+      "group"
+      "size"
+      "date"
+      "git"
+      "name"
+    ];
+  };
   programs.lsd.colors = {
     user = 247;
     group = 244;
