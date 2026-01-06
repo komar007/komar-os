@@ -1,6 +1,6 @@
 {
-  lib,
   config,
+  lib,
   pkgs,
   tmux-module,
   tmux-alacritty-module,
@@ -9,8 +9,12 @@
 {
   options.dot-tmux = {
     session-shells = lib.mkOption {
-      type = lib.types.attrsOf lib.types.str;
+      type = with lib.types; attrsOf str;
       default = { };
+    };
+    common-session-names = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = [ ];
     };
   };
 
@@ -33,4 +37,17 @@
         + "esac";
     in
     lib.getExe (pkgs.writeShellScriptBin "shell.sh" shell);
+
+  config.home.file.".tmux_common_session_names" =
+    let
+      names = config.dot-tmux.common-session-names;
+    in
+    {
+      enable = lib.lists.length names > 0;
+      text = lib.strings.concatStringsSep "\n" names + "\n";
+    };
+
+  config.dot-tmux.common-session-names = [
+    "config"
+  ];
 }

@@ -57,14 +57,20 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "nixpkgs-nixfmt": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
       },
       "locked": {
-        "lastModified": 1763714246,
-        "narHash": "sha256-YUje/NPrJLTrsZlE3G5F5ZewM2yspdOs9dh/mb1pl+0=",
+        "lastModified": 1767738320,
+        "narHash": "sha256-LK0DPuAqhXNKndN/q6B1JnzDw4UVvF0zv2zLBPiNMOc=",
         "owner": "komar007",
         "repo": "dot-tmux",
-        "rev": "26378a19cff4118094f75a0050d3439271153291",
+        "rev": "73813e57a5c182714b5ac7e2222468de0be706a7",
         "type": "github"
       },
       "original": {
