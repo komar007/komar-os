@@ -142,15 +142,17 @@ function _format_history_entry()
 
 function _prompt_command()
 {
-	_LAST_EXIT_CODE=$?
+	# TODO: for some reason $? does not work here when starship is initialized after setting
+	# PROMPT_COMMAND, even though starship's init code seems to suggest that it should. That's
+	# why we are using what may be an implementation detail of starship, but it works.
+	_LAST_EXIT_CODE=$STARSHIP_CMD_STATUS
 	local hist
 	hist=$(history 1 | head)
 	if [ "$hist" = "$_LAST_HIST" ]; then
-		return $_LAST_EXIT_CODE
+		return
 	fi
 	_LAST_HIST="$hist"
 	_format_history_entry >> "$_GLOBAL_HISTORY_FILE"
-	return $_LAST_EXIT_CODE
 }
 
 read -r -d '' _JQ_COLORS <<-'EOF'
@@ -242,12 +244,8 @@ function _search_global_history()
 bind -x '"\C-g":_search_global_history'
 bind -x '"\C-r":_search_global_history "--exact --no-extended --bind ctrl-r:up"'
 
-# shellcheck disable=SC2034
-starship_precmd_user_func="set_title"
-eval "$(starship init bash)"
-
 # save the last history item in global history
-PROMPT_COMMAND="_prompt_command ; $PROMPT_COMMAND"
+PROMPT_COMMAND="_prompt_command"
 
 
 # ENVIRONMENT VARIABLES
@@ -298,6 +296,9 @@ function set_title() {
 	fi
 	echo -n "$(tput tsl)$TITLE$(tput fsl)"
 }
+# shellcheck disable=SC2034
+starship_precmd_user_func="set_title"
+eval "$(starship init bash)"
 
 export DIRENV_WARN_TIMEOUT=0
 eval "$(direnv-instant hook bash)"
