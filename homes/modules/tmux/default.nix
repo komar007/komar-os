@@ -49,5 +49,6 @@
 
   config.dot-tmux.common-session-names = [
     "config"
+    "btop"
   ];
 }
