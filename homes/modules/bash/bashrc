@@ -149,10 +149,11 @@ function _prompt_command()
 	local hist
 	hist=$(history 1 | head)
 	if [ "$hist" = "$_LAST_HIST" ]; then
-		return
+		return "$_LAST_EXIT_CODE"
 	fi
 	_LAST_HIST="$hist"
 	(_format_history_entry >> "$_GLOBAL_HISTORY_FILE")
+	return "$_LAST_EXIT_CODE"
 }
 
 read -r -d '' _JQ_COLORS <<-'EOF'
