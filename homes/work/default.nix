@@ -23,6 +23,11 @@
     };
   };
 
+  dot-tmux.common-session-names = [
+    "prisme-backend"
+    "tss"
+  ];
+
   xdg.default-browser-app = "firefox.desktop";
 
   home.packages = with pkgs; [
