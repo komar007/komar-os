@@ -6,7 +6,7 @@ add_newline = false
 continuation_prompt = "[ ┊ ](blue)"
 
 format = '''
-$character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](fg:236))([](bg:236 fg:16)$git_branch$git_metrics[](fg:236))([](bg:236 fg:16)${env_var.NIX_SHELL_NAME}[](fg:236))([](bg:236 fg:16)$python[](fg:236)) $username[@](0)$hostname[:](0)$directory$fill$cmd_duration$time [](241)
+$character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](fg:236))([](bg:236 fg:16)$git_branch$git_metrics[](fg:236))([](bg:236 fg:16)$direnv[](fg:236))([](bg:236 fg:16)${env_var.NIX_SHELL_NAME}[](fg:236))([](bg:236 fg:16)$python[](fg:236)) $username[@](0)$hostname[:](0)$directory$fill$cmd_duration$time [](241)
  [\$ ](bold blue)
 '''
 
@@ -14,6 +14,15 @@ $character$status([](bg:236 fg:16)${env_var.PS1_EXTRA}[](fg:236))([](bg
 format = "$symbol"
 success_symbol = "[](fg:241)"
 error_symbol = ""
+
+[direnv]
+disabled = false
+format = "[$symbol $allowed]($style)"
+style = "bold bg:236 fg:blue"
+symbol = "󰌪"
+allowed_msg = "✓"
+not_allowed_msg = "✗"
+denied_msg = " "
 
 [status]
 format = "[$status]($style)[]($style inverted)"
