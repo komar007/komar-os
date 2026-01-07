@@ -139,6 +139,7 @@ function _format_history_entry()
 		  | select(.cmd != "")'
 }
 
+# save the last history item in global history
 function _prompt_command()
 {
 	# TODO: for some reason $? does not work here when starship is initialized after setting
@@ -151,7 +152,7 @@ function _prompt_command()
 		return
 	fi
 	_LAST_HIST="$hist"
-	_format_history_entry >> "$_GLOBAL_HISTORY_FILE"
+	(_format_history_entry >> "$_GLOBAL_HISTORY_FILE")
 }
 
 read -r -d '' _JQ_COLORS <<-'EOF'
@@ -243,7 +244,6 @@ function _search_global_history()
 bind -x '"\C-g":_search_global_history'
 bind -x '"\C-r":_search_global_history "--exact --no-extended --bind ctrl-r:up"'
 
-# save the last history item in global history
 PROMPT_COMMAND="_prompt_command"
 
 
