@@ -4,6 +4,8 @@
     ./hardware-configuration.nix
     ../modules/splashscreen.nix
 
+    ../modules/sops
+
     ../modules/openssh.nix
     ../modules/xserver.nix
     ../modules/intel.nix

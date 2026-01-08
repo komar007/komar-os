@@ -1,13 +1,24 @@
 keys:
-  - &framework_komar ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIanZqcz9tRNzoo9OTeTuuo4daRkhkv+uuJXdd24lpL1 root@nixos-framework
-  - &thinkcentre_komar ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINClfpakh5bEla1IcBg2/zzfgi9S6RNGnJnsjsd8dL2P root@nixos
+  - &framework ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIanZqcz9tRNzoo9OTeTuuo4daRkhkv+uuJXdd24lpL1 root@nixos-framework
+  - &thinkcentre ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINClfpakh5bEla1IcBg2/zzfgi9S6RNGnJnsjsd8dL2P root@nixos
+  - &work ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDIvPAOxytathkPzCPfU0UZJ46QJS9+pO/jq4gdnkTvr root@nixos-mtrybus
+  - &work_komar ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDgnaoZzMYdIjn8/wi1huethG3iw68nQxOOilhc8KSWOFW9QIIt+EagAxUmF/gCaOGALl/Di2LP3kLUY44/RCWlEJjmTF3+I5jV4dv2kskrkLlg3SBrjSGrtJegGOUDIJwF1jZrHxtzoXf9vZfONUKchgh1OM9KFDOcpTjrT519KqfKWlaEP6oyDu79MMr1pkNsAtKFlHX087H0IRX374B/bbmFCj50d+SLYH/mfzw7VQJQumn2E2CYpfrQL+73jPA3G90U+AU17Aot2eGN9F4HQOoDNp6hDSYprmQr+XK8jakC+aK+/Qr1HZiRhoYqmpyxfpDaEtFVZTKrkVlNXD8x M.Trybus@mtrybus-u
 
 creation_rules:
   - path_regex: machines/framework/secrets\.yaml$
     key_groups:
     - age:
-      - *framework_komar
+      - *framework
   - path_regex: machines/thinkcentre/secrets\.yaml$
     key_groups:
     - age:
-      - *thinkcentre_komar
+      - *thinkcentre
+  - path_regex: machines/work/secrets\.yaml$
+    key_groups:
+    - age:
+      - *work
+
+  - path_regex: homes/work/secrets\.yaml$
+    key_groups:
+    - age:
+      - *work_komar

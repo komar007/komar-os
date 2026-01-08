@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ ... }:
 let
   utils = import ../../modules/ssh/utils.nix { };
 in

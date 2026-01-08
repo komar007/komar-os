@@ -7,6 +7,11 @@
     ../modules/xmonad.nix
     ../modules/mpv.nix
     ../modules/vial
+
+    ../modules/sops
+    ./secrets.nix
+
+    ./ssh
   ];
 
   home.pointerCursor.size = 16;

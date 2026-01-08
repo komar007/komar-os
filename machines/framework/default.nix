@@ -6,7 +6,7 @@
     ../modules/grub2.nix
     ../modules/splashscreen.nix
 
-    ../modules/sops.nix
+    ../modules/sops
     ../modules/openssh.nix
     ../modules/brightness
     ../modules/xserver.nix
