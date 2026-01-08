@@ -7,4 +7,5 @@ extend-ignore-identifiers-re = [
 [files]
 extend-exclude = [
   "machines/*/secrets.yaml",
+  "homes/*/secrets.yaml",
 ]
