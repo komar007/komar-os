@@ -1,10 +1,8 @@
-{ ... }:
+{ config, ... }:
 {
   home.file.".ssh/id_ed25519.pub".source = ./ssh_id;
-
-  programs.ssh.matchBlocks."*" = {
-    identityFile = "/run/secrets/users/komar/ssh_key";
-  };
+  home.file.".ssh/id_ed25519".source =
+    config.lib.file.mkOutOfStoreSymlink "/run/secrets/users/${config.home.username}/ssh_key";
 
   programs.ssh.matchBlocks.thinkcentre = {
     host = "thinkcentre";

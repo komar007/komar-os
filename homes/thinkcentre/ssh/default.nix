@@ -1,13 +1,11 @@
-{ ... }:
+{ config, ... }:
 let
   utils = import ../../modules/ssh/utils.nix { };
 in
 {
   home.file.".ssh/id_rsa.pub".source = ./ssh_id;
-
-  programs.ssh.matchBlocks."*" = {
-    identityFile = "/run/secrets/users/komar/ssh_key";
-  };
+  home.file.".ssh/id_rsa".source =
+    config.lib.file.mkOutOfStoreSymlink "/run/secrets/users/${config.home.username}/ssh_key";
 
   programs.ssh.matchBlocks.work-pc = {
     host = "work-vpn";
