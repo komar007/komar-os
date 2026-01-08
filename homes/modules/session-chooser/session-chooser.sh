@@ -12,11 +12,18 @@
 #
 set -e
 
+CONFIG="$HOME/.ssh/config"
 REMOTE_CMD=${REMOTE_CMD:-''}
 PAUSE_AFTER_SSH_FAIL=${PAUSE_AFTER_SSH_FAIL:-1}
 
-# FIXME: what about includes?
-HOSTS=$( (grep -E '^Host [^*]' ~/.ssh/config || true) | cut -f 2 -d ' ')
+readarray -t includes < <(sed -rn 's/^Include (.*)$/\1/p' "$CONFIG")
+files=("$CONFIG" "${includes[@]}")
+
+HOSTS=()
+for file in "${files[@]}"; do
+	readarray -t hosts < <(sed -rn 's/^Host ([^*].*)$/\1/p' "$file")
+	HOSTS=("${HOSTS[@]}" "${hosts[@]}")
+done
 
 format_shell_entry() {
 	local ABS
@@ -79,7 +86,7 @@ ENTRIES=$(
 			| cut -d " " -f 2-
 
 	fi
-	for host in $HOSTS; do
+	for host in "${HOSTS[@]}"; do
 		vars=$(ssh -G "$host" | grep -E "^(${ENTRY_REQUIRED_SSH_VARS// /|}) " | tr ' ' =)
 		format_remote_host_entry "$vars"
 	done
