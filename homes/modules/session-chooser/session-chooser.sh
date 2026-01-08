@@ -15,7 +15,8 @@ set -e
 REMOTE_CMD=${REMOTE_CMD:-''}
 PAUSE_AFTER_SSH_FAIL=${PAUSE_AFTER_SSH_FAIL:-1}
 
-HOSTS=$(grep -E 'Host [^*]' ~/.ssh/config | cut -f 2 -d ' ')
+# FIXME: what about includes?
+HOSTS=$( (grep -E '^Host [^*]' ~/.ssh/config || true) | cut -f 2 -d ' ')
 
 format_shell_entry() {
 	local ABS
