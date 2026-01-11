@@ -21,6 +21,7 @@
 
   home.packages = with pkgs; [
     exiftool
+    signal-desktop
   ];
 
   home.stateVersion = "24.11";

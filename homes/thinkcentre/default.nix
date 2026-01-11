@@ -36,6 +36,7 @@
     gimp
     unetbootin
     spotifyd
+    signal-desktop
 
     dosbox
     wine
