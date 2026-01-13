@@ -212,7 +212,7 @@ in
   };
 
   config.firefox-darkmode.exclude = [
-    "teams.microsoft.com"
+    "teams.cloud.microsoft"
     "github.com"
     "developer.mozilla.org"
     "reddit.com"
@@ -224,7 +224,7 @@ in
 
   config.firefox.userContent = [
     ''
-      @-moz-document domain("teams.microsoft.com") {
+      @-moz-document domain("teams.cloud.microsoft") {
         .fui-TeachingPopoverSurface {
           display: none !important;
         }
