@@ -45,6 +45,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
+    fshf = {
+      url = "github:komar007/fshf";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.systems.follows = "systems";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";
@@ -71,6 +78,7 @@
             inputs.nur.overlays.default
             inputs.nixgl.overlay
             inputs.rust-overlay.overlays.default
+            inputs.fshf.overlays.default
           ];
         };
       nixpkgs-unstable =

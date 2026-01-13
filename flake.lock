@@ -141,6 +141,35 @@
         "type": "github"
       }
     },
+    "fshf": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768324822,
+        "narHash": "sha256-M7dkOMiNWvGteS8sqmBghBwOvkgUtYk43wB681XQ0Bk=",
+        "owner": "komar007",
+        "repo": "fshf",
+        "rev": "dde4fc5d1248bf125d19a9024791f2a6d3c2995b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "komar007",
+        "repo": "fshf",
+        "type": "github"
+      }
+    },
     "grub-themes": {
       "inputs": {
         "nixpkgs": [
@@ -328,6 +357,7 @@
         "dot-nvim": "dot-nvim",
         "dot-tmux": "dot-tmux",
         "flake-utils": "flake-utils",
+        "fshf": "fshf",
         "grub-themes": "grub-themes",
         "home-manager": "home-manager",
         "nixgl": "nixgl",
