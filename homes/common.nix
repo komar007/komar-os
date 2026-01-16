@@ -13,7 +13,7 @@
     ./modules/xdg.nix
     nvim-module
     ./modules/tmux
-    ./modules/direnv.nix
+    ./modules/direnv
     ./modules/alacritty.nix
     ./modules/starship
     ./modules/git
