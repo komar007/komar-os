@@ -1,4 +1,7 @@
 { lib, pkgs, ... }:
+let
+  delta = pkgs.lib.getExe pkgs.delta;
+in
 {
   programs.git.enable = true;
   programs.git.settings.alias = {
@@ -51,8 +54,10 @@
     core = {
       whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
       autocrlf = false;
-      pager = "less -FRX";
-
+      pager = delta;
+    };
+    interactive = {
+      diffFilter = "${delta} --color-only";
     };
     http = {
       cookiefile = "~/.gitcookies";
@@ -60,5 +65,11 @@
     push = {
       default = "matching";
     };
+  };
+
+  programs.git.settings.delta = {
+    navigate = true;
+    dark = true;
+    grep-match-word-style = "#000000 #fabd2f";
   };
 }
