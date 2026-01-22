@@ -15,6 +15,7 @@
 
       cargo-machete
       cargo-nextest
+      cargo-binstall
       bacon
     ];
 }
