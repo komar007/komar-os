@@ -28,6 +28,11 @@ in
     user = "komar";
     forwardX11 = true;
   };
+  programs.ssh.matchBlocks.voron = {
+    host = "voron";
+    hostname = "192.168.88.94";
+    user = "biqu";
+  };
 
   ssh.authorizedKeys = [
     (utils.ssh-pub-key-for "framework")

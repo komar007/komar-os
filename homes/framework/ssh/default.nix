@@ -11,7 +11,6 @@
     user = "komar";
     forwardX11 = true;
   };
-
   programs.ssh.matchBlocks.work-via-thinkcentre = {
     host = "work-via-thinkcentre";
     proxyJump = "thinkcentre";
@@ -19,5 +18,10 @@
     port = 9022;
     user = "komar";
     forwardX11 = true;
+  };
+  programs.ssh.matchBlocks.voron = {
+    host = "voron";
+    hostname = "192.168.88.94";
+    user = "biqu";
   };
 }
