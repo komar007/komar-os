@@ -9,7 +9,6 @@
     ../modules/vial
 
     ../modules/sops
-    ./secrets.nix
 
     ./ssh
   ];
