@@ -39,7 +39,7 @@ in
 
     Host integration
       Port 2222
-      User adb-admins
+      User adb-users
       HostName ${p."public_addr/prisme_integration"}
       ServerAliveInterval 5
 
