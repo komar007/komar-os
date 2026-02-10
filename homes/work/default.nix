@@ -7,6 +7,7 @@
     ../modules/xmonad.nix
     ../modules/mpv.nix
     ../modules/vial
+    ../modules/teams
 
     ../modules/sops
 
