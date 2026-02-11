@@ -39,11 +39,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769026237,
-        "narHash": "sha256-hN0SktPtuylAPupxdLEg0I3iIGI1U8e2+Zwys7Tkukg=",
+        "lastModified": 1770186954,
+        "narHash": "sha256-P8lpxufKRDAXDLM4qTdGaBfjNegVgP4ntJEKefFaN9c=",
         "owner": "komar007",
         "repo": "dot-nvim",
-        "rev": "fd855c812c564c703db69d4e8b297e2de1c43f8f",
+        "rev": "1cb117bf9feebea44e0db332bdb4bf364620775b",
         "type": "github"
       },
       "original": {
@@ -66,11 +66,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769019141,
-        "narHash": "sha256-vhfGOX13Und0RAdy36dLkQuVyRZLJgcrCuuxPKtj8x8=",
+        "lastModified": 1770206404,
+        "narHash": "sha256-it6DFUTHdGY57ToKOGHl84zEN9PLGMhulO5NrrIWlwo=",
         "owner": "komar007",
         "repo": "dot-tmux",
-        "rev": "5d73f65aa4c678833127151608cd31ce32e195e7",
+        "rev": "cd72bcba6dbc5fce8b38e77ab741a08de7d6fdb2",
         "type": "github"
       },
       "original": {
