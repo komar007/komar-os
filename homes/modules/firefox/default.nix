@@ -230,5 +230,15 @@ in
         }
       }
     ''
+
+    ''
+      @-moz-document domain("jira.adbglobal.com") {
+        tt {
+          border: 1px solid #999;
+          border-radius: 0.3em;
+          padding: 0 0.3em;
+        }
+      }
+    ''
   ];
 }
