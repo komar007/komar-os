@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
 {
   home.packages = with pkgs; [
     xmonad-with-packages
@@ -39,15 +39,5 @@
     };
   };
 
-  # picom v12.5 sometimes crashes on amdgpu, the version below from master has been more stable so far...
-  services.picom.package = pkgs.picom.overrideAttrs (old: {
-    version = "v12";
-    src = pkgs.fetchFromGitHub {
-      owner = "yshui";
-      repo = "picom";
-      rev = "90e537110aa7125ad97aa781fdf956c93fa12436";
-      hash = "sha256-lfusMFzfQwk97a4gyJwxQEuMlo1rWgoQR4H1wgyx7Bg=";
-      fetchSubmodules = true;
-    };
-  });
+  services.picom.package = nixpkgs-unstable.picom;
 }
