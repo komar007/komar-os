@@ -65,6 +65,9 @@ in
     push = {
       default = "matching";
     };
+    merge = {
+      conflictStyle = "zdiff3";
+    };
   };
 
   programs.git.settings.delta = {
