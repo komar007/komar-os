@@ -1,0 +1,9 @@
+[package]
+name = "wait_for_x_prop"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.39", features = ["derive"] }
+miette = { version = "7.5.0", features = ["fancy"] }
+x11rb = "0.13.2"

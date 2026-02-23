@@ -1,4 +1,12 @@
 { pkgs, pkgsUnstable, ... }:
+let
+  wait_for_x_prop = pkgs.rustPlatform.buildRustPackage {
+    pname = "wait_for_x_prop";
+    version = "0.1.0";
+    src = ./wait_for_x_prop;
+    cargoHash = "sha256-9hKbcTKM1Gn+UPYoryQ7jbq7Ij8nf/nXonw03B3/oY4=";
+  };
+in
 {
   home.packages = with pkgs; [
     xmonad-with-packages
@@ -10,6 +18,8 @@
     xsecurelock
     xautolock
     fshf
+    # TODO: temporarily in global scope, to be interpolated into xinitrc
+    wait_for_x_prop
   ];
 
   home.file.".wallpaper.png".source = builtins.fetchurl {

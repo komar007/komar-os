@@ -48,6 +48,9 @@ kill -9 $(
 		grep -oE '[0-9]+'
 )
 
-(sleep 1 && ~/.xmonad/panels_launch.sh &)
-picom &
+(wait_for_x_prop __XMONAD_STARTUP_DONE__ 1 && (
+	~/.xmonad/panels_launch.sh &
+	picom &
+)) &
+
 ulimit -s 16000 && exec xmonad

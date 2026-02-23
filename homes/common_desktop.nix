@@ -4,7 +4,7 @@
     ./modules/x11.nix
     ./modules/alacritty.nix
     ./modules/youtube-tui.nix
-    ./modules/xmonad.nix
+    ./modules/xmonad
     ./modules/mpv.nix
     ./modules/firefox
   ];

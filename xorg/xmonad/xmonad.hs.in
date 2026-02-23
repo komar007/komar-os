@@ -4,6 +4,9 @@ import System.IO
 import System.Exit (exitSuccess)
 import qualified Data.Map as M
 import Data.Ratio ((%))
+import Foreign.C.String (castCharToCChar)
+import Graphics.X11.Xlib
+import Graphics.X11.Xlib.Extras
 import XMonad
 import XMonad.ManageHook
 import XMonad.Hooks.SetWMName
@@ -207,6 +210,15 @@ setWs :: String -> X ()
 setWs ws = do
     windows (W.view ws)
 
+setXProperty :: String -> String -> X ()
+setXProperty property value = withDisplay $ \d -> do
+    root <- asks theRoot
+    propertyAtom <- atom d property
+    typeAtom <- atom d "STRING"
+    io $ changeProperty8 d root propertyAtom typeAtom propModeReplace $ map castCharToCChar value
+    where
+        atom d value = io $ internAtom d value False
+
 myConf xmproc =
     docks $
     def {
@@ -216,7 +228,8 @@ myConf xmproc =
             -- pre-set last workspace
             setWs "web1" <+>
             -- set starting workspace
-            setWs "c1",
+            setWs "c1" <+>
+            setXProperty "__XMONAD_STARTUP_DONE__" "1",
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
         layoutHook = myLayoutHook,
         logHook = myLogHook xmproc,
