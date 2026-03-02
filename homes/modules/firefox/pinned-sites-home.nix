@@ -14,6 +14,14 @@
         label = "Messenger";
         url = "https://www.messenger.com/";
       }
+      {
+        label = "Whatsapp";
+        url = "https://web.whatsapp.com/";
+      }
+      {
+        label = "Discord";
+        url = "https://discord.com/app";
+      }
       { }
       {
         label = "Home Assistant";
