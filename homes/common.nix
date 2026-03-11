@@ -1,4 +1,9 @@
-{ pkgs, nvim-module, ... }:
+{
+  pkgs,
+  nvim-module,
+  nix-index-database-module,
+  ...
+}:
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -22,6 +27,7 @@
     ./modules/lsd.nix
     ./modules/rust.nix
     ./modules/youtube-tui.nix
+    nix-index-database-module
   ];
 
   dot-tmux.session-shells =
@@ -58,4 +64,6 @@
     nerd-fonts.terminess-ttf
     nerd-fonts.jetbrains-mono
   ];
+
+  programs.nix-index-database.comma.enable = true;
 }

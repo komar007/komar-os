@@ -51,6 +51,10 @@
       inputs.systems.follows = "systems";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";
@@ -90,6 +94,7 @@
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       grub-themes-module = system: inputs.grub-themes.nixosModules.default;
       sops-pkgs = system: inputs.sops-nix.packages.${system};
+      nix-index-database-module = inputs.nix-index-database.homeModules.default;
 
       nixosConfiguration =
         name: system:
@@ -113,6 +118,7 @@
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs-stable system;
           extraSpecialArgs = {
+            inherit nix-index-database-module;
             configuration-name = name;
             nixpkgs-unstable = nixpkgs-unstable system;
             nvim-module = nvim-module system;
