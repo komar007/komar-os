@@ -92,7 +92,7 @@
       nvim-module = system: inputs.dot-nvim.homeManagerModules.${system}.default;
       tmux-module = system: inputs.dot-tmux.homeManagerModules.${system}.default;
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
-      grub-themes-module = system: inputs.grub-themes.nixosModules.default;
+      grub-themes-module = inputs.grub-themes.nixosModules.default;
       sops-pkgs = system: inputs.sops-nix.packages.${system};
       nix-index-database-module = inputs.nix-index-database.homeModules.default;
 
@@ -100,10 +100,10 @@
         name: system:
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = {
+            inherit grub-themes-module;
             configuration-name = name;
             nixos-hardware = inputs.nixos-hardware;
             nixpkgs-unstable = nixpkgs-unstable system;
-            grub-themes-module = grub-themes-module system;
             sops-pkgs = sops-pkgs system;
             sops-nix = inputs.sops-nix;
           };
