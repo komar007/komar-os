@@ -301,6 +301,9 @@ starship_precmd_user_func="set_title"
 
 export DIRENV_WARN_TIMEOUT=0
 
+# TODO: consider wrapping comma instead
+export COMMA_PICKER=fzf
+
 _BASHRC_RELOADED=1
 # start prompt from the bottom (currently not used)
 #[ -z "$_BASHRC_RELOADED" ] && seq "$(tput lines)" | sed 's/.//g'
