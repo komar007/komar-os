@@ -100,6 +100,7 @@
         name: system:
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = {
+            inherit inputs;
             inherit grub-themes-module;
             configuration-name = name;
             nixos-hardware = inputs.nixos-hardware;
