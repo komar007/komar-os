@@ -153,7 +153,7 @@
         formatting = treefmtEval.${pkgs.system}.config.build.check self;
         typos = pkgs.runCommand "typos-check" {
           nativeBuildInputs = [ pkgs.typos ];
-        } ''cd ${self} && typos . && touch $out'';
+        } "cd ${self} && typos . && touch $out";
       });
     };
 }
