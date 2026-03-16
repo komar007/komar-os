@@ -3,7 +3,7 @@
   config,
   pkgs,
   sops-pkgs,
-  sops-nix,
+  inputs,
   ...
 }:
 let
@@ -14,7 +14,7 @@ let
 in
 {
   imports = [
-    sops-nix.nixosModules.sops
+    inputs.sops-nix.nixosModules.sops
   ];
 
   sops = {

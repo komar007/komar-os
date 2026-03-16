@@ -103,10 +103,8 @@
             inherit inputs;
             inherit grub-themes-module;
             configuration-name = name;
-            nixos-hardware = inputs.nixos-hardware;
             nixpkgs-unstable = nixpkgs-unstable system;
             sops-pkgs = sops-pkgs system;
-            sops-nix = inputs.sops-nix;
           };
           modules = [
             ./machines/common.nix
@@ -119,15 +117,13 @@
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs-stable system;
           extraSpecialArgs = {
+            inherit inputs;
             inherit nix-index-database-module;
             configuration-name = name;
             nixpkgs-unstable = nixpkgs-unstable system;
             nvim-module = nvim-module system;
             tmux-module = tmux-module system;
             tmux-alacritty-module = tmux-alacritty-module system;
-            nixgl = inputs.nixgl;
-            direnv-instant = inputs.direnv-instant;
-            sops-nix = inputs.sops-nix;
           };
           modules = [
             ./homes/common.nix

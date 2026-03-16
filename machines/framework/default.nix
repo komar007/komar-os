@@ -1,8 +1,8 @@
-{ nixos-hardware, ... }:
+{ inputs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
-    nixos-hardware.nixosModules.framework-13-7040-amd
+    inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ../modules/grub2.nix
     ../modules/splashscreen.nix
 

@@ -1,6 +1,6 @@
-{ config, nixgl, ... }:
+{ config, inputs, ... }:
 {
-  nixGL.packages = nixgl.packages;
+  nixGL.packages = inputs.nixgl.packages;
   nixGL.defaultWrapper = "mesa";
   nixGL.installScripts = [ "mesa" ];
   nixGL.vulkan.enable = true;

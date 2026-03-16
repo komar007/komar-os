@@ -1,7 +1,7 @@
-{ direnv-instant, ... }:
+{ inputs, ... }:
 {
   imports = [
-    direnv-instant.homeModules.direnv-instant
+    inputs.direnv-instant.homeModules.direnv-instant
   ];
 
   programs.direnv.enable = true;
