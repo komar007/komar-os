@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, nixpkgs-unstable, ... }:
 {
   imports = [
     ../modules/firefox
@@ -41,6 +41,7 @@
     uv
     temporal-cli
     mosquitto
+    nixpkgs-unstable.codex
 
     nerd-fonts.zed-mono
   ];
