@@ -8,6 +8,7 @@
     ../modules/mpv.nix
     ../modules/vial
     ../modules/teams
+    ../modules/jira.nix
 
     ../modules/sops
 
