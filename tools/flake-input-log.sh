@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 cd "$SCRIPT_DIR" || exit
 
 INPUT=$1
 FROM=${2:-"HEAD"}
 TO=${3:-"--unstaged"}
 
-get(){
+get() {
 	FIELD=$1
 	jq -r ".nodes[\"$INPUT\"].locked.$FIELD"
 }
@@ -22,17 +22,17 @@ get_flake_lock() {
 	fi
 }
 
-get_github_url(){
+get_github_url() {
 	FLAKE_REV=$1
 	FLAKE=$(get_flake_lock "$FLAKE_REV")
-	echo "https://github.com/$(get owner <<< "$FLAKE")/$(get repo <<< "$FLAKE")"
+	echo "https://github.com/$(get owner <<<"$FLAKE")/$(get repo <<<"$FLAKE")"
 }
 
 INPUT_FROM=$(get_flake_lock "$FROM" | get rev)
 INPUT_TO=$(get_flake_lock "$TO" | get rev)
 
 if [ "$INPUT_FROM" = null ] || [ "$INPUT_TO" = null ]; then
-	echo "$INPUT: wrong type of input, missing revision" > /dev/stderr
+	echo "$INPUT: wrong type of input, missing revision" >/dev/stderr
 	exit 1
 fi
 

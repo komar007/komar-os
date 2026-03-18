@@ -3,7 +3,7 @@
 DIR="$HOME/.xmonad"
 
 if [ -f ~/.desktop_type ]; then
-	CONFIG=`cat ~/.desktop_type`
+	CONFIG=$(cat ~/.desktop_type)
 elif [ -f /proc/acpi/battery/BAT0/ ]; then
 	CONFIG=laptop
 else
@@ -11,9 +11,9 @@ else
 fi
 
 if [ "$CONFIG" = work ]; then
-	cpp -P -I"$DIR" -DCONFIG_WORK    ~/.xmonad/xmonad.hs.in > ~/.xmonad/xmonad.hs
+	cpp -P -I"$DIR" -DCONFIG_WORK ~/.xmonad/xmonad.hs.in >~/.xmonad/xmonad.hs
 else
-	cpp -P -I"$DIR" -DCONFIG_DESKTOP ~/.xmonad/xmonad.hs.in > ~/.xmonad/xmonad.hs
+	cpp -P -I"$DIR" -DCONFIG_DESKTOP ~/.xmonad/xmonad.hs.in >~/.xmonad/xmonad.hs
 fi
 
 if [ "$CONFIG" = work ]; then
@@ -25,7 +25,7 @@ if [ -f ~/.wallpaper.png ]; then
 	xwallpaper --zoom ~/.wallpaper.png
 fi
 
-cpp -P -I"$DIR" ~/.Xdefaults.edit > ~/.Xdefaults
+cpp -P -I"$DIR" ~/.Xdefaults.edit >~/.Xdefaults
 
 xrdb ~/.Xresources
 xsetroot -cursor_name left_ptr -solid '#000000'
@@ -41,11 +41,11 @@ xset dpms 120 120 120
 xset m 7/4 7
 
 # shellcheck disable=SC2046
-kill -9 $( \
-	ps ax -opid,command \
-		| grep xmonad_pipe.sh \
-		| grep -v grep \
-		| grep -oE '[0-9]+' \
+kill -9 $(
+	ps ax -opid,command |
+		grep xmonad_pipe.sh |
+		grep -v grep |
+		grep -oE '[0-9]+'
 )
 
 (sleep 1 && ~/.xmonad/panels_launch.sh &)

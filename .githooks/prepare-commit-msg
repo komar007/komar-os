@@ -4,10 +4,10 @@ COMMIT_MSG_FILE=$1
 COMMIT_SOURCE=$2
 
 if [ -z "$COMMIT_SOURCE" ]; then
-  T=$(mktemp)
-  ROOT=$(git rev-parse --show-toplevel)
-  echo > "$T"
-  "$ROOT"/tools/flake-inputs-changelog.sh HEAD --staged | sed -r 's/^(.)/# \1/' >> "$T"
-  cat "$COMMIT_MSG_FILE" >> "$T"
-  mv "$T" "$COMMIT_MSG_FILE"
+	T=$(mktemp)
+	ROOT=$(git rev-parse --show-toplevel)
+	echo >"$T"
+	"$ROOT"/tools/flake-inputs-changelog.sh HEAD --staged | sed -r 's/^(.)/# \1/' >>"$T"
+	cat "$COMMIT_MSG_FILE" >>"$T"
+	mv "$T" "$COMMIT_MSG_FILE"
 fi

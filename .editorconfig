@@ -1,4 +1,5 @@
 [*.sh]
-binary_next_line = true
-space_redirects = true
+indent_style = tab
+binary_next_line = false
+space_redirects = false
 switch_case_indent = false

@@ -7,6 +7,6 @@ if [ ! -p "$FIFO" ]; then
 	mkfifo "$FIFO"
 fi
 while true; do
-	cat > $FIFO
+	cat >$FIFO
 	sleep 1
 done
