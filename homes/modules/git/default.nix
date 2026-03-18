@@ -27,6 +27,17 @@ in
         }
       )
     }";
+    pick = "!${
+      lib.getExe (
+        pkgs.writeShellApplication {
+          name = "git-pick";
+          runtimeInputs = with pkgs; [
+            fzf
+          ];
+          text = builtins.readFile ./pick.sh;
+        }
+      )
+    }";
     as = "!${pkgs.writeShellScript "git-as" ''
       if [ -n "$1" ]; then
         BASE="$1"
