@@ -71,6 +71,7 @@ in
     temporal-cli
     mosquitto
     nixpkgs-unstable.codex
+    nixpkgs-unstable.git-gr
 
     nerd-fonts.zed-mono
   ];
