@@ -39,11 +39,22 @@ IS_GERRIT=$(git remote get-url origin | grep -q gerrit && echo 1 || echo 0)
 
 PREV=$(git rev-parse --abbrev-ref HEAD)
 PUSH_BRANCH=push_branch
-MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+BASE_BRANCH=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || true)
+REMOTE_BRANCH=${BASE_BRANCH#origin/}
 if [ "$IS_GERRIT" -eq 1 ]; then
-	PUSH_TO="HEAD:refs/for/$MAIN_BRANCH"
+	PUSH_TO="HEAD:refs/for/$REMOTE_BRANCH"
 else
-	PUSH_TO="HEAD:$MAIN_BRANCH"
+	PUSH_TO="HEAD:$REMOTE_BRANCH"
+fi
+
+if [ -z "$BASE_BRANCH" ]; then
+	COLOR=red pg_msg "cannot resolve origin HEAD locally"
+	exit 1
+fi
+
+if ! git rev-parse --verify "$BASE_BRANCH" >/dev/null 2>&1; then
+	COLOR=red pg_msg "cannot find base branch $BASE_BRANCH locally"
+	exit 1
 fi
 
 temp_shell() {
@@ -58,7 +69,7 @@ temp_shell() {
 	fi
 }
 
-git checkout "$MAIN_BRANCH" -b "$PUSH_BRANCH"
+git checkout -b "$PUSH_BRANCH" "$BASE_BRANCH"
 
 FAILED=0
 if ! git cherry-pick "$1"; then
