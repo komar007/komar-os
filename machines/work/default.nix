@@ -11,6 +11,8 @@
     ../modules/intel.nix
     ../modules/audio.nix
     ../modules/maintain-ssh-connection
+
+    ../modules/k3s.nix
   ];
 
   fileSystems = {
