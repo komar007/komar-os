@@ -47,8 +47,13 @@
       text = lib.strings.concatStringsSep "\n" names + "\n";
     };
 
-  config.dot-tmux.common-session-names = [
-    "config"
-    "btop"
-  ];
+  config.dot-tmux = {
+    common-session-names = [
+      "config"
+    ];
+
+    top.windows = [
+      "btop"
+    ];
+  };
 }

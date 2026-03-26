@@ -18,6 +18,7 @@
     ./modules/xdg.nix
     nvim-module
     ./modules/tmux
+    ./modules/tmux/top_session.nix
     ./modules/direnv
     ./modules/alacritty.nix
     ./modules/starship
@@ -35,7 +36,6 @@
       bc = pkgs.lib.getExe pkgs.bc;
     in
     {
-      btop = "btop";
       bc = "${bc} -l";
     };
 
