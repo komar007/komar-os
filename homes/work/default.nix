@@ -1,9 +1,7 @@
-{
-  lib,
-  pkgs,
-  nixpkgs-unstable,
-  ...
-}:
+{ pkgs, nixpkgs-unstable, ... }:
+let
+  utils = import ../modules/k3s/utils.nix { pkgs = nixpkgs-unstable; };
+in
 {
   imports = [
     ../modules/firefox
@@ -38,13 +36,9 @@
     "prisme-backend"
     "tss"
   ];
-  dot-tmux.top.windows =
-    let
-      kubetui = lib.getExe nixpkgs-unstable.kubetui;
-    in
-    [
-      "KUBECONFIG=/etc/rancher/k3s/k3s.yaml ${kubetui}"
-    ];
+  dot-tmux.top.windows = [
+    (utils.kubetui-with-namespace "prisme")
+  ];
 
   xdg.default-browser-app = "firefox.desktop";
 
