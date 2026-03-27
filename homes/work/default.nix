@@ -1,11 +1,13 @@
 {
   config,
+  lib,
   pkgs,
   nixpkgs-unstable,
   ...
 }:
 let
   utils = import ../modules/k3s/utils.nix { pkgs = nixpkgs-unstable; };
+  ff-utils = import ../modules/firefox/utils.nix { inherit lib; };
 in
 {
   imports = [
@@ -45,6 +47,13 @@ in
     (utils.kubetui-with-namespace "prisme")
   ];
 
+  sops-anything.home-files =
+    let
+      darkmodeId = ff-utils.extensionId pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension;
+    in
+    [
+      ".mozilla/firefox/default/browser-extension-data/${darkmodeId}/storage.js"
+    ];
   # requires sops secrets definition in ./ssh/default.nix
   firefox-darkmode.exclude =
     let
@@ -55,19 +64,6 @@ in
       p."public_addr/prisme_nightly"
       "i.pl.adbglobal.com"
     ];
-
-  # FIXME: generalize
-  sops.templates."firefox/extensions/darkmode/settings".content =
-    config.home.file.".mozilla/firefox/default/browser-extension-data/{174b2d58-b983-4501-ab4b-07e71203cb43}/storage.js".text;
-  home.file.".mozilla/firefox/default/browser-extension-data/{174b2d58-b983-4501-ab4b-07e71203cb43}/storage.js".enable =
-    false;
-
-  home.file."___firefox/extensions/darkmode/settings" = {
-    target = ".mozilla/firefox/default/browser-extension-data/{174b2d58-b983-4501-ab4b-07e71203cb43}/storage.js";
-    source =
-      config.lib.file.mkOutOfStoreSymlink
-        config.sops.templates."firefox/extensions/darkmode/settings".path;
-  };
 
   xdg.default-browser-app = "firefox.desktop";
 
