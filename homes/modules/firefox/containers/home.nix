@@ -4,7 +4,7 @@ let
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
 in
 {
-  programs.firefox.profiles."default-release" = {
+  programs.firefox.profiles.${ff-utils.profileName} = {
     containers.home = {
       id = 1;
       color = "blue";

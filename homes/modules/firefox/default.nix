@@ -36,7 +36,7 @@ in
     ./extensions/darkmode.nix
   ];
   config.programs.firefox.enable = true;
-  config.programs.firefox.profiles."default-release" = {
+  config.programs.firefox.profiles.${ff-utils.profileName} = {
     id = 0;
     path = "default";
     isDefault = true;

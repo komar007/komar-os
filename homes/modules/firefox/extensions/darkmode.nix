@@ -15,7 +15,7 @@ in
     };
   };
 
-  config.programs.firefox.profiles."default-release" = {
+  config.programs.firefox.profiles.${ff-utils.profileName} = {
     extensions.packages = [
       firefox-addons.dark-mode-webextension
     ];

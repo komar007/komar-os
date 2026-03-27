@@ -1,5 +1,7 @@
 { lib, ... }:
 rec {
+  profileName = "default-release";
+
   # the firefox extension id of the firefox extension contained in pkg.
   extensionId =
     pkg:
