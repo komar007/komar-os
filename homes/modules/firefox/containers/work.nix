@@ -1,6 +1,11 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
-  ff-utils = import ../utils.nix { inherit lib; };
+  ff-utils = import ../utils.nix { inherit config lib; };
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
 in
 {

@@ -6,7 +6,7 @@
 }:
 let
   nixpkgsBaseVersion = builtins.head (builtins.match ''([0-9]+\.[0-9]+).*'' pkgs.lib.version);
-  ff-utils = import ./utils.nix { inherit lib; };
+  ff-utils = import ./utils.nix { inherit config lib; };
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
 
   home-assistant = firefox-addons.buildFirefoxXpiAddon {

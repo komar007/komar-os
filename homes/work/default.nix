@@ -1,13 +1,13 @@
 {
-  config,
   lib,
+  config,
   pkgs,
   nixpkgs-unstable,
   ...
 }:
 let
   utils = import ../modules/k3s/utils.nix { pkgs = nixpkgs-unstable; };
-  ff-utils = import ../modules/firefox/utils.nix { inherit lib; };
+  ff-utils = import ../modules/firefox/utils.nix { inherit config lib; };
 in
 {
   imports = [
@@ -47,14 +47,10 @@ in
     (utils.kubetui-with-namespace "prisme")
   ];
 
-  sops-anything.home-files =
-    let
-      darkmodeId = ff-utils.extensionId pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension;
-    in
-    [
-      ".mozilla/firefox/default/browser-extension-data/${darkmodeId}/storage.js"
-    ];
-  # requires sops secrets definition in ./ssh/default.nix
+  sops-anything.home-files = [
+    (ff-utils.extensionSettingsFile pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension)
+  ];
+  # sops secrets for placeholders below are defined in ./ssh/default.nix
   firefox-darkmode.exclude =
     let
       p = config.sops.placeholder;

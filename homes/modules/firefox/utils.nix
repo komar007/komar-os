@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 rec {
   profileName = "default-release";
 
@@ -23,4 +23,13 @@ rec {
       escaped-id = builtins.replaceStrings [ "{" "}" "@" "." ] [ "_" "_" "_" "_" ] id;
     in
     "${lib.strings.toLower escaped-id}-browser-action";
+
+  # the storage.js file path (relative to the home directory) containing an extension's settings
+  # in other words, the path of the output produced by
+  # programs.firefox.profiles.<profile>.extensions.settings.<extensionId>.settings
+  extensionSettingsFile =
+    let
+      profileDir = config.programs.firefox.profiles.${profileName}.path;
+    in
+    pkg: ".mozilla/firefox/${profileDir}/browser-extension-data/${extensionId pkg}/storage.js";
 }
