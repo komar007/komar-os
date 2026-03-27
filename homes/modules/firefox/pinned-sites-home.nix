@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  ff-utils = import ../utils.nix { inherit config lib; };
+  ff-utils = import ./utils.nix { inherit config lib; };
 in
 {
   programs.firefox.profiles.${ff-utils.profileName}.settings = {
