@@ -66,11 +66,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774448499,
-        "narHash": "sha256-OUmuDm5oev2n3rNe5bjboTgEV+LDMYZHFqlURjUpo/U=",
+        "lastModified": 1774649431,
+        "narHash": "sha256-Bm/CeWBuwx1nbgIYTEAi5Q6xEp1ByF/DmcJt5hkV8Sg=",
         "owner": "komar007",
         "repo": "dot-tmux",
-        "rev": "5bcdbb0110493aeddad195735ee00bdf1166c260",
+        "rev": "113cec8ee6b262f405edf77419783116e9e39208",
         "type": "github"
       },
       "original": {
