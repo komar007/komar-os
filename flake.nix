@@ -73,6 +73,7 @@
   outputs =
     { self, ... }@inputs:
     let
+      lib = inputs.nixpkgs.lib;
       nixpkgs-stable =
         system:
         import inputs.nixpkgs {
@@ -98,7 +99,7 @@
 
       nixosConfiguration =
         name: system:
-        inputs.nixpkgs.lib.nixosSystem {
+        lib.nixosSystem {
           specialArgs = {
             inherit inputs;
             inherit grub-themes-module;
@@ -131,13 +132,8 @@
           ];
         };
       eachSystem =
-        f:
-        inputs.nixpkgs.lib.genAttrs (import inputs.systems) (
-          system: f inputs.nixpkgs.legacyPackages.${system}
-        );
+        f: lib.genAttrs (import inputs.systems) (system: f inputs.nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-    in
-    {
       nixosConfigurations = {
         thinkcentre = nixosConfiguration "thinkcentre" "x86_64-linux";
         framework = nixosConfiguration "framework" "x86_64-linux";
@@ -148,12 +144,33 @@
         framework = homeConfiguration "framework" "x86_64-linux";
         work = homeConfiguration "work" "x86_64-linux";
       };
+      filterSystem =
+        system: lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == system);
+      homeManagerBuildChecks =
+        system:
+        lib.mapAttrs' (name: config: lib.nameValuePair "home-manager-${name}" config.activationPackage) (
+          filterSystem system homeConfigurations
+        );
+      nixosBuildChecks =
+        system:
+        lib.mapAttrs' (
+          name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel
+        ) (filterSystem system nixosConfigurations);
+    in
+    {
+      inherit nixosConfigurations homeConfigurations;
+
       formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-      checks = eachSystem (pkgs: {
-        formatting = treefmtEval.${pkgs.system}.config.build.check self;
-        typos = pkgs.runCommand "typos-check" {
-          nativeBuildInputs = [ pkgs.typos ];
-        } "cd ${self} && typos . && touch $out";
-      });
+      checks = eachSystem (
+        pkgs:
+        {
+          formatting = treefmtEval.${pkgs.system}.config.build.check self;
+          typos = pkgs.runCommand "typos-check" {
+            nativeBuildInputs = [ pkgs.typos ];
+          } "cd ${self} && typos . && touch $out";
+        }
+        // homeManagerBuildChecks pkgs.system
+        // nixosBuildChecks pkgs.system
+      );
     };
 }
