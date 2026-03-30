@@ -41,6 +41,8 @@ in
     as = "!${pkgs.writeShellScript "git-as" ''
       if [ -n "$1" ]; then
         BASE="$1"
+      elif BASE=$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null); then
+        :
       else
         BASE=$(
           git log --format='%H' HEAD^ \
