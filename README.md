@@ -9,9 +9,9 @@ This repository contains my entire NixOS configuration used on a few machines, f
 ### NixOS & Home Manager
 
 Some configuration files are declared using Home Manager which is used in standalone mode. This
-means that independently of rebuilding the NixOS system, it is necessary to also rebuild the
-Home Manager configuration. This is caused by the fact that not all of my machines use NixOS. That's
-also why I tend to keep as much of the configuration in Home Manager instead of NixOS as possible.
+means that independently of rebuilding the NixOS system, it is necessary to also rebuild the Home
+Manager configuration. This is caused by the fact that not all of my machines use NixOS. That's also
+why I tend to keep as much of the configuration in Home Manager instead of NixOS as possible.
 
 Some core components (like neovim and tmux config) are separated to other repositories as flakes
 containing Home Manager modules and can be used standalone. Possibly the same fate will meet more
@@ -29,8 +29,8 @@ link all the legacy dotfiles to the home directory.
 
 ## Contributing
 
-This repository was created based on too many other dotfile repos, gists and articles and blog
-posts to even remember or list here, so I hope it can be of use to someone else.
+This repository was created based on too many other dotfile repos, gists and articles and blog posts
+to even remember or list here, so I hope it can be of use to someone else.
 
 I don't think anyone would like to contribute to someone else's dotfiles, but you can look around
 for configuration ideas or ask me a questions directly on github instead.
