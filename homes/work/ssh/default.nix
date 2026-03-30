@@ -8,10 +8,6 @@ in
   home.file.".ssh/id_rsa".source =
     config.lib.file.mkOutOfStoreSymlink "/run/secrets/users/${config.home.username}/ssh_key";
 
-  programs.ssh.includes = [
-    config.sops.templates."ssh/hosts".path
-  ];
-
   ssh.authorizedKeys = [
     (utils.ssh-pub-key-for "framework")
     (utils.ssh-pub-key-for "thinkcentre")
@@ -22,31 +18,49 @@ in
   sops.secrets."public_addr/prisme_integration" = { };
   sops.secrets."public_addr/prisme_nightly" = { };
 
-  sops.templates."ssh/hosts".content = ''
-    Host thinkcentre-tunnel
-      Port 2022
-      User komar
-      HostName ${p."public_addr/thinkcentre"}
-      ServerAliveInterval 30
-      ServerAliveCountMax 3
-      RemoteForward [localhost]:9022 [localhost]:22
-      ExitOnForwardFailure yes
-      RemoteForward 9999
+  sops-anything.home-files = [
+    ".ssh/config"
+  ];
 
-    Host ${p."public_addr/adb_devs"}
-      User M.Trybus
-      HostName ${p."public_addr/adb_devs"}
+  programs.ssh.matchBlocks.thinkcentre-tunnel = {
+    host = "thinkcentre-tunnel";
+    hostname = "${p."public_addr/thinkcentre"}";
+    port = 2022;
+    user = "komar";
+    serverAliveInterval = 30;
+    serverAliveCountMax = 3;
+    remoteForwards = [
+      {
+        bind.port = 9022;
+        host.address = "localhost";
+        host.port = 22;
+      }
+    ];
+    extraOptions = {
+      "ExitOnForwardFailure" = "yes";
+      "RemoteForward" = "9999"; # cannot be done using remoteForwards, host cannot be null
+    };
+  };
 
-    Host integration
-      Port 2222
-      User adb-users
-      HostName ${p."public_addr/prisme_integration"}
-      ServerAliveInterval 5
+  programs.ssh.matchBlocks.adb-devs = {
+    host = "${p."public_addr/adb_devs"}";
+    hostname = "${p."public_addr/adb_devs"}";
+    user = "M.Trybus";
+  };
 
-    Host nightly
-      Port 2222
-      User adb-admins
-      HostName ${p."public_addr/prisme_nightly"}
-      ServerAliveInterval 5
-  '';
+  programs.ssh.matchBlocks.prisme_integration = {
+    host = "integration";
+    hostname = "${p."public_addr/prisme_integration"}";
+    port = 2222;
+    user = "adb-users";
+    serverAliveInterval = 5;
+  };
+
+  programs.ssh.matchBlocks.prisme_nightly = {
+    host = "nightly";
+    hostname = "${p."public_addr/prisme_nightly"}";
+    port = 2222;
+    user = "adb-admins";
+    serverAliveInterval = 5;
+  };
 }
