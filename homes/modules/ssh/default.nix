@@ -1,13 +1,11 @@
-{ config, lib, ... }:
 {
-  options.ssh = {
-    authorizedKeys = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [ ];
-    };
-  };
-
-  config.programs.ssh = {
+  config,
+  lib,
+  options,
+  ...
+}:
+let
+  sshConfig.programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
 
@@ -19,7 +17,7 @@
 
   # This is a workaround, see https://github.com/nix-community/home-manager/issues/3090#issuecomment-3341948190.
   # openssh will not accept any permissions > 0600, which is what we get from HM.
-  config.home.file.".ssh/authorized_keys_link" =
+  sshConfig.home.file.".ssh/authorized_keys_link" =
     let
       keys = map lib.strings.trim config.ssh.authorizedKeys;
     in
@@ -34,4 +32,21 @@
       '';
       force = true;
     };
+
+  sopsAnythingConfig = lib.optionalAttrs (builtins.hasAttr "sops-anything" options) {
+    sops-anything.home-files = [ ".ssh/config" ];
+  };
+in
+{
+  options.ssh = {
+    authorizedKeys = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = [ ];
+    };
+  };
+
+  config = lib.mkMerge [
+    sshConfig
+    sopsAnythingConfig
+  ];
 }
