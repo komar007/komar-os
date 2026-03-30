@@ -50,7 +50,8 @@ in
   sops-anything.home-files = [
     (ff-utils.extensionSettingsFile pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension)
   ];
-  # sops secrets for placeholders below are defined in ./ssh/default.nix
+  sops.secrets."public_addr/prisme_integration" = { };
+  sops.secrets."public_addr/prisme_nightly" = { };
   firefox-darkmode.exclude =
     let
       p = config.sops.placeholder;
