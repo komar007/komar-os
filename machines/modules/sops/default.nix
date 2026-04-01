@@ -2,15 +2,24 @@
   configuration-name,
   config,
   pkgs,
-  sops-pkgs,
   inputs,
   ...
 }:
 let
+  utils = import ./utils.nix { };
   # This env makes both sops and sops-install-secrets from sops-nix work on ssh ed25519 keys
   # directly, instead of relying on age keys converted from ssh keys.
-  env-set-ssh-host-key = "SOPS_AGE_SSH_PRIVATE_KEY_FILE=/etc/ssh/ssh_host_ed25519_key";
-  utils = import ./utils.nix { };
+  sops-age-ssh-private-key-file = "/etc/ssh/ssh_host_ed25519_key";
+  wrapped-sops = pkgs.symlinkJoin {
+    name = "sops";
+    paths = [ pkgs.sops ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/sops \
+        --set EDITOR ${pkgs.lib.getExe pkgs.neovim} \
+        --set SOPS_AGE_SSH_PRIVATE_KEY_FILE ${sops-age-ssh-private-key-file}
+    '';
+  };
 in
 {
   imports = [
@@ -18,12 +27,8 @@ in
   ];
 
   sops = {
-    package = pkgs.writeShellApplication {
-      name = "sops-install-secrets";
-      runtimeInputs = [ sops-pkgs.sops-install-secrets ];
-      text = ''
-        ${env-set-ssh-host-key} sops-install-secrets "$@"
-      '';
+    environment = {
+      SOPS_AGE_SSH_PRIVATE_KEY_FILE = sops-age-ssh-private-key-file;
     };
     defaultSopsFile = ../../${configuration-name}/secrets.yaml;
     secrets =
@@ -36,12 +41,6 @@ in
   };
 
   environment.systemPackages = [
-    (pkgs.writeShellApplication {
-      name = "sops";
-      runtimeInputs = [ pkgs.sops ];
-      text = ''
-        EDITOR=nvim ${env-set-ssh-host-key} sops "$@"
-      '';
-    })
+    wrapped-sops
   ];
 }

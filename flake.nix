@@ -94,7 +94,6 @@
       tmux-module = system: inputs.dot-tmux.homeManagerModules.${system}.default;
       tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       grub-themes-module = inputs.grub-themes.nixosModules.default;
-      sops-pkgs = system: inputs.sops-nix.packages.${system};
       nix-index-database-module = inputs.nix-index-database.homeModules.default;
 
       nixosConfiguration =
@@ -105,7 +104,6 @@
             inherit grub-themes-module;
             configuration-name = name;
             nixpkgs-unstable = nixpkgs-unstable system;
-            sops-pkgs = sops-pkgs system;
           };
           modules = [
             ./machines/common.nix
