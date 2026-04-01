@@ -18,11 +18,11 @@ in
     ../modules/mpv.nix
     ../modules/vial
     ../modules/teams
-    ../modules/jira.nix
 
     ../modules/sops
 
     ./ssh
+    ./jira
   ];
 
   home.pointerCursor.size = 16;
