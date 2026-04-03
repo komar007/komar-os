@@ -74,7 +74,7 @@
     { self, ... }@inputs:
     let
       lib = inputs.nixpkgs.lib;
-      nixpkgs-stable =
+      pkgsStable =
         system:
         import inputs.nixpkgs {
           inherit system;
@@ -85,63 +85,60 @@
             inputs.fshf.overlays.default
           ];
         };
-      nixpkgs-unstable =
+      pkgsUnstable =
         system:
         import inputs.nixpkgs-unstable {
           inherit system;
         };
-      nvim-module = system: inputs.dot-nvim.homeManagerModules.${system}.default;
-      tmux-module = system: inputs.dot-tmux.homeManagerModules.${system}.default;
-      tmux-alacritty-module = system: inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
-      grub-themes-module = inputs.grub-themes.nixosModules.default;
-      nix-index-database-module = inputs.nix-index-database.homeModules.default;
 
       nixosConfiguration =
         name: system:
         lib.nixosSystem {
           specialArgs = {
+            configurationName = name;
             inherit inputs;
-            inherit grub-themes-module;
-            configuration-name = name;
-            nixpkgs-unstable = nixpkgs-unstable system;
+            grubThemesModule = inputs.grub-themes.nixosModules.default;
+            pkgsUnstable = pkgsUnstable system;
           };
           modules = [
             ./machines/common.nix
             ./machines/${name}
           ];
         };
-
       homeConfiguration =
         name: system:
         inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs-stable system;
+          pkgs = pkgsStable system;
           extraSpecialArgs = {
+            configurationName = name;
             inherit inputs;
-            inherit nix-index-database-module;
-            configuration-name = name;
-            nixpkgs-unstable = nixpkgs-unstable system;
-            nvim-module = nvim-module system;
-            tmux-module = tmux-module system;
-            tmux-alacritty-module = tmux-alacritty-module system;
+            nixIndexDatabaseModule = inputs.nix-index-database.homeModules.default;
+            pkgsUnstable = pkgsUnstable system;
+            nvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
+            tmuxModule = inputs.dot-tmux.homeManagerModules.${system}.default;
+            tmuxAlacrittyModule = inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
           };
           modules = [
             ./homes/common.nix
             ./homes/${name}
           ];
         };
-      eachSystem =
-        f: lib.genAttrs (import inputs.systems) (system: f inputs.nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+
       nixosConfigurations = {
         thinkcentre = nixosConfiguration "thinkcentre" "x86_64-linux";
         framework = nixosConfiguration "framework" "x86_64-linux";
         work = nixosConfiguration "work" "x86_64-linux";
       };
+
       homeConfigurations = {
         thinkcentre = homeConfiguration "thinkcentre" "x86_64-linux";
         framework = homeConfiguration "framework" "x86_64-linux";
         work = homeConfiguration "work" "x86_64-linux";
       };
+
+      eachSystem =
+        f: lib.genAttrs (import inputs.systems) (system: f inputs.nixpkgs.legacyPackages.${system});
+      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
       filterSystem =
         system: lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == system);
       homeManagerBuildChecks =

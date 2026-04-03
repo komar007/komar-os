@@ -35,8 +35,8 @@ in
   };
 
   ssh.authorizedKeys = [
-    (utils.ssh-pub-key-for "framework")
-    (utils.ssh-pub-key-for "work")
+    (utils.sshPubKeyFor "framework")
+    (utils.sshPubKeyFor "work")
     (builtins.readFile ./kpiano_ssh_id)
   ];
 }

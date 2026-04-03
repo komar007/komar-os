@@ -6,10 +6,10 @@
 }:
 let
   nixpkgsBaseVersion = builtins.head (builtins.match ''([0-9]+\.[0-9]+).*'' pkgs.lib.version);
-  ff-utils = import ./utils.nix { inherit config lib; };
-  firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
+  ffUtils = import ./utils.nix { inherit config lib; };
+  firefoxAddons = pkgs.nur.repos.rycee.firefox-addons;
 
-  home-assistant = firefox-addons.buildFirefoxXpiAddon {
+  homeAssistant = firefoxAddons.buildFirefoxXpiAddon {
     pname = "home-assistant";
     version = "0.5.0";
     addonId = "home-assistant@bokub.dev";
@@ -36,7 +36,7 @@ in
     ./extensions/darkmode.nix
   ];
   config.programs.firefox.enable = true;
-  config.programs.firefox.profiles.${ff-utils.profileName} = {
+  config.programs.firefox.profiles.${ffUtils.profileName} = {
     id = 0;
     path = "default";
     isDefault = true;
@@ -72,11 +72,11 @@ in
             "urlbar-container"
             "customizableui-special-spring2"
             "downloads-button"
-            (ff-utils.extensionIconEntry firefox-addons.dark-mode-webextension)
-            (ff-utils.extensionIconEntry firefox-addons.ublock-origin)
+            (ffUtils.extensionIconEntry firefoxAddons.dark-mode-webextension)
+            (ffUtils.extensionIconEntry firefoxAddons.ublock-origin)
             "unified-extensions-button"
             "fxa-toolbar-menu-button"
-            (ff-utils.extensionIconEntry home-assistant)
+            (ffUtils.extensionIconEntry homeAssistant)
           ];
           "toolbar-menubar" = [ "menubar-items" ];
           "vertical-tabs" = [ "tabbrowser-tabs" ];
@@ -213,15 +213,15 @@ in
     };
 
     extensions.force = true;
-    extensions.packages = with firefox-addons; [
+    extensions.packages = with firefoxAddons; [
       firenvim
       ublock-origin
-      home-assistant
+      homeAssistant
       container-proxy
     ];
   };
 
-  config.firefox-darkmode.exclude = [
+  config.firefoxDarkmode.exclude = [
     "teams.cloud.microsoft"
     "github.com"
     "developer.mozilla.org"

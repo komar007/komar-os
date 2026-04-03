@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  kubetui-with-namespace =
+  kubetuiWithNamespace =
     let
       kubetui = pkgs.lib.getExe pkgs.kubetui;
     in

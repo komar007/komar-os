@@ -1,17 +1,17 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{ pkgs, pkgsUnstable, ... }:
 {
   home.packages =
     let
-      latest-stable-rust = pkgs.rust-bin.stable.latest.default.override {
+      latestStableRust = pkgs.rust-bin.stable.latest.default.override {
         extensions = [
           "rust-src"
           "rust-analyzer"
         ];
       };
     in
-    with nixpkgs-unstable;
+    with pkgsUnstable;
     [
-      latest-stable-rust
+      latestStableRust
 
       cargo-machete
       cargo-nextest

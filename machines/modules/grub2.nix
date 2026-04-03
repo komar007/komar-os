@@ -1,7 +1,7 @@
-{ lib, grub-themes-module, ... }:
+{ lib, grubThemesModule, ... }:
 {
   imports = [
-    grub-themes-module
+    grubThemesModule
   ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;

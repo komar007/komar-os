@@ -1,9 +1,9 @@
 { lib, config, ... }:
 let
-  ff-utils = import ./utils.nix { inherit config lib; };
+  ffUtils = import ./utils.nix { inherit config lib; };
 in
 {
-  programs.firefox.profiles.${ff-utils.profileName}.settings = {
+  programs.firefox.profiles.${ffUtils.profileName}.settings = {
     "browser.newtabpage.pinned" = [
       {
         label = "Gmail";

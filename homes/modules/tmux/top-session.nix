@@ -12,11 +12,11 @@
     };
   };
 
-  config.dot-tmux.common-session-names = [
+  config.dot-tmux.commonSessionNames = [
     "top"
   ];
 
-  config.dot-tmux.session-shells.top =
+  config.dot-tmux.sessionShells.top =
     let
       cases = lib.imap1 (i: command: "${toString i}) ${command} ;;") config.dot-tmux.top.windows;
     in

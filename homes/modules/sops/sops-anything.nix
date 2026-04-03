@@ -14,15 +14,15 @@
 let
   mergeAttrsFor = xs: f: builtins.foldl' (acc: x: acc // (f x)) { } xs;
   # id used both as sops template name and home.file entry name (not target!)
-  idFor = file: "__sops-anything__/${file}";
+  idFor = file: "__sopsAnything__/${file}";
 in
 {
-  options.sops-anything.home-files = lib.mkOption {
+  options.sopsAnything.homeFiles = lib.mkOption {
     type = with lib.types; listOf str;
     description = "list of output files in the home directory known to contain sops placeholders";
   };
 
-  config.home.file = mergeAttrsFor config.sops-anything.home-files (file: {
+  config.home.file = mergeAttrsFor config.sopsAnything.homeFiles (file: {
     # disable file generation and use its content as a sops-nix template
     ${file}.enable = false;
 
@@ -33,7 +33,7 @@ in
     };
   });
 
-  config.sops.templates = mergeAttrsFor config.sops-anything.home-files (file: {
+  config.sops.templates = mergeAttrsFor config.sopsAnything.homeFiles (file: {
     # TODO: what if .text is not available? can we use source instead?
     ${idFor file}.content = config.home.file.${file}.text;
   });

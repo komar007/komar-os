@@ -20,9 +20,9 @@ rec {
     pkg:
     let
       id = extensionId pkg;
-      escaped-id = builtins.replaceStrings [ "{" "}" "@" "." ] [ "_" "_" "_" "_" ] id;
+      escapedId = builtins.replaceStrings [ "{" "}" "@" "." ] [ "_" "_" "_" "_" ] id;
     in
-    "${lib.strings.toLower escaped-id}-browser-action";
+    "${lib.strings.toLower escapedId}-browser-action";
 
   # the storage.js file path (relative to the home directory) containing an extension's settings
   # in other words, the path of the output produced by

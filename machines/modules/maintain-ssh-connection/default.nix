@@ -6,7 +6,7 @@
   ...
 }:
 {
-  options.maintain-ssh-connection = {
+  options.maintainSshConnection = {
     host = lib.mkOption {
       type = lib.types.str;
     };
@@ -21,7 +21,7 @@
     serviceConfig = {
       Type = "simple";
       Restart = "always";
-      User = config.maintain-ssh-connection.user;
+      User = config.maintainSshConnection.user;
     };
     script =
       let
@@ -33,6 +33,6 @@
           }
         );
       in
-      "${script} ${config.maintain-ssh-connection.host}";
+      "${script} ${config.maintainSshConnection.host}";
   };
 }

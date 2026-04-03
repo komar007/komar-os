@@ -2,12 +2,12 @@
   lib,
   config,
   pkgs,
-  nixpkgs-unstable,
+  pkgsUnstable,
   ...
 }:
 let
-  utils = import ../modules/k3s/utils.nix { pkgs = nixpkgs-unstable; };
-  ff-utils = import ../modules/firefox/utils.nix { inherit config lib; };
+  utils = import ../modules/k3s/utils.nix { pkgs = pkgsUnstable; };
+  ffUtils = import ../modules/firefox/utils.nix { inherit config lib; };
 in
 {
   imports = [
@@ -28,10 +28,10 @@ in
   home.pointerCursor.size = 16;
 
   alacritty.font = "Terminess Nerd Font Mono";
-  alacritty.font-italic = "ZedMono Nerd Font";
-  alacritty.font-size = 9.0;
-  alacritty.font-offset = -2;
-  alacritty.glyph-offset = -1;
+  alacritty.fontItalic = "ZedMono Nerd Font";
+  alacritty.fontSize = 9.0;
+  alacritty.fontOffset = -2;
+  alacritty.glyphOffset = -1;
   programs.alacritty.settings = {
     window.padding = {
       x = 0;
@@ -39,20 +39,20 @@ in
     };
   };
 
-  dot-tmux.common-session-names = [
+  dot-tmux.commonSessionNames = [
     "prisme-backend"
     "tss"
   ];
   dot-tmux.top.windows = [
-    (utils.kubetui-with-namespace "prisme")
+    (utils.kubetuiWithNamespace "prisme")
   ];
 
-  sops-anything.home-files = [
-    (ff-utils.extensionSettingsFile pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension)
+  sopsAnything.homeFiles = [
+    (ffUtils.extensionSettingsFile pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension)
   ];
   sops.secrets."public_addr/prisme_integration" = { };
   sops.secrets."public_addr/prisme_nightly" = { };
-  firefox-darkmode.exclude =
+  firefoxDarkmode.exclude =
     let
       p = config.sops.placeholder;
     in
@@ -62,7 +62,7 @@ in
       "i.pl.adbglobal.com"
     ];
 
-  xdg.default-browser-app = "firefox.desktop";
+  xdg.defaultBrowserApp = "firefox.desktop";
 
   home.packages = with pkgs; [
     thunderbird
@@ -70,8 +70,8 @@ in
     uv
     temporal-cli
     mosquitto
-    nixpkgs-unstable.codex
-    nixpkgs-unstable.git-gr
+    pkgsUnstable.codex
+    pkgsUnstable.git-gr
 
     nerd-fonts.zed-mono
   ];

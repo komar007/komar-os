@@ -1,7 +1,7 @@
 {
   lib,
   config,
-  nixpkgs-unstable,
+  pkgsUnstable,
   ...
 }:
 {
@@ -9,25 +9,25 @@
     font = lib.mkOption {
       type = lib.types.str;
     };
-    font-italic = lib.mkOption {
+    fontItalic = lib.mkOption {
       type = lib.types.str;
       default = config.alacritty.font;
     };
-    font-size = lib.mkOption {
+    fontSize = lib.mkOption {
       type = lib.types.float;
     };
-    font-offset = lib.mkOption {
+    fontOffset = lib.mkOption {
       type = lib.types.int;
       default = -4;
     };
-    glyph-offset = lib.mkOption {
+    glyphOffset = lib.mkOption {
       type = lib.types.int;
       default = -2;
     };
   };
 
   # FIXME: switch from unstable to 25.11 after upgrade
-  config.programs.alacritty.package = nixpkgs-unstable.alacritty;
+  config.programs.alacritty.package = pkgsUnstable.alacritty;
   config.programs.alacritty.enable = true;
   config.programs.alacritty.settings = {
     scrolling.history = 32768;
@@ -67,7 +67,7 @@
     };
 
     font = {
-      size = config.alacritty.font-size;
+      size = config.alacritty.fontSize;
 
       normal.family = config.alacritty.font;
       normal.style = "Light";
@@ -75,15 +75,15 @@
       bold.family = config.alacritty.font;
       bold.style = "Bold";
 
-      italic.family = config.alacritty.font-italic;
+      italic.family = config.alacritty.fontItalic;
       italic.style = "Italic";
 
-      bold_italic.family = config.alacritty.font-italic;
+      bold_italic.family = config.alacritty.fontItalic;
       bold_italic.style = "Bold Italic";
 
-      offset.y = config.alacritty.font-offset;
+      offset.y = config.alacritty.fontOffset;
 
-      glyph_offset.y = config.alacritty.glyph-offset;
+      glyph_offset.y = config.alacritty.glyphOffset;
     };
 
     window = {

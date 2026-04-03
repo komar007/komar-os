@@ -1,6 +1,6 @@
 { ... }:
 {
-  just_for = user: {
+  justFor = user: {
     owner = user;
     group = "users";
   };

@@ -15,11 +15,11 @@
   home.pointerCursor.size = 32;
 
   alacritty.font = "JetBrainsMono Nerd Font";
-  alacritty.font-size = 9.0;
+  alacritty.fontSize = 9.0;
 
-  chromium.enable-vaapi-intel-features = true;
+  chromium.enableVaapiIntelFeatures = true;
 
-  xdg.default-browser-app = "firefox.desktop";
+  xdg.defaultBrowserApp = "firefox.desktop";
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {

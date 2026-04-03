@@ -1,7 +1,7 @@
 {
   pkgs,
-  nvim-module,
-  nix-index-database-module,
+  nvimModule,
+  nixIndexDatabaseModule,
   ...
 }:
 {
@@ -16,9 +16,9 @@
     ./modules/bash
     ./modules/x11.nix
     ./modules/xdg.nix
-    nvim-module
+    nvimModule
     ./modules/tmux
-    ./modules/tmux/top_session.nix
+    ./modules/tmux/top-session.nix
     ./modules/direnv
     ./modules/alacritty.nix
     ./modules/starship
@@ -28,10 +28,10 @@
     ./modules/lsd.nix
     ./modules/rust.nix
     ./modules/youtube-tui.nix
-    nix-index-database-module
+    nixIndexDatabaseModule
   ];
 
-  dot-tmux.session-shells =
+  dot-tmux.sessionShells =
     let
       bc = pkgs.lib.getExe pkgs.bc;
     in

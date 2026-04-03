@@ -42,8 +42,8 @@
     firewall.allowedTCPPorts = [ 80 ];
   };
 
-  maintain-ssh-connection.user = "komar";
-  maintain-ssh-connection.host = "thinkcentre-tunnel";
+  maintainSshConnection.user = "komar";
+  maintainSshConnection.host = "thinkcentre-tunnel";
 
   services.udisks2.enable = true;
 

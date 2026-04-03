@@ -33,8 +33,8 @@ let
       force = true;
     };
 
-  sopsAnythingConfig = lib.optionalAttrs (builtins.hasAttr "sops-anything" options) {
-    sops-anything.home-files = [ ".ssh/config" ];
+  sopsAnythingConfig = lib.optionalAttrs (builtins.hasAttr "sopsAnything" options) {
+    sopsAnything.homeFiles = [ ".ssh/config" ];
   };
 in
 {

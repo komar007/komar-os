@@ -2,25 +2,25 @@
   config,
   lib,
   pkgs,
-  tmux-module,
-  tmux-alacritty-module,
+  tmuxModule,
+  tmuxAlacrittyModule,
   ...
 }:
 {
   options.dot-tmux = {
-    session-shells = lib.mkOption {
+    sessionShells = lib.mkOption {
       type = with lib.types; attrsOf str;
       default = { };
     };
-    common-session-names = lib.mkOption {
+    commonSessionNames = lib.mkOption {
       type = with lib.types; listOf str;
       default = [ ];
     };
   };
 
   imports = [
-    tmux-module
-    tmux-alacritty-module
+    tmuxModule
+    tmuxAlacrittyModule
   ];
 
   # TODO: perhaps generate .session_dir.sh in a similar way as .shell.sh
@@ -28,7 +28,7 @@
 
   config.home.file.".shell.sh".source =
     let
-      shells = config.dot-tmux.session-shells;
+      shells = config.dot-tmux.sessionShells;
       cases = lib.attrsets.mapAttrsToList (ses: sh: "${ses}) exec ${sh};;") shells;
       shell =
         "case \"$1\" in\n"
@@ -40,7 +40,7 @@
 
   config.home.file.".tmux_common_session_names" =
     let
-      names = config.dot-tmux.common-session-names;
+      names = config.dot-tmux.commonSessionNames;
     in
     {
       enable = lib.lists.length names > 0;
@@ -48,7 +48,7 @@
     };
 
   config.dot-tmux = {
-    common-session-names = [
+    commonSessionNames = [
       "config"
     ];
 

@@ -12,12 +12,12 @@
 
   home.pointerCursor.size = 32;
 
-  chromium.enable-vaapi-amd-features = true;
+  chromium.enableVaapiAmdFeatures = true;
 
-  xdg.default-browser-app = "firefox.desktop";
+  xdg.defaultBrowserApp = "firefox.desktop";
 
   alacritty.font = "JetBrainsMono Nerd Font";
-  alacritty.font-size = 7.0;
+  alacritty.fontSize = 7.0;
 
   home.packages = with pkgs; [
     exiftool

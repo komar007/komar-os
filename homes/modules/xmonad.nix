@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{ pkgs, pkgsUnstable, ... }:
 {
   home.packages = with pkgs; [
     xmonad-with-packages
@@ -39,5 +39,5 @@
     };
   };
 
-  services.picom.package = nixpkgs-unstable.picom;
+  services.picom.package = pkgsUnstable.picom;
 }

@@ -6,7 +6,7 @@
 
   home.file.".config/tig/config".text =
     let
-      show-jira-issue = (
+      showJiraIssue = (
         pkgs.writeShellApplication {
           name = "show-jira-issue";
           runtimeInputs = with pkgs; [ jira-cli-go ];
@@ -38,8 +38,8 @@
       bind main P ?git pg %(commit)
       bind main Y @${pkgs.lib.getExe yank} %(commit)
       bind reflog Y @${pkgs.lib.getExe yank} %(commit)
-      bind main J >${pkgs.lib.getExe show-jira-issue} %(commit)
-      bind reflog J >${pkgs.lib.getExe show-jira-issue} %(commit)
+      bind main J >${pkgs.lib.getExe showJiraIssue} %(commit)
+      bind reflog J >${pkgs.lib.getExe showJiraIssue} %(commit)
       bind main F ?git commit --fixup %(commit)
 
       set show-untracked = false

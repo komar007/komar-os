@@ -5,25 +5,25 @@
   ...
 }:
 let
-  ff-utils = import ../utils.nix { inherit config lib; };
-  firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
+  ffUtils = import ../utils.nix { inherit config lib; };
+  firefoxAddons = pkgs.nur.repos.rycee.firefox-addons;
 in
 {
-  options.firefox-darkmode = {
+  options.firefoxDarkmode = {
     exclude = lib.mkOption {
       type = with lib.types; listOf str;
     };
   };
 
-  config.programs.firefox.profiles.${ff-utils.profileName} = {
+  config.programs.firefox.profiles.${ffUtils.profileName} = {
     extensions.packages = [
-      firefox-addons.dark-mode-webextension
+      firefoxAddons.dark-mode-webextension
     ];
 
-    extensions.settings."${ff-utils.extensionId firefox-addons.dark-mode-webextension}".settings = {
+    extensions.settings."${ffUtils.extensionId firefoxAddons.dark-mode-webextension}".settings = {
       "custom" = "";
       "state" = "dark";
-      "whitelist" = config.firefox-darkmode.exclude;
+      "whitelist" = config.firefoxDarkmode.exclude;
       "opensupport" = true;
       "cookie" = [
         "ae=d"

@@ -1,10 +1,10 @@
 { lib, config, ... }:
 {
-  options.chromium.enable-vaapi-intel-features = lib.mkOption {
+  options.chromium.enableVaapiIntelFeatures = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
-  options.chromium.enable-vaapi-amd-features = lib.mkOption {
+  options.chromium.enableVaapiAmdFeatures = lib.mkOption {
     type = lib.types.bool;
     default = false;
   };
@@ -14,7 +14,7 @@
     let
       # found on an Arch forum
       intelFeatures =
-        if config.chromium.enable-vaapi-intel-features then
+        if config.chromium.enableVaapiIntelFeatures then
           [
             "AcceleratedVideoDecodeLinuxGL"
           ]
@@ -22,7 +22,7 @@
           [ ];
       # meticulously selected via trial-and-error and arcane Arch forums reading
       amdFeatures =
-        if config.chromium.enable-vaapi-amd-features then
+        if config.chromium.enableVaapiAmdFeatures then
           [
             "VaapiIgnoreDriverChecks"
             "Vulkan"
