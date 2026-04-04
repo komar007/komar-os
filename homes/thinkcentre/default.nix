@@ -26,7 +26,7 @@
   };
 
   home.packages = with pkgs; [
-    super-slicer
+    super-slicer-beta
 
     exiftool
     blender
