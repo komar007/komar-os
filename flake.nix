@@ -137,8 +137,8 @@
       };
 
       eachSystem =
-        f: lib.genAttrs (import inputs.systems) (system: f inputs.nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
+        f: lib.genAttrs (import inputs.systems) (system: f system inputs.nixpkgs.legacyPackages.${system});
+      treefmtEval = eachSystem (_: pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
       filterSystem =
         system: lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == system);
       homeManagerBuildChecks =
@@ -155,17 +155,17 @@
     {
       inherit nixosConfigurations homeConfigurations;
 
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+      formatter = eachSystem (system: _: treefmtEval.${system}.config.build.wrapper);
       checks = eachSystem (
-        pkgs:
+        system: pkgs:
         {
-          formatting = treefmtEval.${pkgs.system}.config.build.check self;
+          formatting = treefmtEval.${system}.config.build.check self;
           typos = pkgs.runCommand "typos-check" {
             nativeBuildInputs = [ pkgs.typos ];
           } "cd ${self} && typos . && touch $out";
         }
-        // homeManagerBuildChecks pkgs.system
-        // nixosBuildChecks pkgs.system
+        // homeManagerBuildChecks system
+        // nixosBuildChecks system
       );
     };
 }
