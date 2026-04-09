@@ -117,12 +117,12 @@
               home.homeDirectory = lib.mkDefault "/dev/null";
             };
         in
-        isCheck: name: system:
+        isCheck: name: system: nixosUserConfig:
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsStable system;
           extraSpecialArgs = {
             configurationName = name;
-            inherit inputs;
+            inherit inputs nixosUserConfig;
             nixIndexDatabaseModule = inputs.nix-index-database.homeModules.default;
             pkgsUnstable = pkgsUnstable system;
             nvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
@@ -146,12 +146,14 @@
         isCheck:
         let
           homeConfiguration' = homeConfiguration isCheck;
+          nixosUsersFor = cfg: self.nixosConfigurations.${cfg}.config.users.users;
+          komarAt = cfg: (nixosUsersFor cfg).komar;
         in
         {
-          thinkcentre = homeConfiguration' "thinkcentre" "x86_64-linux";
-          framework = homeConfiguration' "framework" "x86_64-linux";
-          work = homeConfiguration' "work" "x86_64-linux";
-          minimal = homeConfiguration' "minimal" "x86_64-linux";
+          thinkcentre = homeConfiguration' "thinkcentre" "x86_64-linux" (komarAt "thinkcentre");
+          framework = homeConfiguration' "framework" "x86_64-linux" (komarAt "framework");
+          work = homeConfiguration' "work" "x86_64-linux" (komarAt "work");
+          minimal = homeConfiguration' "minimal" "x86_64-linux" null;
         };
 
       eachSystem =

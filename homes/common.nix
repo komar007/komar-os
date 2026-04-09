@@ -3,22 +3,29 @@
   pkgs,
   nvimModule,
   nixIndexDatabaseModule,
+  nixosUserConfig,
   ...
 }:
 let
-  fromEnvOrUnset =
-    name:
+  userAttr =
+    confAttr: envName:
     let
-      val = builtins.getEnv name;
+      envVal = builtins.getEnv envName;
     in
-    lib.mkIf (val != "") val;
+    if nixosUserConfig != null then
+      # if there is a related nixos user config, force it, don't allow overrides...
+      lib.mkForce nixosUserConfig.${confAttr}
+    else
+      # ... otherwise, if no env, use default (used in flake check), but if env exists, it can still
+      # be overridden using lib.mkForce
+      lib.mkIf (envVal != "") envVal;
 in
 {
   nixpkgs.config.allowUnfree = true;
 
   home = {
-    username = fromEnvOrUnset "USER";
-    homeDirectory = fromEnvOrUnset "HOME";
+    username = userAttr "name" "USER";
+    homeDirectory = userAttr "home" "HOME";
   };
 
   imports = [

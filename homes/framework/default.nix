@@ -9,11 +9,6 @@
     ./ssh
   ];
 
-  home = {
-    username = lib.mkForce "komar";
-    homeDirectory = lib.mkForce "/home/komar";
-  };
-
   home.pointerCursor.size = 32;
 
   chromium.enableVaapiAmdFeatures = true;
