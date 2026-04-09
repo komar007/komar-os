@@ -1,12 +1,11 @@
 { pkgs, ... }:
 {
   imports = [
-    ../modules/firefox
+    ../common_desktop.nix
+
     ../modules/firefox/containers/work.nix
     ../modules/firefox/pinned-sites-home.nix
     ../modules/chromium.nix
-    ../modules/xmonad.nix
-    ../modules/mpv.nix
     ../modules/vial
 
     ./ssh
@@ -18,8 +17,6 @@
   alacritty.fontSize = 9.0;
 
   chromium.enableVaapiIntelFeatures = true;
-
-  xdg.defaultBrowserApp = "firefox.desktop";
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {

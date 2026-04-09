@@ -11,11 +11,10 @@ let
 in
 {
   imports = [
-    ../modules/firefox
+    ../common_desktop.nix
+
     ../modules/firefox/containers/home.nix
     ../modules/qutebrowser.nix
-    ../modules/xmonad.nix
-    ../modules/mpv.nix
     ../modules/vial
     ../modules/teams
 
@@ -61,8 +60,6 @@ in
       p."public_addr/prisme_nightly"
       "i.pl.adbglobal.com"
     ];
-
-  xdg.defaultBrowserApp = "firefox.desktop";
 
   home.packages = with pkgs; [
     thunderbird

@@ -14,20 +14,17 @@
 
   imports = [
     ./modules/bash
-    ./modules/x11.nix
     ./modules/xdg.nix
     nvimModule
     ./modules/tmux
     ./modules/tmux/top-session.nix
     ./modules/direnv
-    ./modules/alacritty.nix
     ./modules/starship
     ./modules/git
     ./modules/tig
     ./modules/ssh
     ./modules/lsd.nix
     ./modules/rust.nix
-    ./modules/youtube-tui.nix
     nixIndexDatabaseModule
   ];
 
@@ -40,9 +37,6 @@
     };
 
   programs.home-manager.enable = true;
-
-  # automatically regenerate fc-cache
-  fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
     jq
@@ -58,11 +52,6 @@
 
     btop
     htop
-
-    # Cascadia Code contains Symbols for Legacy Computing, required for example by dot-tmux ribbons.
-    cascadia-code
-    nerd-fonts.terminess-ttf
-    nerd-fonts.jetbrains-mono
   ];
 
   programs.nix-index-database.comma.enable = true;
