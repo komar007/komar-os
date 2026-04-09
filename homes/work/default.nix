@@ -24,6 +24,11 @@ in
     ./jira
   ];
 
+  home = {
+    username = lib.mkForce "komar";
+    homeDirectory = lib.mkForce "/home/komar";
+  };
+
   home.pointerCursor.size = 16;
 
   alacritty.font = "Terminess Nerd Font Mono";

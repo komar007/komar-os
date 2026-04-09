@@ -106,7 +106,18 @@
           ];
         };
       homeConfiguration =
-        name: system:
+        let
+          # Sane pure defaults for options that require impure evaluation in ./homes/common.nix.
+          # They are only added in "flake check" mode to enable flake-checking of configurations
+          # that purposely rely on impure evaluation to be independent of username and $HOME.
+          purityOverridesModule =
+            { ... }:
+            {
+              home.username = lib.mkDefault "username";
+              home.homeDirectory = lib.mkDefault "/dev/null";
+            };
+        in
+        isCheck: name: system:
         inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = pkgsStable system;
           extraSpecialArgs = {
@@ -121,7 +132,8 @@
           modules = [
             ./homes/common.nix
             ./homes/${name}
-          ];
+          ]
+          ++ lib.optional isCheck purityOverridesModule;
         };
 
       nixosConfigurations = {
@@ -130,12 +142,17 @@
         work = nixosConfiguration "work" "x86_64-linux";
       };
 
-      homeConfigurations = {
-        thinkcentre = homeConfiguration "thinkcentre" "x86_64-linux";
-        framework = homeConfiguration "framework" "x86_64-linux";
-        work = homeConfiguration "work" "x86_64-linux";
-        minimal = homeConfiguration "minimal" "x86_64-linux";
-      };
+      homeConfigurations =
+        isCheck:
+        let
+          homeConfiguration' = homeConfiguration isCheck;
+        in
+        {
+          thinkcentre = homeConfiguration' "thinkcentre" "x86_64-linux";
+          framework = homeConfiguration' "framework" "x86_64-linux";
+          work = homeConfiguration' "work" "x86_64-linux";
+          minimal = homeConfiguration' "minimal" "x86_64-linux";
+        };
 
       eachSystem =
         f: lib.genAttrs (import inputs.systems) (system: f system inputs.nixpkgs.legacyPackages.${system});
@@ -145,7 +162,7 @@
       homeManagerBuildChecks =
         system:
         lib.mapAttrs' (name: config: lib.nameValuePair "home-manager-${name}" config.activationPackage) (
-          filterSystem system homeConfigurations
+          filterSystem system (homeConfigurations true)
         );
       nixosBuildChecks =
         system:
@@ -154,7 +171,8 @@
         ) (filterSystem system nixosConfigurations);
     in
     {
-      inherit nixosConfigurations homeConfigurations;
+      inherit nixosConfigurations;
+      homeConfigurations = homeConfigurations false;
 
       formatter = eachSystem (system: _: treefmtEval.${system}.config.build.wrapper);
       checks = eachSystem (

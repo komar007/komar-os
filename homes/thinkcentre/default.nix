@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ../common_desktop.nix
@@ -10,6 +10,11 @@
 
     ./ssh
   ];
+
+  home = {
+    username = lib.mkForce "komar";
+    homeDirectory = lib.mkForce "/home/komar";
+  };
 
   home.pointerCursor.size = 32;
 

@@ -1,15 +1,24 @@
 {
+  lib,
   pkgs,
   nvimModule,
   nixIndexDatabaseModule,
   ...
 }:
+let
+  fromEnvOrUnset =
+    name:
+    let
+      val = builtins.getEnv name;
+    in
+    lib.mkIf (val != "") val;
+in
 {
   nixpkgs.config.allowUnfree = true;
 
   home = {
-    username = "komar";
-    homeDirectory = "/home/komar";
+    username = fromEnvOrUnset "USER";
+    homeDirectory = fromEnvOrUnset "HOME";
   };
 
   imports = [
