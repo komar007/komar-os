@@ -74,110 +74,51 @@
     { self, ... }@inputs:
     let
       lib = inputs.nixpkgs.lib;
-      pkgsStable =
-        system:
-        import inputs.nixpkgs {
-          inherit system;
-          overlays = [
-            inputs.nur.overlays.default
-            inputs.nixgl.overlay
-            inputs.rust-overlay.overlays.default
-            inputs.fshf.overlays.default
-          ];
-        };
-      pkgsUnstable =
-        system:
-        import inputs.nixpkgs-unstable {
-          inherit system;
-        };
+      utils = import ./utils.nix inputs;
 
-      nixosConfiguration =
-        name: system:
-        lib.nixosSystem {
-          specialArgs = {
-            configurationName = name;
-            inherit inputs;
-            grubThemesModule = inputs.grub-themes.nixosModules.default;
-            pkgsUnstable = pkgsUnstable system;
-          };
-          modules = [
-            ./machines/common.nix
-            ./machines/${name}
-          ];
-        };
-      homeConfiguration =
+      nixosConfigurations =
         let
-          # Sane pure defaults for options that require impure evaluation in ./homes/common.nix.
-          # They are only added in "flake check" mode to enable flake-checking of configurations
-          # that purposely rely on impure evaluation to be independent of username and $HOME.
-          purityOverridesModule =
-            { ... }:
-            {
-              home.username = lib.mkDefault "username";
-              home.homeDirectory = lib.mkDefault "/dev/null";
-            };
+          nixos = utils.nixosConfiguration;
         in
-        isCheck: name: system: nixosUserConfig:
-        inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = pkgsStable system;
-          extraSpecialArgs = {
-            configurationName = name;
-            inherit inputs nixosUserConfig;
-            nixIndexDatabaseModule = inputs.nix-index-database.homeModules.default;
-            pkgsUnstable = pkgsUnstable system;
-            nvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
-            tmuxModule = inputs.dot-tmux.homeManagerModules.${system}.default;
-            tmuxAlacrittyModule = inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
-          };
-          modules = [
-            ./homes/common.nix
-            ./homes/${name}
-          ]
-          ++ lib.optional isCheck purityOverridesModule;
+        {
+          thinkcentre = nixos "thinkcentre" "x86_64-linux";
+          framework = nixos "framework" "x86_64-linux";
+          work = nixos "work" "x86_64-linux";
         };
-
-      nixosConfigurations = {
-        thinkcentre = nixosConfiguration "thinkcentre" "x86_64-linux";
-        framework = nixosConfiguration "framework" "x86_64-linux";
-        work = nixosConfiguration "work" "x86_64-linux";
-      };
 
       homeConfigurations =
         isCheck:
         let
-          homeConfiguration' = homeConfiguration isCheck;
+          home = utils.homeConfiguration isCheck;
           nixosUsersFor = cfg: self.nixosConfigurations.${cfg}.config.users.users;
           komarAt = cfg: (nixosUsersFor cfg).komar;
         in
         {
-          thinkcentre = homeConfiguration' "thinkcentre" "x86_64-linux" (komarAt "thinkcentre");
-          framework = homeConfiguration' "framework" "x86_64-linux" (komarAt "framework");
-          work = homeConfiguration' "work" "x86_64-linux" (komarAt "work");
-          minimal = homeConfiguration' "minimal" "x86_64-linux" null;
+          thinkcentre = home "thinkcentre" "x86_64-linux" (komarAt "thinkcentre");
+          framework = home "framework" "x86_64-linux" (komarAt "framework");
+          work = home "work" "x86_64-linux" (komarAt "work");
+          minimal = home "minimal" "x86_64-linux" null;
         };
 
-      eachSystem =
-        f: lib.genAttrs (import inputs.systems) (system: f system inputs.nixpkgs.legacyPackages.${system});
-      treefmtEval = eachSystem (_: pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
-      filterSystem =
-        system: lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == system);
       homeManagerBuildChecks =
         system:
         lib.mapAttrs' (name: config: lib.nameValuePair "home-manager-${name}" config.activationPackage) (
-          filterSystem system (homeConfigurations true)
+          utils.filterSystem system (homeConfigurations true)
         );
       nixosBuildChecks =
         system:
         lib.mapAttrs' (
           name: config: lib.nameValuePair "nixos-${name}" config.config.system.build.toplevel
-        ) (filterSystem system nixosConfigurations);
+        ) (utils.filterSystem system nixosConfigurations);
+
+      treefmtEval = utils.eachSystem (_: pkgs: inputs.treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
     {
       inherit nixosConfigurations;
       homeConfigurations = homeConfigurations false;
 
-      formatter = eachSystem (system: _: treefmtEval.${system}.config.build.wrapper);
-      checks = eachSystem (
+      formatter = utils.eachSystem (system: _: treefmtEval.${system}.config.build.wrapper);
+      checks = utils.eachSystem (
         system: pkgs:
         {
           formatting = treefmtEval.${system}.config.build.check self;
