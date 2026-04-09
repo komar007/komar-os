@@ -134,6 +134,7 @@
         thinkcentre = homeConfiguration "thinkcentre" "x86_64-linux";
         framework = homeConfiguration "framework" "x86_64-linux";
         work = homeConfiguration "work" "x86_64-linux";
+        minimal = homeConfiguration "minimal" "x86_64-linux";
       };
 
       eachSystem =
