@@ -55,6 +55,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    comma = {
+      url = "github:nix-community/comma";
+      inputs.utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";

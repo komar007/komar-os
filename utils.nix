@@ -11,6 +11,7 @@ let
         inputs.nixgl.overlay
         inputs.rust-overlay.overlays.default
         inputs.fshf.overlays.default
+        inputs.comma.overlays.default
       ];
     };
   pkgsUnstable =
