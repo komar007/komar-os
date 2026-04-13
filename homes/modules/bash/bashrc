@@ -1,5 +1,3 @@
-# /etc/skel/.bashrc
-#
 # This file is sourced by all *interactive* bash shells on startup,
 # including some apparently interactive shells such as scp and rcp
 # that can't tolerate any output.  So make sure this doesn't display
@@ -15,7 +13,8 @@ fi
 
 # if we have an original file
 if [ -f ~/.bashrc_orig ]; then
-	source ~/.bashrc_orig
+	# shellcheck source=/dev/null
+	source "$HOME/.bashrc_orig"
 fi
 unset command_not_found_handle
 
@@ -29,24 +28,27 @@ alias grep="grep --colour=auto"
 function less_set_title()
 {
 	dir="$(pwd)"
-	echo "$(tput tsl)less $@ [$dir]$(tput fsl)"
+	title="less"
+	if [ -n "$*" ]; then
+		title+=" $*"
+	fi
+	echo -n "$(tput tsl)$title [$dir]$(tput fsl)"
 	less "$@"
 }
 alias less=less_set_title
 
 function tig_set_title()
 {
-	dir="$(dirname "$(cd "$(git rev-parse --git-dir 2> /dev/null)"; pwd)")"
+	dir="$(dirname "$(cd "$(git rev-parse --git-dir 2> /dev/null)" 2>/dev/null && pwd)")"
 	branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
 	if [ -n "$branch" ]; then
 		dir+=" on $branch"
 	fi
 	title="tig"
-	argline="$@"
-	if [ -n "$argline" ]; then
-		title+=" $argline"
+	if [ -n "$*" ]; then
+		title+=" $*"
 	fi
-	echo "$(tput tsl)$title [$dir]$(tput fsl)"
+	echo -n "$(tput tsl)$title [$dir]$(tput fsl)"
 	tig "$@"
 }
 alias tig=tig_set_title
@@ -61,7 +63,7 @@ prepend_path() {
 function share()
 {
 	scp "$1" komar@komar.be:/var/www/space.komar.be/htdocs/
-	echo http://space.komar.be/`basename "$1"`
+	echo "http://space.komar.be/$(basename "$1")"
 }
 
 function notify() {
@@ -72,7 +74,7 @@ function notify() {
 	fi
 	[ -n "$*" ] && echo -ne "\e]0;$*\a"
 	echo -ne "$*...\a"
-	[ "$NOBLOCK" -eq 0 ] && read
+	[ "$NOBLOCK" -eq 0 ] && read -r
 }
 
 # suppress tilde-expansion
@@ -198,7 +200,7 @@ _GLOBAL_HISTORY_FILE=$HOME/.global_history
 # Show a fuzzy-search prompt with global history and let the user select one item
 function _search_global_history()
 {
-	local directory line bind_id bind id set_cursor preview
+	local directory line bind_id bind id set_cursor
 	local fzf_extra_opts=$1
 	set_cursor="beginning-of-line"$(yes +forward-char | head -n "$READLINE_POINT" | tr -d '\n')
 	# shellcheck disable=SC2086
