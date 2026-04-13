@@ -6,7 +6,7 @@
 # Test for an interactive shell.  There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
-if [[ $- != *i* ]] ; then
+if [[ $- != *i* ]]; then
 	# Shell is non-interactive.  Be done now!
 	return
 fi
@@ -25,8 +25,7 @@ HISTCONTROL=
 unalias -a
 alias grep="grep --colour=auto"
 
-function less_set_title()
-{
+function less_set_title() {
 	dir="$(pwd)"
 	title="less"
 	if [ -n "$*" ]; then
@@ -37,10 +36,9 @@ function less_set_title()
 }
 alias less=less_set_title
 
-function tig_set_title()
-{
-	dir="$(dirname "$(cd "$(git rev-parse --git-dir 2> /dev/null)" 2>/dev/null && pwd)")"
-	branch="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
+function tig_set_title() {
+	dir="$(dirname "$(cd "$(git rev-parse --git-dir 2>/dev/null)" 2>/dev/null && pwd)")"
+	branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 	if [ -n "$branch" ]; then
 		dir+=" on $branch"
 	fi
@@ -53,15 +51,13 @@ function tig_set_title()
 }
 alias tig=tig_set_title
 
-
 # UTILITIES
 
 prepend_path() {
-    [[ ":$PATH:" != *":$1:"* ]] && PATH="$1${PATH:+":$PATH"}"
+	[[ ":$PATH:" != *":$1:"* ]] && PATH="$1${PATH:+":$PATH"}"
 }
 
-function share()
-{
+function share() {
 	scp "$1" komar@komar.be:/var/www/space.komar.be/htdocs/
 	echo "http://space.komar.be/$(basename "$1")"
 }
@@ -78,57 +74,51 @@ function notify() {
 }
 
 # suppress tilde-expansion
-_expand()
-{
-	return 0;
+_expand() {
+	return 0
 }
-
 
 # GLOBAL HISTORY
 
 # Trim the input from whitespace and convert to a json-friendlt string literal
-function _trim_jsonize_string()
-{
+function _trim_jsonize_string() {
 	jq -MR --slurp '. | gsub("^\\s+|\\s+$";"")'
 }
 
 # Remove the history item number from the output of "history 1"
 # Note: it is only guaranteed to work with a single item of history, because it may be multi-line
-function _remove_history_id()
-{
+function _remove_history_id() {
 	sed -r '1s/\s+[0-9]+\s+//'
 }
 
 # Output the input lines as they are or "null" if the input is empty
-function _or_null()
-{
+function _or_null() {
 	awk '//{x=1;print} END{if(!x)print("null")}'
 }
 
 _LAST_HIST=""
 # Prepare a single-line json-formatted command history entry
-function _format_history_entry()
-{
+function _format_history_entry() {
 	(
 		date +%s
-		[ -n "$TMUX" ] \
-			&& tmux display-message -p '#S' | _trim_jsonize_string \
-			|| echo null
-		HISTTIMEFORMAT="%s%n" history 1 \
-			| head -n 1 \
-			| _remove_history_id \
-			| _or_null
-		HISTTIMEFORMAT="" history 1 \
-			| _remove_history_id \
-			| _trim_jsonize_string
+		[ -n "$TMUX" ] &&
+			tmux display-message -p '#S' | _trim_jsonize_string ||
+			echo null
+		HISTTIMEFORMAT="%s%n" history 1 |
+			head -n 1 |
+			_remove_history_id |
+			_or_null
+		HISTTIMEFORMAT="" history 1 |
+			_remove_history_id |
+			_trim_jsonize_string
 		pwd | _trim_jsonize_string
-		[ -n "$OLDPWD" ] \
-			&& echo "$OLDPWD" | _trim_jsonize_string \
-			|| echo null
+		[ -n "$OLDPWD" ] &&
+			echo "$OLDPWD" | _trim_jsonize_string ||
+			echo null
 		echo "$_LAST_EXIT_CODE"
 		date +%s%N | _trim_jsonize_string
-	) \
-		| jq -Mc --slurp '{
+	) |
+		jq -Mc --slurp '{
 			cmd: .[3],
 			start: .[2],
 			end: .[0],
@@ -142,8 +132,7 @@ function _format_history_entry()
 }
 
 # save the last history item in global history
-function _prompt_command()
-{
+function _prompt_command() {
 	# TODO: for some reason $? does not work here when starship is initialized after setting
 	# PROMPT_COMMAND, even though starship's init code seems to suggest that it should. That's
 	# why we are using what may be an implementation detail of starship, but it works.
@@ -154,59 +143,58 @@ function _prompt_command()
 		return "$_LAST_EXIT_CODE"
 	fi
 	_LAST_HIST="$hist"
-	(_format_history_entry >> "$_GLOBAL_HISTORY_FILE")
+	(_format_history_entry >>"$_GLOBAL_HISTORY_FILE")
 	return "$_LAST_EXIT_CODE"
 }
 
 read -r -d '' _JQ_COLORS <<-'EOF'
-def colors: {
- "meta": "\u001b[34m",
- "fail": "\u001b[31m",
- "success": "\u001b[32m",
- "warn": "\u001b[33m",
- "dim": "\u001b[30m",
- "reset": "\u001b[0m",
-};
+	def colors: {
+	 "meta": "\u001b[34m",
+	 "fail": "\u001b[31m",
+	 "success": "\u001b[32m",
+	 "warn": "\u001b[33m",
+	 "dim": "\u001b[30m",
+	 "reset": "\u001b[0m",
+	};
 EOF
 
 # fzf single history item renderer
 read -r -d '' _FZF_ENTRY_JQ <<-'EOF'
-"\(.id) "
-+ "\(colors.meta)\(.start | strftime("%a %d %b %Y %H:%M:%S"))\(colors.reset)"
-+ " " + (if (.exit_code // 0) == 0 then "\(colors.success)[succ]" else "\(colors.fail)[fail]" end) + "\(colors.reset)"
-+ " \(.cmd)"
-+ (if .end - .start > 1 then " \(colors.warn)(took: \(.end - .start)s)\(colors.reset)" else "" end)
-+ (if (.tmux_session != null) then " \(colors.dim):\(colors.meta)\(.tmux_session)\(colors.reset)" else "" end)
-+ "\u0000"
+	"\(.id) "
+	+ "\(colors.meta)\(.start | strftime("%a %d %b %Y %H:%M:%S"))\(colors.reset)"
+	+ " " + (if (.exit_code // 0) == 0 then "\(colors.success)[succ]" else "\(colors.fail)[fail]" end) + "\(colors.reset)"
+	+ " \(.cmd)"
+	+ (if .end - .start > 1 then " \(colors.warn)(took: \(.end - .start)s)\(colors.reset)" else "" end)
+	+ (if (.tmux_session != null) then " \(colors.dim):\(colors.meta)\(.tmux_session)\(colors.reset)" else "" end)
+	+ "\u0000"
 EOF
 _FZF_ENTRY_JQ="$_JQ_COLORS$_FZF_ENTRY_JQ"
 
 # fzf preview window renderer
 read -r -d '' _FZF_PREVIEW_JQ <<-'EOF'
-select(.id == $id)
-| "$ \(.cmd)\n\n\(colors.meta)"
-  + (if (.exit_code // 0) != 0 then "\(colors.fail)" else "" end)
-  + "exit code: \(.exit_code)\(colors.meta)\n"
-  + "execution time: \(.end - .start)s\n"
-  + "@ \(.start | strftime("%a %d %b %Y %H:%M:%S"))\n"
-  + "tmux session: \(.tmux_session)\n"
-  + (if .prev_cwd then "previous CWD: \(.prev_cwd)\n" else "" end)
-  + "CWD: \(.cwd)\n"
+	select(.id == $id)
+	| "$ \(.cmd)\n\n\(colors.meta)"
+	  + (if (.exit_code // 0) != 0 then "\(colors.fail)" else "" end)
+	  + "exit code: \(.exit_code)\(colors.meta)\n"
+	  + "execution time: \(.end - .start)s\n"
+	  + "@ \(.start | strftime("%a %d %b %Y %H:%M:%S"))\n"
+	  + "tmux session: \(.tmux_session)\n"
+	  + (if .prev_cwd then "previous CWD: \(.prev_cwd)\n" else "" end)
+	  + "CWD: \(.cwd)\n"
 EOF
 _FZF_PREVIEW_JQ="$_JQ_COLORS$_FZF_PREVIEW_JQ"
 
 _GLOBAL_HISTORY_FILE=$HOME/.global_history
 
 # Show a fuzzy-search prompt with global history and let the user select one item
-function _search_global_history()
-{
+function _search_global_history() {
 	local directory line bind_id bind id set_cursor
 	local fzf_extra_opts=$1
 	set_cursor="beginning-of-line"$(yes +forward-char | head -n "$READLINE_POINT" | tr -d '\n')
 	# shellcheck disable=SC2086
-	bind_id=$(tac "$_GLOBAL_HISTORY_FILE" \
-		| jq -jr "$_FZF_ENTRY_JQ" \
-		| fzf \
+	bind_id=$(tac "$_GLOBAL_HISTORY_FILE" |
+		jq -jr "$_FZF_ENTRY_JQ" |
+		fzf \
 			-q "$READLINE_LINE" \
 			--bind "start:${set_cursor}" \
 			--scheme=history \
@@ -225,21 +213,21 @@ function _search_global_history()
 			" \
 			--color=hl:yellow:bold \
 			--color=hl+:yellow:bold \
-			--expect enter,ctrl-f \
-		| head -n 2 \
-		| xargs)
+			--expect enter,ctrl-f |
+		head -n 2 |
+		xargs)
 	[ -z "$bind_id" ] && return
-	read -r bind id _ <<< "$bind_id"
+	read -r bind id _ <<<"$bind_id"
 	case "$bind" in
-		enter)
-			# jq -r -> command string raw and unquoted
-			line=$(jq -r "select(.id == \"$id\") | .cmd" "$_GLOBAL_HISTORY_FILE")
-			;;
-		ctrl-f)
-			# no -r in jq -> directory string already nicely escaped and quoted
-			directory=$(jq "select(.id == \"$id\") | .cwd" "$_GLOBAL_HISTORY_FILE")
-			line="cd $directory"
-			;;
+	enter)
+		# jq -r -> command string raw and unquoted
+		line=$(jq -r "select(.id == \"$id\") | .cmd" "$_GLOBAL_HISTORY_FILE")
+		;;
+	ctrl-f)
+		# no -r in jq -> directory string already nicely escaped and quoted
+		directory=$(jq "select(.id == \"$id\") | .cwd" "$_GLOBAL_HISTORY_FILE")
+		line="cd $directory"
+		;;
 	esac
 	READLINE_LINE="$line"
 	READLINE_POINT=${#line}
@@ -249,14 +237,13 @@ bind -x '"\C-r":_search_global_history "--exact --no-extended --bind ctrl-r:up"'
 
 PROMPT_COMMAND="_prompt_command"
 
-
 # ENVIRONMENT VARIABLES
 
-export LESS_TERMCAP_mb=$'\E[1;31m'   # blink
-export LESS_TERMCAP_md=$'\E[1;32m'   # bold
+export LESS_TERMCAP_mb=$'\E[1;31m' # blink
+export LESS_TERMCAP_md=$'\E[1;32m' # bold
 export LESS_TERMCAP_me=$'\E[0m'
 export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[7m'      # standout
+export LESS_TERMCAP_so=$'\E[7m' # standout
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;4;34m' # underline
 
@@ -294,7 +281,7 @@ function set_title() {
 		DIR="$PWD"
 	fi
 	TITLE="bash: $(basename "$DIR")"
-	if [[ -n "$(git rev-parse --git-dir 2> /dev/null)" ]]; then
+	if [[ -n "$(git rev-parse --git-dir 2>/dev/null)" ]]; then
 		TITLE+=" on ⎇ $(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 	fi
 	echo -n "$(tput tsl)$TITLE$(tput fsl)"
