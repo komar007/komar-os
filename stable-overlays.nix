@@ -1,0 +1,15 @@
+{
+  nur,
+  nixgl,
+  rust-overlay,
+  fshf,
+  comma,
+  ...
+}:
+[
+  nur.overlays.default
+  nixgl.overlay
+  rust-overlay.overlays.default
+  fshf.overlays.default
+  comma.overlays.default
+]

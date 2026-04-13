@@ -6,13 +6,7 @@ let
     system:
     import inputs.nixpkgs {
       inherit system;
-      overlays = [
-        inputs.nur.overlays.default
-        inputs.nixgl.overlay
-        inputs.rust-overlay.overlays.default
-        inputs.fshf.overlays.default
-        inputs.comma.overlays.default
-      ];
+      overlays = import ./stable-overlays.nix inputs;
     };
   pkgsUnstable =
     system:
