@@ -39,7 +39,10 @@
   networking = {
     hostName = "nixos-mtrybus";
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ 80 ];
+    firewall.allowedTCPPorts = [
+      80
+      18080
+    ];
   };
 
   maintainSshConnection.user = config.users.users.komar.name;
