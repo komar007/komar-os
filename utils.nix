@@ -49,7 +49,7 @@ let
         inherit inputs nixosUserConfig;
         nixIndexDatabaseModule = inputs.nix-index-database.homeModules.default;
         pkgsUnstable = pkgsUnstable system;
-        nvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
+        dotNvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
         tmuxModule = inputs.dot-tmux.homeManagerModules.${system}.default;
         tmuxAlacrittyModule = inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
       };

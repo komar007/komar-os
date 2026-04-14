@@ -66,6 +66,7 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.treefmt-nix.follows = "treefmt-nix";
       inputs.systems.follows = "systems";
+      inputs.home-manager.follows = "home-manager";
     };
     dot-tmux = {
       url = "github:komar007/dot-tmux";

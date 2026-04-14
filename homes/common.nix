@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  nvimModule,
   nixIndexDatabaseModule,
   nixosUserConfig,
   ...
@@ -32,7 +31,7 @@ in
     ./modules/quirks.nix
     ./modules/bash
     ./modules/xdg.nix
-    nvimModule
+    ./modules/dot-nvim.nix
     ./modules/tmux
     ./modules/tmux/top-session.nix
     ./modules/direnv

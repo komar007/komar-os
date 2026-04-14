@@ -54,6 +54,9 @@
         "flake-utils": [
           "flake-utils"
         ],
+        "home-manager": [
+          "home-manager"
+        ],
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "systems": [
@@ -64,11 +67,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774425476,
-        "narHash": "sha256-kByohT8/2fh7EjJwl9ZPjMC4I5PPAcLKfaDz0ej3bWs=",
+        "lastModified": 1776179357,
+        "narHash": "sha256-YCI7KY3Q9jyQB+/VBarDr0v8K3F09IKweJFDM4yRPzE=",
         "owner": "komar007",
         "repo": "dot-nvim",
-        "rev": "d6846a950154b3af492067ce20fdd1e9276f28fb",
+        "rev": "9c9bb42cbc55a71fbdacf671192442b00a65e363",
         "type": "github"
       },
       "original": {
