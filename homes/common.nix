@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  nixIndexDatabaseModule,
   nixosUserConfig,
   inputs,
   ...
@@ -44,7 +43,7 @@ in
     ./modules/ssh
     ./modules/lsd.nix
     ./modules/rust.nix
-    nixIndexDatabaseModule
+    ./modules/comma.nix
   ];
 
   dot-tmux.sessionShells =
@@ -72,7 +71,4 @@ in
     btop
     htop
   ];
-
-  programs.nix-index-database.comma.enable = true;
-  programs.nix-index.enableBashIntegration = false;
 }

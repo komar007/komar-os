@@ -46,7 +46,6 @@ let
       extraSpecialArgs = {
         configurationName = name;
         inherit inputs nixosUserConfig;
-        nixIndexDatabaseModule = inputs.nix-index-database.homeModules.default;
         pkgsUnstable = pkgsUnstable system;
         dotNvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
         tmuxModule = inputs.dot-tmux.homeManagerModules.${system}.default;
