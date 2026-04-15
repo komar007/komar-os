@@ -10,28 +10,17 @@
 
 set -e
 
-pg_msg() {
-	case "${COLOR:-blue}" in
-	green)
-		seed=63
-		;;
-	red)
-		seed=73
-		;;
-	blue)
-		seed=100
-		;;
-	esac
-	if [ -n "${seed:-}" ]; then
-		colorize="lolcat -S $seed -p 10"
-	else
-		colorize="cat"
-	fi
-	echo "$@" | cowsay -W 79 | $colorize 2>/dev/null
-}
+if [ -n "${GIT_ALIAS_LIB:-}" ]; then
+	# shellcheck source=/dev/null
+	. "$GIT_ALIAS_LIB"
+else
+	# shellcheck disable=SC1091
+	# shellcheck source=lib.sh
+	. "$(dirname "$0")/lib.sh"
+fi
 
-if git status --porcelain 2>/dev/null | grep -qE '^(M| M)'; then
-	COLOR=red pg_msg 'refusing to push, dirty dir'
+if git_alias_has_dirty_worktree; then
+	COLOR=red git_alias_msg 'refusing to push, dirty dir'
 	exit 1
 fi
 
@@ -48,18 +37,18 @@ else
 fi
 
 if [ -z "$BASE_BRANCH" ]; then
-	COLOR=red pg_msg "cannot resolve origin HEAD locally"
+	COLOR=red git_alias_msg "cannot resolve origin HEAD locally"
 	exit 1
 fi
 
 if ! git rev-parse --verify "$BASE_BRANCH" >/dev/null 2>&1; then
-	COLOR=red pg_msg "cannot find base branch $BASE_BRANCH locally"
+	COLOR=red git_alias_msg "cannot find base branch $BASE_BRANCH locally"
 	exit 1
 fi
 
 temp_shell() {
-	if ! $SHELL; then
-		COLOR=red pg_msg 'shell exit with error, about to interrupt pg, type "continue" to continue pg instead of interrupting'
+	if ! git_alias_spawn_shell "${PS1_EXTRA:-}"; then
+		COLOR=red git_alias_msg 'shell exit with error, about to interrupt pg, type "continue" to continue pg instead of interrupting'
 		read -r c
 		if [ "$c" = "continue" ]; then
 			return 0
@@ -74,20 +63,20 @@ git checkout -b "$PUSH_BRANCH" "$BASE_BRANCH"
 FAILED=0
 if ! git cherry-pick "$1"; then
 	git status
-	pg_msg "fix conflicts and exit shell"
+	git_alias_msg "fix conflicts and exit shell"
 	PS1_EXTRA="CP FAILED" temp_shell
 	git cherry-pick --continue || FAILED=1
 fi
 
 if [ "$FAILED" -eq 0 ]; then
 	if git push origin "$PUSH_TO"; then
-		COLOR=green pg_msg "successfully pushed $1"
+		COLOR=green git_alias_msg "successfully pushed $1"
 	else
-		COLOR=red pg_msg "failed to push, backup changes or push yourself to $PUSH_TO and exit shell"
+		COLOR=red git_alias_msg "failed to push, backup changes or push yourself to $PUSH_TO and exit shell"
 		PS1_EXTRA="PUSH FAILED" temp_shell
 	fi
 else
-	COLOR=red pg_msg "cherry-pick --continue failed, backup changes or push yourself to $PUSH_TO and exit shell"
+	COLOR=red git_alias_msg "cherry-pick --continue failed, backup changes or push yourself to $PUSH_TO and exit shell"
 	PS1_EXTRA="CP CONT FAILED" temp_shell
 	git cherry-pick --abort || true
 fi

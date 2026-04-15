@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 let
   delta = pkgs.lib.getExe pkgs.delta;
+  gitAliasLib = pkgs.writeText "git-alias-lib.sh" (builtins.readFile ./lib.sh);
 in
 {
   programs.git.enable = true;
@@ -23,7 +24,10 @@ in
             cowsay
             lolcat
           ];
-          text = builtins.readFile ./pg.sh;
+          text = ''
+            export GIT_ALIAS_LIB=${gitAliasLib}
+          ''
+          + builtins.readFile ./pg.sh;
         }
       )
     }";
@@ -33,8 +37,13 @@ in
           name = "git-pick";
           runtimeInputs = with pkgs; [
             fzf
+            cowsay
+            lolcat
           ];
-          text = builtins.readFile ./pick.sh;
+          text = ''
+            export GIT_ALIAS_LIB=${gitAliasLib}
+          ''
+          + builtins.readFile ./pick.sh;
         }
       )
     }";
