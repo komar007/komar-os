@@ -6,7 +6,6 @@ let
     system:
     import inputs.nixpkgs {
       inherit system;
-      overlays = import ./stable-overlays.nix inputs;
     };
   pkgsUnstable =
     system:

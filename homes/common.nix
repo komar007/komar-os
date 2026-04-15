@@ -3,6 +3,7 @@
   pkgs,
   nixIndexDatabaseModule,
   nixosUserConfig,
+  inputs,
   ...
 }:
 let
@@ -21,6 +22,8 @@ let
 in
 {
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.overlays = import ./hm-stable-overlays.nix inputs;
 
   home = {
     username = userAttr "name" "USER";
