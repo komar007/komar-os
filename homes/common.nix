@@ -22,7 +22,12 @@ in
 {
   nixpkgs.config.allowUnfree = true;
 
-  nixpkgs.overlays = import ./hm-stable-overlays.nix inputs;
+  nixpkgs.overlays = with inputs; [
+    nur.overlays.default
+    nixgl.overlay
+    rust-overlay.overlays.default
+    fshf.overlays.default
+  ];
 
   home = {
     username = userAttr "name" "USER";
