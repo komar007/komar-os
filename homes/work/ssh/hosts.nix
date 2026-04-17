@@ -3,7 +3,6 @@ let
   p = config.sops.placeholder;
 in
 {
-
   sops.secrets."public_addr/thinkcentre" = { };
   programs.ssh.matchBlocks.thinkcentre-tunnel = {
     host = "thinkcentre-tunnel";
@@ -14,7 +13,7 @@ in
     serverAliveCountMax = 3;
     remoteForwards = [
       {
-        bind.port = 9022;
+        bind.port = (import ./matchblock.nix).port;
         host.address = "localhost";
         host.port = 22;
       }

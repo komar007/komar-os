@@ -1,6 +1,13 @@
 { config, ... }:
 let
   utils = import ../../modules/ssh/utils.nix { };
+  workMatchBlock = import ../../work/ssh/matchblock.nix;
+  adbJumphost = {
+    host = "adb-jumphost";
+    hostname = "192.168.5.68";
+    port = 22;
+    user = "M.Trybus";
+  };
 in
 {
   home.file.".ssh/id_rsa.pub".source = ./ssh_id;
@@ -10,23 +17,14 @@ in
   programs.ssh.matchBlocks.work-pc = {
     host = "work-vpn";
     hostname = "192.168.134.42";
-    proxyJump = "adb-jumphost";
+    proxyJump = adbJumphost.host;
     port = 22;
     user = "komar";
     forwardX11 = true;
   };
-  programs.ssh.matchBlocks.adb-jumphost = {
-    host = "adb-jumphost";
-    hostname = "192.168.5.68";
-    port = 22;
-    user = "M.Trybus";
-  };
-  programs.ssh.matchBlocks.work-pc-tunnel = {
+  programs.ssh.matchBlocks.adb-jumphost = adbJumphost;
+  programs.ssh.matchBlocks.work-pc-tunnel = workMatchBlock // {
     host = "work";
-    hostname = "localhost";
-    port = 9022;
-    user = "komar";
-    forwardX11 = true;
   };
   programs.ssh.matchBlocks.voron = {
     host = "voron";

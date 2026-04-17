@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -42,7 +42,7 @@
     firewall.allowedTCPPorts = [ 80 ];
   };
 
-  maintainSshConnection.user = "komar";
+  maintainSshConnection.user = config.users.users.komar.name;
   maintainSshConnection.host = "thinkcentre-tunnel";
 
   services.udisks2.enable = true;
