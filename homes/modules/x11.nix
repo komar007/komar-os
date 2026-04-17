@@ -23,6 +23,16 @@ let
       xclip -selection clipboard -o -
     '';
   };
+  sc = pkgs.writeShellApplication {
+    name = "sc";
+    runtimeInputs = [
+      clip
+      pkgs.scrot
+    ];
+    text = ''
+      scrot -s -F- -d b1 | clip
+    '';
+  };
 in
 {
   home.pointerCursor = {
@@ -47,5 +57,6 @@ in
     ++ [
       clip
       unclip
+      sc
     ];
 }
