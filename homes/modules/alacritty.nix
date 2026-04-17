@@ -27,7 +27,7 @@
   };
 
   # FIXME: switch from unstable to 25.11 after upgrade
-  config.programs.alacritty.package = pkgsUnstable.alacritty;
+  config.programs.alacritty.package = pkgsUnstable.alacritty-graphics;
   config.programs.alacritty.enable = true;
   config.programs.alacritty.settings = {
     scrolling.history = 32768;
