@@ -51,6 +51,10 @@ function tig_set_title() {
 }
 alias tig=tig_set_title
 
+function tmux_update_environment() {
+	eval "$(tmux show-environment -s)"
+}
+
 # UTILITIES
 
 prepend_path() {
