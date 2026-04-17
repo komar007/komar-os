@@ -75,5 +75,7 @@ in
 
     btop
     htop
+
+    timg
   ];
 }
