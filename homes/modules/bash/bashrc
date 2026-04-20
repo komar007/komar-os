@@ -88,7 +88,7 @@ function _trim_jsonize_string() {
 # Remove the history item number from the output of "history 1"
 # Note: it is only guaranteed to work with a single item of history, because it may be multi-line
 function _remove_history_id() {
-	sed -r '1s/\s+[0-9]+\s+//'
+	sed -r '1s/^\s*[0-9]+\s+//'
 }
 
 # Output the input lines as they are or "null" if the input is empty
