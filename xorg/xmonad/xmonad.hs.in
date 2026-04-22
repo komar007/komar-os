@@ -7,6 +7,7 @@ import Data.Ratio ((%))
 import Foreign.C.String (castCharToCChar)
 import Graphics.X11.Xlib
 import Graphics.X11.Xlib.Extras
+import Control.Monad (filterM)
 import XMonad
 import XMonad.ManageHook
 import XMonad.Hooks.SetWMName
@@ -132,12 +133,27 @@ scratchpads = [
                                          customFloating $ W.RationalRect x y w h
                                      )
 
+shiftIfNoMatch :: WorkspaceId -> XMonad.Query Bool -> ManageHook
+shiftIfNoMatch ws q = do
+    newWin <- ask
+    noExistingMatches <- liftX $ withWindowSet $ \s -> do
+        let otherWindows = Prelude.filter (/= newWin) (W.allWindows s)
+        matches <- filterM (runQuery q) otherWindows
+        pure (null matches)
+
+    if noExistingMatches
+        then doF (W.shift ws)
+        else idHook
+
+shiftFirstWindowTo :: WorkspaceId -> XMonad.Query Bool -> ManageHook
+shiftFirstWindowTo ws query = query --> shiftIfNoMatch ws query
+
 myScratchpadManageHook = namedScratchpadManageHook scratchpads
 myManageHook = myScratchpadManageHook <+> manageDocks <+> myConditions <+> manageHook def
 myConditions = composeAll [
-    isMail                    --> doF (W.shift "mail"),
-    isFullscreen              --> doFullFloat]
-    where isMail = className =? "Thunderbird"
+    shiftFirstWindowTo "mail" $ className =? "thunderbird",
+    shiftFirstWindowTo "web1" $ className =? "firefox",
+    isFullscreen --> doFullFloat]
 
 guiFont = xstr(XMONAD_FONT)
 
