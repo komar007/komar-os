@@ -46,6 +46,11 @@ pkill -9 -f panels_wrapper.sh
 	picom &
 )) &
 
+# TODO: temporary envs (should eventually be managed by nix)
+export XMONAD_FONT="$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''XMONAD_FONT')"
+export HEIGHT="$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT')"
+export HEIGHT_TABS="$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT_TABS')"
+
 ulimit -s 16000 && xmonad
 
 # clean up xmonad's mess

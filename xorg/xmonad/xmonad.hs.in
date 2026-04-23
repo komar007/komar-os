@@ -2,6 +2,7 @@
 
 import System.IO
 import System.Exit (exitSuccess)
+import System.Environment (lookupEnv)
 import qualified Data.Map as M
 import Data.Ratio ((%))
 import Foreign.C.String (castCharToCChar)
@@ -59,6 +60,32 @@ import XMonad.Util.WorkspaceCompare
 
 import XMonad.Prompt.Input
 
+data Env = Env
+  { envFont       :: String
+  , envPromptHeight  :: Int
+  , envTabsHeight :: Int
+  }
+
+mkEnv :: IO Env
+mkEnv = do
+  font <- lookupEnv "XMONAD_FONT"
+  promptHeight <- lookupEnv "HEIGHT"
+  tabsHeight <- lookupEnv "HEIGHT_TABS"
+  return Env
+    { envFont = (maybe "xft:JetBrainsMono Nerd Font:pixelsize=16" id font)
+    , envPromptHeight = read (maybe "64" id promptHeight)
+    , envTabsHeight = read (maybe "64" id tabsHeight)
+    }
+
+main = do
+    checkTopicConfig myTopicNames myTopicConfig
+    env <- mkEnv
+    xmproc <- spawnPipe $ "bash ~/.xmonad/panels_wrapper.sh"
+    xmonad
+        $ withUrgencyHookC myDzenUrgencyHook def {remindWhen = Every 2}
+        $ withUrgencyHook myBlinkUrgencyHook
+        $ myConf env xmproc
+
 golden = toRational (((sqrt 5) - 1)/2)
 
 tall ratio numMaster = R.ResizableTall numMaster delta ratio []
@@ -66,21 +93,21 @@ tall ratio numMaster = R.ResizableTall numMaster delta ratio []
 
 myTall r n = named "tall" $ tall r n
 myWide r n = named "wide" $ Mirror $ tall r n
-myFull     = named "full" $ noBorders (tabbedBottom shrinkText tabTheme)
+myFull env = named "full" $ noBorders (tabbedBottom shrinkText (tabTheme env))
 
-defaultSet r n =
-    myTall r n ||| myWide r n ||| myFull
-defaultWSet r n =
-    myFull   ||| myTall r n ||| myWide r n
+defaultSet env r n =
+    myTall r n ||| myWide r n ||| (myFull env)
+defaultWSet env r n =
+    myFull env ||| myTall r n ||| myWide r n
 
 fullscreenPreferredSpaces = ["c1", "c2", "c3", "web1", "web2", "mail"]
 
 -- FIXME dynamically create workspacedirs from topics configuration
-myLayoutHook =
+myLayoutHook env =
     workspaceDir "~" $
     smartBorders $
-    (onWorkspaces fullscreenPreferredSpaces $ avoidStruts $ defaultWSet golden 1) $
-    (avoidStruts $ defaultSet golden 1)
+    (onWorkspaces fullscreenPreferredSpaces $ avoidStruts $ defaultWSet env golden 1) $
+    (avoidStruts $ defaultSet env golden 1)
 
 toggleStrutsOn :: [WorkspaceId] -> X ()
 toggleStrutsOn wss = do
@@ -120,7 +147,7 @@ myLogHook pipe = dynamicLogWithPP $ dzenPP {
 scratchpads = [
     NS "scratchpad"     "~/.xmonad/terminal.sh scratchpad tmux new-session -A -s scratch"
         (resource =? "scratchpad")   (terminalFloating 0 0.5 1 0.5),
-    NS MIXER_CMD ("TERMINAL_PADDING=y ~/.xmonad/terminal.sh scratchmixer " ++ MIXER_CMD)
+    NS "wiremix" ("TERMINAL_PADDING=y ~/.xmonad/terminal.sh scratchmixer " ++ "wiremix")
         (resource =? "scratchmixer") (terminalFloating 0.15 0.08 0.7 0.3),
     NS "bc"        "~/.xmonad/terminal.sh bc tmux new-session -A -s bc ~/.tmux/bin/spawn_shell.sh bc"
         (resource =? "bc")           (terminalFloating 0.67 0.2 0.3 0.6),
@@ -153,10 +180,8 @@ myConditions = composeAll [
     shiftFirstWindowTo "web1" $ className =? "firefox",
     isFullscreen --> doFullFloat]
 
-guiFont = xstr(XMONAD_FONT)
-
-tabTheme = def {
-    fontName             = guiFont,
+tabTheme env = def {
+    fontName             = envFont env,
     activeColor          = "#111111",
     inactiveColor        = "#000000",
     urgentColor          = "#222222",
@@ -166,17 +191,7 @@ tabTheme = def {
     activeTextColor      = "#c4a000",
     inactiveTextColor    = "#aaaaaa",
     urgentTextColor      = "#dd0000",
-    decoHeight           = HEIGHT_TABS
-}
-
-xpconfig = def {
-    font        = guiFont,
-    bgColor     = "#000000",
-    fgColor     = "#aaaaaa",
-    bgHLight    = "#cccccc",
-    fgHLight    = "#000000",
-    promptBorderWidth = 0,
-    height = HEIGHT
+    decoHeight           = fromIntegral $ envTabsHeight env
 }
 
 data TopicItem = TI { topicName :: Topic   -- (22b)
@@ -197,8 +212,8 @@ myTopics =
     , ti "ds1"   "~"
     , ti "sys2"  "~"
     , ti "ds2"   "~"
-    , Main.TI "web1" "~" (spawnHere BROWSER_CMD)
-    , Main.TI "web2" "~" (spawnHere BROWSER_CMD)
+    , Main.TI "web1" "~" (spawnHere "firefox")
+    , Main.TI "web2" "~" (spawnHere "firefox")
     , Main.TI "mail" "~" (spawnHere "thunderbird")
     , ti "vm1"  "~"
     , ti "vm2"  "~"
@@ -231,7 +246,7 @@ setXProperty property value = withDisplay $ \d -> do
     where
         atom d value = io $ internAtom d value False
 
-myConf xmproc =
+myConf env xmproc =
     docks $
     def {
         startupHook =
@@ -243,7 +258,7 @@ myConf xmproc =
             setWs "c1" <+>
             setXProperty "__XMONAD_STARTUP_DONE__" "1",
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
-        layoutHook = myLayoutHook,
+        layoutHook = myLayoutHook env,
         logHook = myLogHook xmproc,
         focusFollowsMouse = False,
         modMask = mod4Mask,
@@ -252,7 +267,7 @@ myConf xmproc =
         terminal = "~/.xmonad/terminal.sh terminal",
         workspaces = myTopicNames,
         clickJustFocuses = True
-} `additionalKeysP` (myKeys xmproc)
+} `additionalKeysP` (myKeys env xmproc)
 
 data MyDzenUrgencyHook = MyDzenUrgencyHook {
                              duration :: Int,
@@ -280,14 +295,6 @@ myDzenUrgencyHook = MyDzenUrgencyHook {Main.duration = seconds 1, Main.args = [
 myBlinkUrgencyHook :: SpawnUrgencyHook
 myBlinkUrgencyHook = SpawnUrgencyHook "~/.xmonad/blink.sh "
 
-main = do
-    checkTopicConfig myTopicNames myTopicConfig
-    xmproc <- spawnPipe $ "bash ~/.xmonad/panels_wrapper.sh"
-    xmonad
-        $ withUrgencyHookC myDzenUrgencyHook def {remindWhen = Every 2}
-        $ withUrgencyHook myBlinkUrgencyHook
-        $ myConf xmproc
-
 workspaceKeys = ["", "M-1", "M-<F1>", "M-2", "M-<F2>", "M-3", "M-<F3>", "M-4", "M-<F4>", "M-5", "M-<F5>",
     "M-6", "M-7", "M-u", "M-<F9>", "M-<F10>"]
 workspaceSKeys = map ("S-"++) workspaceKeys
@@ -295,7 +302,17 @@ workspaceSKeys = map ("S-"++) workspaceKeys
 -- Workaround for toggle + scratchpad
 myToggle = windows $ W.view =<< W.tag . head . Prelude.filter ((\x -> x /= "NSP" && x /= "SP") . W.tag) . W.hidden
 
-myKeys xmproc = [
+xpconfig env = def {
+    font        = envFont env,
+    bgColor     = "#000000",
+    fgColor     = "#aaaaaa",
+    bgHLight    = "#cccccc",
+    fgHLight    = "#000000",
+    promptBorderWidth = 0,
+    height = fromIntegral $ envPromptHeight env
+}
+
+myKeys env xmproc = [
     ("M-m",               spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"),
     ("M-S-m",             io exitSuccess),
     ("M-q",               viewScreen def 0),
@@ -304,22 +321,22 @@ myKeys xmproc = [
     ("M-S-q",             sendToScreen def 0),
     ("M-S-w",             sendToScreen def 1),
     ("M-S-e",             sendToScreen def 2),
-    ("M-`",               workspacePrompt xpconfig (windows . W.view)),
-    ("M-S-`",             workspacePrompt xpconfig (windows . W.shift)),
-    ("M-p",               shellPromptHere xpconfig),
+    ("M-`",               workspacePrompt xpconfig' (windows . W.view)),
+    ("M-S-`",             workspacePrompt xpconfig' (windows . W.shift)),
+    ("M-p",               shellPromptHere xpconfig'),
     ("M-s",               namedScratchpadAction scratchpads "scratchpad"),
-    ("M-a",               namedScratchpadAction scratchpads MIXER_CMD),
+    ("M-a",               namedScratchpadAction scratchpads "wiremix"),
     ("M-x",               namedScratchpadAction scratchpads "bc"),
     ("M-c",               namedScratchpadAction scratchpads "notepad"),
-    ("M-d",               changeDir xpconfig),
+    ("M-d",               changeDir xpconfig'),
     ("M-;",               sendMessage R.MirrorShrink),
     ("M-'",               sendMessage R.MirrorExpand),
     ("M-<Esc>",           goToSelected def),
     ("M-<Return>",        promote),
     ("M-b",               sendMessage ToggleStruts),
-    ("M-g n",             promptWSGroupAdd xpconfig "name group: "),
-    ("M-g g",             promptWSGroupView xpconfig "go to group: "),
-    ("M-g d",             promptWSGroupForget xpconfig "drop group: "),
+    ("M-g n",             promptWSGroupAdd xpconfig' "name group: "),
+    ("M-g g",             promptWSGroupView xpconfig' "go to group: "),
+    ("M-g d",             promptWSGroupForget xpconfig' "drop group: "),
 #ifndef CONFIG_WORK
     ("M-f",               layoutScreens 2 (TwoPane 0.5 0.5)),
     ("M-S-f",             layoutScreens 2 (Mirror (TwoPane 0.5 0.5))),
@@ -340,3 +357,4 @@ myKeys xmproc = [
     [(mod ++ sc, func (Lines 1) Linear dir) |
         (sc, dir) <- [("[", ToLeft), ("]", ToRight)],
         (mod, func) <- [("M-", planeMove), ("M-S-", planeShift)]]
+    where xpconfig' = xpconfig env
