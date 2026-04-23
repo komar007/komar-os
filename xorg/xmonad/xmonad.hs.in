@@ -73,7 +73,7 @@ defaultSet r n =
 defaultWSet r n =
     myFull   ||| myTall r n ||| myWide r n
 
-fullscreenPreferredSpaces = ["web1", "web2", "mail"]
+fullscreenPreferredSpaces = ["c1", "c2", "c3", "web1", "web2", "mail"]
 
 -- FIXME dynamically create workspacedirs from topics configuration
 myLayoutHook =
