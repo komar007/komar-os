@@ -7,7 +7,7 @@ Config {
     iconRoot = ICON_ROOT,
     iconOffset = ICON_OFFSET,
     position = Static { xpos = POS, ypos = YPOS, width = WIDTH, height = HEIGHT },
-    lowerOnStart = False,
+    lowerOnStart = True,
     commands = [
         Run Cpu [
             "-L","3",

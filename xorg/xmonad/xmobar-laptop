@@ -3,7 +3,7 @@ Config {
 	bgColor = "black",
 	fgColor = "#555753",
 	position = Static {xpos = 600, ypos = -1, width = 424, height = 14},
-	lowerOnStart = False,
+	lowerOnStart = True,
 	commands = [ Run Date "%a %b %_d %k:%M:%S" "date" 10,
 		Run Cpu [
 			"-L","3",

@@ -7,7 +7,7 @@ Config {
         iconRoot = ICON_ROOT,
         iconOffset = ICON_OFFSET,
         position = Static { xpos = POS, ypos = YPOS, width = WIDTH, height = HEIGHT },
-        lowerOnStart = False,
+        lowerOnStart = True,
         commands = [ Run Com  "/home/komar/.xmonad/morning.sh" [] "morning" 100,
                      Run Date "%a %b %_d %k:%M:%S" "date" 10
         ],

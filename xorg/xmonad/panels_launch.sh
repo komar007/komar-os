@@ -12,6 +12,7 @@ fi
 
 killall -9 xmobar dzen2 2>/dev/null
 
+# TODO: what is this here fore? Some leftover?
 PIDS=/tmp/panels.pids.$RANDOM
 
 FIFO=/tmp/xmobar_panel_fifo
@@ -23,20 +24,6 @@ done
 FN=$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''DZEN2_FONT')
 HEIGHT=$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT')
 
-if [[ $CONFIG == desktop ]]; then
-	DZEN_X=1920
-elif [[ $CONFIG == work ]]; then
-	DZEN_X=1200
-elif [[ $CONFIG == laptop ]]; then
-	DZEN_X=400
-fi
-
-# in case cat dies because of broken pipe
-while true; do
-	cat "$FIFO"
-done | dzen2 -bg black -h $HEIGHT -x "$DZEN_X" -ta l -fn "$FN" &
-echo $! >$PIDS
-sleep 0.1
 if [[ $CONFIG == desktop ]]; then
 	ICON_ROOT="$HOME/.xmonad/dzen2_img_large/"
 	cpp -P -I"$DIR" -DICON_ROOT=\"$ICON_ROOT\" -DCONFIG_DESKTOP -DPOS=0 -DWIDTH=1920 ~/.xmonad/xmobar-info.in >/tmp/xmobar-info-desktop
@@ -65,4 +52,21 @@ elif [[ $CONFIG == laptop ]]; then
 	xmobar /tmp/xmobar-clock &
 	echo $! >>$PIDS
 fi
-cat
+
+# make sure to run dzen2 after xmobars have created their windows, so that dzen2 is below xmobars
+# (dzen2 takes the whole width of the screen, xmobars may be partial)
+# TODO: how to get rid of the sleep?
+sleep 0.2
+
+if [[ $CONFIG == desktop ]]; then
+	DZEN_X=1920
+elif [[ $CONFIG == work ]]; then
+	DZEN_X=1200
+elif [[ $CONFIG == laptop ]]; then
+	DZEN_X=400
+fi
+
+# in case cat dies because of broken pipe
+while true; do
+	cat "$FIFO"
+done | dzen2 -bg black -h $HEIGHT -x "$DZEN_X" -ta l -fn "$FN" -e "onstart=lower"
