@@ -59,8 +59,6 @@ import XMonad.Util.WorkspaceCompare
 
 import XMonad.Prompt.Input
 
-browser = BROWSER_CMD
-
 golden = toRational (((sqrt 5) - 1)/2)
 
 tall ratio numMaster = R.ResizableTall numMaster delta ratio []
@@ -199,11 +197,9 @@ myTopics =
     , ti "ds1"   "~"
     , ti "sys2"  "~"
     , ti "ds2"   "~"
-    , Main.TI "web1"  "~/Pobrania"
-        (spawnHere browser)
-    , Main.TI "web2"  "~/Pobrania"
-        (spawnHere browser)
-    , ti "mail"  "~"
+    , Main.TI "web1" "~/Pobrania" (spawnHere BROWSER_CMD)
+    , Main.TI "web2" "~/Pobrania" (spawnHere BROWSER_CMD)
+    , Main.TI "mail" "~" (spawnHere "thunderbird")
     , ti "vm1"  "~/VMs"
     , ti "vm2"  "~/VMs"
     ]
