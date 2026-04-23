@@ -187,8 +187,8 @@ data TopicItem = TI { topicName :: Topic   -- (22b)
 myTopics :: [Main.TopicItem]
 myTopics =
     [ ti "NSP"   "~"
-    , ti "c1"    "/home/komar"
-    , ti "d1"    "/home/komar"
+    , ti "c1"    "~"
+    , ti "d1"    "~"
     , ti "c2"    "~"
     , ti "d2"    "~"
     , ti "c3"    "~"
@@ -197,11 +197,11 @@ myTopics =
     , ti "ds1"   "~"
     , ti "sys2"  "~"
     , ti "ds2"   "~"
-    , Main.TI "web1" "~/Pobrania" (spawnHere BROWSER_CMD)
-    , Main.TI "web2" "~/Pobrania" (spawnHere BROWSER_CMD)
+    , Main.TI "web1" "~" (spawnHere BROWSER_CMD)
+    , Main.TI "web2" "~" (spawnHere BROWSER_CMD)
     , Main.TI "mail" "~" (spawnHere "thunderbird")
-    , ti "vm1"  "~/VMs"
-    , ti "vm2"  "~/VMs"
+    , ti "vm1"  "~"
+    , ti "vm2"  "~"
     ]
     where
         ti t d = Main.TI t d shell
