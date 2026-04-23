@@ -31,21 +31,30 @@ in
     user = "M.Trybus";
   };
 
-  sops.secrets."public_addr/prisme_integration" = { };
+  sops.secrets."public_addr/prisme/integration" = { };
   programs.ssh.matchBlocks.prisme_integration = {
     host = "integration";
-    hostname = "${p."public_addr/prisme_integration"}";
+    hostname = "${p."public_addr/prisme/integration"}";
     port = 2222;
     user = "adb-users";
     serverAliveInterval = 5;
   };
 
-  sops.secrets."public_addr/prisme_nightly" = { };
+  sops.secrets."public_addr/prisme/nightly" = { };
   programs.ssh.matchBlocks.prisme_nightly = {
     host = "nightly";
-    hostname = "${p."public_addr/prisme_nightly"}";
+    hostname = "${p."public_addr/prisme/nightly"}";
     port = 2222;
     user = "adb-admins";
+    serverAliveInterval = 5;
+  };
+
+  sops.secrets."public_addr/prisme/perftest" = { };
+  programs.ssh.matchBlocks.prisme_perftest = {
+    host = "perftest";
+    hostname = "${p."public_addr/prisme/perftest"}";
+    port = 2222;
+    user = "ubuntu";
     serverAliveInterval = 5;
   };
 }

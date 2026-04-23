@@ -50,15 +50,15 @@ in
   sopsAnything.homeFiles = [
     (ffUtils.extensionSettingsFile pkgs.nur.repos.rycee.firefox-addons.dark-mode-webextension)
   ];
-  sops.secrets."public_addr/prisme_integration" = { };
-  sops.secrets."public_addr/prisme_nightly" = { };
+  sops.secrets."public_addr/prisme/integration" = { };
+  sops.secrets."public_addr/prisme/nightly" = { };
   firefoxDarkmode.exclude =
     let
       p = config.sops.placeholder;
     in
     [
-      p."public_addr/prisme_integration"
-      p."public_addr/prisme_nightly"
+      p."public_addr/prisme/integration"
+      p."public_addr/prisme/nightly"
       "i.pl.adbglobal.com"
     ];
 
