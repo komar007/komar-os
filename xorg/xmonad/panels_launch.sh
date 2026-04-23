@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
+
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-killall -9 xmobar dzen2 2>/dev/null
+killall -9 xmobar dzen2 2>/dev/null || true
 
 if [[ -e ~/.desktop_type ]]; then
 	CONFIG=$(cat ~/.desktop_type)
@@ -50,12 +52,4 @@ fi
 FN=$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''DZEN2_FONT')
 HEIGHT=$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT')
 
-FIFO=/tmp/xmobar_panel_fifo
-while [ ! -p "$FIFO" ]; do
-	sleep 1
-done
-
-# in case cat dies because of broken pipe
-while true; do
-	cat "$FIFO"
-done | dzen2 -bg black -h "$HEIGHT" -x "$DZEN_X" -ta l -fn "$FN" -e "onstart=lower"
+dzen2 -bg black -h "$HEIGHT" -x "$DZEN_X" -ta l -fn "$FN" -e "onstart=lower"

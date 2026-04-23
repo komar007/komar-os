@@ -40,17 +40,13 @@ xset s off
 xset dpms 120 120 120
 xset m 7/4 7
 
-# shellcheck disable=SC2046
-kill -9 $(
-	ps ax -opid,command |
-		grep xmonad_pipe.sh |
-		grep -v grep |
-		grep -oE '[0-9]+'
-)
+pkill -9 -f panels_wrapper.sh
 
 (wait_for_x_prop __XMONAD_STARTUP_DONE__ 1 && (
-	~/.xmonad/panels_launch.sh &
 	picom &
 )) &
 
-ulimit -s 16000 && exec xmonad
+ulimit -s 16000 && xmonad
+
+# clean up xmonad's mess
+pkill -9 -f panels_wrapper.sh
