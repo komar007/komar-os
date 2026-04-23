@@ -1,12 +1,23 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   p = config.sops.placeholder;
+  secretMatchBlock = sopsAddressId: block: {
+    sops.secrets."public_addr/${sopsAddressId}" = { };
+    programs.ssh.matchBlocks.${"__smb__" + sopsAddressId} = block p."public_addr/${sopsAddressId}";
+  };
+  prismeDeployment =
+    name: user:
+    secretMatchBlock "prisme/${name}" (hostname: {
+      host = name;
+      inherit hostname user;
+      port = 2222;
+      serverAliveInterval = 5;
+    });
 in
-{
-  sops.secrets."public_addr/thinkcentre" = { };
-  programs.ssh.matchBlocks.thinkcentre-tunnel = {
+builtins.foldl' lib.recursiveUpdate { } [
+  (secretMatchBlock "thinkcentre" (hostname: {
     host = "thinkcentre-tunnel";
-    hostname = "${p."public_addr/thinkcentre"}";
+    inherit hostname;
     port = 2022;
     user = "komar";
     serverAliveInterval = 30;
@@ -22,39 +33,13 @@ in
       "ExitOnForwardFailure" = "yes";
       "RemoteForward" = "9999"; # cannot be done using remoteForwards, host cannot be null
     };
-  };
-
-  sops.secrets."public_addr/adb_devs" = { };
-  programs.ssh.matchBlocks.adb-devs = {
-    host = "${p."public_addr/adb_devs"}";
-    hostname = "${p."public_addr/adb_devs"}";
+  }))
+  (secretMatchBlock "adb_devs" (hostname: {
+    host = hostname;
+    inherit hostname;
     user = "M.Trybus";
-  };
-
-  sops.secrets."public_addr/prisme/integration" = { };
-  programs.ssh.matchBlocks.prisme_integration = {
-    host = "integration";
-    hostname = "${p."public_addr/prisme/integration"}";
-    port = 2222;
-    user = "adb-users";
-    serverAliveInterval = 5;
-  };
-
-  sops.secrets."public_addr/prisme/nightly" = { };
-  programs.ssh.matchBlocks.prisme_nightly = {
-    host = "nightly";
-    hostname = "${p."public_addr/prisme/nightly"}";
-    port = 2222;
-    user = "adb-admins";
-    serverAliveInterval = 5;
-  };
-
-  sops.secrets."public_addr/prisme/perftest" = { };
-  programs.ssh.matchBlocks.prisme_perftest = {
-    host = "perftest";
-    hostname = "${p."public_addr/prisme/perftest"}";
-    port = 2222;
-    user = "ubuntu";
-    serverAliveInterval = 5;
-  };
-}
+  }))
+  (prismeDeployment "integration" "adb-users")
+  (prismeDeployment "nightly" "adb-admins")
+  (prismeDeployment "perftest" "ubuntu")
+]
