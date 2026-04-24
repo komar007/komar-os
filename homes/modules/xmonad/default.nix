@@ -62,11 +62,13 @@ in
   config.home.file.".config/xmonad.json".text = builtins.toJSON (
     with config.xmonad.config;
     {
-      envFont = font;
-      envPromptHeight = promptHeight;
-      envTabsHeight = tabsHeight;
-      envHiRes = hiRes;
-      envMainWsGroup = mainWsGroup;
+      inherit
+        font
+        promptHeight
+        tabsHeight
+        hiRes
+        mainWsGroup
+        ;
     }
   );
 

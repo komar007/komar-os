@@ -63,11 +63,9 @@ import XMonad.Util.WorkspaceCompare
 
 import XMonad.Prompt.Input
 
-
 import GHC.Generics (Generic)
-import Data.Aeson (FromJSON)
-
-import Data.Aeson (FromJSON, decodeFileStrict)
+import Data.Aeson (FromJSON(parseJSON), decodeFileStrict, defaultOptions, genericParseJSON, fieldLabelModifier)
+import Data.Char (toLower)
 import System.IO (hPutStrLn, stderr)
 import System.Exit (exitFailure)
 
@@ -79,7 +77,14 @@ data Env = Env
     , envMainWsGroup  :: [String]
     } deriving (Show, Generic)
 
-instance FromJSON Env
+dropEnvPrefix :: String -> String
+dropEnvPrefix ('e':'n':'v':c:cs) = toLower c : cs
+dropEnvPrefix name = name
+
+instance FromJSON Env where
+    parseJSON = genericParseJSON defaultOptions
+        { fieldLabelModifier = dropEnvPrefix
+        }
 
 loadEnv :: IO Env
 loadEnv = do
