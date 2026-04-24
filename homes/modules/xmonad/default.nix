@@ -31,6 +31,10 @@ in
       type = lib.types.bool;
       default = true;
     };
+    mainWsGroup = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = [ "c1" ];
+    };
   };
 
   config.home.packages = with pkgs; [
@@ -62,6 +66,7 @@ in
       envPromptHeight = promptHeight;
       envTabsHeight = tabsHeight;
       envHiRes = hiRes;
+      envMainWsGroup = mainWsGroup;
     }
   );
 

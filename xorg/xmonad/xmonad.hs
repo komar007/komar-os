@@ -5,6 +5,7 @@ import System.Directory (getHomeDirectory)
 import System.FilePath ((</>))
 import qualified Data.Map as M
 import Data.Ratio ((%))
+import Data.Foldable (for_)
 import Foreign.C.String (castCharToCChar)
 import Graphics.X11.Xlib
 import Graphics.X11.Xlib.Extras
@@ -74,6 +75,7 @@ data Env = Env
     , envPromptHeight :: Int
     , envTabsHeight   :: Int
     , envHiRes        :: Bool
+    , envMainWsGroup  :: [String]
     } deriving (Show, Generic)
 
 instance FromJSON Env
@@ -251,18 +253,25 @@ setXProperty property value = withDisplay $ \d -> do
     where
         atom d value = io $ internAtom d value False
 
-sessionStartupHook = toggleStrutsOn ["c1", "c2", "c3"] <+>
-                     -- pre-set last workspace
-                     setWs "web1" <+>
-                     -- set starting workspace
-                     setWs "c1"
+addPhysicalWSGroup :: ScreenComparator -> WSGroupId -> [WorkspaceId] -> X ()
+addPhysicalWSGroup cmp name wids = do
+    msids <- mapM (getScreen cmp . P) [0 .. length wids - 1]
+    for_ (sequence msids) $ \sids ->
+        addRawWSGroup name (zip sids wids)
+
+sessionStartupHook env = toggleStrutsOn ["c1", "c2", "c3"] <+>
+                         -- pre-set last workspace
+                         setWs "web1" <+>
+                         -- set starting workspace
+                         addPhysicalWSGroup def "w" (envMainWsGroup env) <+>
+                         viewWSGroup "w"
 
 myConf env xmproc =
     docks $
     def {
         startupHook =
             setWMName "LG3D" <+>
-            doOnce sessionStartupHook <+>
+            doOnce (sessionStartupHook env) <+>
             setSessionStarted <+>
             setXProperty "__XMONAD_STARTUP_DONE__" "1",
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
