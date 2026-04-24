@@ -22,6 +22,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.XSelection
 import XMonad.Util.Loggers
+import XMonad.Util.SessionStart (doOnce, setSessionStarted)
 import XMonad.StackSet as W hiding(layout, workspaces)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.WorkspaceDir
@@ -114,10 +115,6 @@ toggleStrutsOn wss = do
     cur <- gets (W.currentTag . windowset)
     mapM_ (\ws -> windows (W.view ws) >> sendMessage ToggleStruts) wss
     windows (W.view cur)
-
-setStrutsDefaults :: X ()
-setStrutsDefaults = do
-    toggleStrutsOn ["c1", "c2", "c3"]
 
 #ifdef CONFIG_WORK
 iconDir = "/home/komar/.xmonad/dzen2_img_small/"
@@ -246,16 +243,19 @@ setXProperty property value = withDisplay $ \d -> do
     where
         atom d value = io $ internAtom d value False
 
+sessionStartupHook = toggleStrutsOn ["c1", "c2", "c3"] <+>
+                     -- pre-set last workspace
+                     setWs "web1" <+>
+                     -- set starting workspace
+                     setWs "c1"
+
 myConf env xmproc =
     docks $
     def {
         startupHook =
             setWMName "LG3D" <+>
-            setStrutsDefaults <+>
-            -- pre-set last workspace
-            setWs "web1" <+>
-            -- set starting workspace
-            setWs "c1" <+>
+            doOnce sessionStartupHook <+>
+            setSessionStarted <+>
             setXProperty "__XMONAD_STARTUP_DONE__" "1",
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
         layoutHook = myLayoutHook env,
