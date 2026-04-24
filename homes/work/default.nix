@@ -26,6 +26,18 @@ in
 
   home.pointerCursor.size = 16;
 
+  xmonad.config = {
+    font = "xft:Terminess Nerd Font Mono:pixelsize=12";
+    promptHeight = 12;
+    tabsHeight = 16;
+    hiRes = false;
+    mainWsGroup = [
+      "mail"
+      "c2"
+      "c3"
+    ];
+  };
+
   quirks.gitBranchSymbol = "⎇ ";
   alacritty.font = "Terminess Nerd Font Mono";
   alacritty.fontItalic = "ZedMono Nerd Font";
