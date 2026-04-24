@@ -26,4 +26,7 @@ in
   programs.shfmt.enable = true;
   programs.shfmt.useEditorConfig = true;
   settings.formatter.shfmt.includes = [ "**/bashrc" ];
+
+  programs.ormolu.enable = true;
+  programs.ormolu.ghcOpts = [ "ImportQualifiedPost" ];
 }
