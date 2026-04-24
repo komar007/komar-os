@@ -6,6 +6,7 @@ import System.FilePath ((</>))
 import qualified Data.Map as M
 import Data.Ratio ((%))
 import Data.Foldable (for_)
+import Data.Maybe (listToMaybe)
 import Foreign.C.String (castCharToCChar)
 import Graphics.X11.Xlib
 import Graphics.X11.Xlib.Extras
@@ -319,6 +320,22 @@ workspaceSKeys = map ("S-"++) workspaceKeys
 -- Workaround for toggle + scratchpad
 myToggle = windows $ W.view =<< W.tag . head . Prelude.filter ((\x -> x /= "NSP" && x /= "SP") . W.tag) . W.hidden
 
+currentPhysicalScreen :: ScreenComparator -> X (Maybe PhysicalScreen)
+currentPhysicalScreen sc = do
+    curSid <- gets (W.screen . W.current . windowset)
+    n      <- gets (length . W.screens . windowset)
+    let ps = map P [0 .. n - 1]
+    matches <- filterM
+        (\p -> fmap (== Just curSid) (getScreen sc p))
+        ps
+    pure (listToMaybe matches)
+
+keepCurrentScreen :: X () -> X ()
+keepCurrentScreen action = do
+    mp <- currentPhysicalScreen def
+    action
+    mapM_ (viewScreen def) mp
+
 xpconfig env = def {
     font        = envFont env,
     bgColor     = "#000000",
@@ -357,7 +374,7 @@ myKeys env xmproc = [
     ("M-<Return>",        promote),
     ("M-b",               sendMessage ToggleStruts),
     ("M-g n",             promptWSGroupAdd xpconfig' "name group: "),
-    ("M-g g",             promptWSGroupView xpconfig' "go to group: "),
+    ("M-g g",             promptWSGroupView' xpconfig' "go to group: "),
     ("M-g d",             promptWSGroupForget xpconfig' "drop group: "),
     ("M-f",               whenSingleScreen $ layoutScreens 2 (TwoPane 0.5 0.5)),
     ("M-S-f",             whenSingleScreen $ layoutScreens 2 (Mirror (TwoPane 0.5 0.5))),
@@ -378,3 +395,4 @@ myKeys env xmproc = [
         (sc, dir) <- [("[", ToLeft), ("]", ToRight)],
         (mod, func) <- [("M-", planeMove), ("M-S-", planeShift)]]
     where xpconfig' = xpconfig env
+          promptWSGroupView' xp label = keepCurrentScreen (promptWSGroupView xp label)
