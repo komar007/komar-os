@@ -123,6 +123,22 @@
       inherit nixosConfigurations;
       homeConfigurations = homeConfigurations false;
 
+      devShells = utils.eachSystem (
+        _: pkgs: {
+          default = pkgs.mkShell {
+            buildInputs = [
+              (pkgs.haskellPackages.ghcWithPackages (
+                haskellPackages: with haskellPackages; [
+                  xmonad
+                  xmonad-contrib
+                  aeson
+                ]
+              ))
+            ];
+          };
+        }
+      );
+
       formatter = utils.eachSystem (system: _: treefmtEval.${system}.config.build.wrapper);
       checks = utils.eachSystem (
         system: pkgs:
