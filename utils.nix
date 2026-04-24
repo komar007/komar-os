@@ -60,8 +60,7 @@ let
 in
 {
   inherit nixosConfiguration homeConfiguration;
-  eachSystem =
-    f: lib.genAttrs (import inputs.systems) (system: f system inputs.nixpkgs.legacyPackages.${system});
+  eachSystem = f: lib.genAttrs (import inputs.systems) (system: f system (pkgsStable system));
   filterSystem =
     system: lib.filterAttrs (_: config: config.pkgs.stdenv.hostPlatform.system == system);
 }
