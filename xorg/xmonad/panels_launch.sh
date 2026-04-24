@@ -49,7 +49,7 @@ elif [[ $CONFIG == laptop ]]; then
 	DZEN_X=400
 fi
 
-FN=$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''DZEN2_FONT')
-HEIGHT=$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT')
+FN=$(cpp -P -I"$DIR" - <<<'#include "bars.rc"'$'\n''DZEN2_FONT')
+HEIGHT=$(cpp -P -I"$DIR" - <<<'#include "bars.rc"'$'\n''HEIGHT')
 
 dzen2 -bg black -h "$HEIGHT" -x "$DZEN_X" -ta l -fn "$FN" -e "onstart=lower"

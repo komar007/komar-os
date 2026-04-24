@@ -1,4 +1,10 @@
-{ pkgs, pkgsUnstable, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsUnstable,
+  ...
+}:
 let
   wait_for_x_prop = pkgs.rustPlatform.buildRustPackage {
     pname = "wait_for_x_prop";
@@ -8,8 +14,26 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    xmonad-with-packages
+  options.xmonad.config = {
+    font = lib.mkOption {
+      type = lib.types.str;
+      default = "xft:JetBrainsMono Nerd Font:pixelsize=16";
+    };
+    promptHeight = lib.mkOption {
+      type = lib.types.int;
+      default = 18;
+    };
+    tabsHeight = lib.mkOption {
+      type = lib.types.int;
+      default = 24;
+    };
+    hiRes = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
+  };
+
+  config.home.packages = with pkgs; [
     wiremix
     xsel
     dzen2
@@ -22,13 +46,32 @@ in
     wait_for_x_prop
   ];
 
-  home.file.".wallpaper.png".source = builtins.fetchurl {
+  config.xsession.windowManager.xmonad = {
+    enable = true;
+    enableContribAndExtras = true;
+
+    extraPackages = haskellPackages: [
+      haskellPackages.aeson
+    ];
+  };
+
+  config.home.file.".config/xmonad.json".text = builtins.toJSON (
+    with config.xmonad.config;
+    {
+      envFont = font;
+      envPromptHeight = promptHeight;
+      envTabsHeight = tabsHeight;
+      envHiRes = hiRes;
+    }
+  );
+
+  config.home.file.".wallpaper.png".source = builtins.fetchurl {
     url = "https://raw.githubusercontent.com/D3Ext/aesthetic-wallpapers/refs/heads/main/images/minimal_gradient.png";
     sha256 = "sha256:1rp0w67a7v3fivjlh3ima2agbis6r1gj822mfln6z5n056c415jn";
   };
 
-  services.picom.enable = true;
-  services.picom = {
+  config.services.picom.enable = true;
+  config.services.picom = {
     backend = "glx";
     settings = {
       vsync = true;
@@ -49,5 +92,5 @@ in
     };
   };
 
-  services.picom.package = pkgsUnstable.picom;
+  config.services.picom.package = pkgsUnstable.picom;
 }

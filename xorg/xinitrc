@@ -11,12 +11,6 @@ else
 fi
 
 if [ "$CONFIG" = work ]; then
-	cpp -P -I"$DIR" -DCONFIG_WORK ~/.xmonad/xmonad.hs.in >~/.xmonad/xmonad.hs
-else
-	cpp -P -I"$DIR" -DCONFIG_DESKTOP ~/.xmonad/xmonad.hs.in >~/.xmonad/xmonad.hs
-fi
-
-if [ "$CONFIG" = work ]; then
 	xrandr --output HDMI-1 --rotate left --left-of DP-3
 	xrandr --output DP-1 --rotate left --right-of DP-3
 fi
@@ -45,11 +39,6 @@ pkill -9 -f panels_wrapper.sh
 (wait_for_x_prop __XMONAD_STARTUP_DONE__ 1 && (
 	picom &
 )) &
-
-# TODO: temporary envs (should eventually be managed by nix)
-export XMONAD_FONT="$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''XMONAD_FONT')"
-export HEIGHT="$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT')"
-export HEIGHT_TABS="$(cpp -P -I"$DIR" - <<<'#include "xmonad.rc"'$'\n''HEIGHT_TABS')"
 
 ulimit -s 16000 && xmonad
 

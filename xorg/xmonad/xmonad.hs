@@ -1,14 +1,14 @@
-#include <xmonad.rc>
-
 import System.IO
 import System.Exit (exitSuccess)
 import System.Environment (lookupEnv)
+import System.Directory (getHomeDirectory)
+import System.FilePath ((</>))
 import qualified Data.Map as M
 import Data.Ratio ((%))
 import Foreign.C.String (castCharToCChar)
 import Graphics.X11.Xlib
 import Graphics.X11.Xlib.Extras
-import Control.Monad (filterM)
+import Control.Monad (filterM, when)
 import XMonad
 import XMonad.ManageHook
 import XMonad.Hooks.SetWMName
@@ -61,26 +61,37 @@ import XMonad.Util.WorkspaceCompare
 
 import XMonad.Prompt.Input
 
-data Env = Env
-  { envFont       :: String
-  , envPromptHeight  :: Int
-  , envTabsHeight :: Int
-  }
 
-mkEnv :: IO Env
-mkEnv = do
-  font <- lookupEnv "XMONAD_FONT"
-  promptHeight <- lookupEnv "HEIGHT"
-  tabsHeight <- lookupEnv "HEIGHT_TABS"
-  return Env
-    { envFont = (maybe "xft:JetBrainsMono Nerd Font:pixelsize=16" id font)
-    , envPromptHeight = read (maybe "64" id promptHeight)
-    , envTabsHeight = read (maybe "64" id tabsHeight)
-    }
+import GHC.Generics (Generic)
+import Data.Aeson (FromJSON)
+
+import Data.Aeson (FromJSON, decodeFileStrict)
+import System.IO (hPutStrLn, stderr)
+import System.Exit (exitFailure)
+
+data Env = Env
+    { envFont         :: String
+    , envPromptHeight :: Int
+    , envTabsHeight   :: Int
+    , envHiRes        :: Bool
+    } deriving (Show, Generic)
+
+instance FromJSON Env
+
+loadEnv :: IO Env
+loadEnv = do
+    home <- getHomeDirectory
+    let config = home </> ".config/xmonad.json"
+    m <- decodeFileStrict config
+    case m of
+        Nothing -> do
+            hPutStrLn stderr "Invalid JSON in config.json"
+            exitFailure
+        Just cfg -> pure cfg
 
 main = do
     checkTopicConfig myTopicNames myTopicConfig
-    env <- mkEnv
+    env <- loadEnv
     xmproc <- spawnPipe $ "bash ~/.xmonad/panels_wrapper.sh"
     xmonad
         $ withUrgencyHookC myDzenUrgencyHook def {remindWhen = Every 2}
@@ -116,28 +127,25 @@ toggleStrutsOn wss = do
     mapM_ (\ws -> windows (W.view ws) >> sendMessage ToggleStruts) wss
     windows (W.view cur)
 
-#ifdef CONFIG_WORK
-iconDir = "/home/komar/.xmonad/dzen2_img_small/"
-#else
-iconDir = "/home/komar/.xmonad/dzen2_img_large/"
-#endif
+iconDir env = case envHiRes env of
+                False -> "/home/komar/.xmonad/dzen2_img_small/"
+                True -> "/home/komar/.xmonad/dzen2_img_large/"
 
 wrapSpace = wrap "^p(8)" "^p(1)"
-preIcon i = wrap ("^i(" ++ iconDir ++ i ++ ")") "^p(1)"
+preIcon env i = wrap ("^i(" ++ iconDir env ++ i ++ ")") "^p(1)"
+layoutNameToIcon env n = "^i(" ++ iconDir env ++ "lay" ++ n ++ ".xbm)"
 
-layoutNameToIcon n = "^i(" ++ iconDir ++ "lay" ++ n ++ ".xbm)"
-
-myLogHook pipe = dynamicLogWithPP $ dzenPP {
+myLogHook env pipe = dynamicLogWithPP $ dzenPP {
     ppSort    = fmap (.filterOutWs [scratchpadWorkspaceTag]) $ wsSorter,
     ppOutput  = hPutStrLn pipe,
     ppTitle   = dzenColor "#5d728d" "" . shorten 100,
-    ppCurrent = dzenColor "#719e4b" "#333333" . preIcon "dcur.xbm",
-    ppUrgent  = dzenColor "#a53333" "" . preIcon "durg.xbm" . dzenColor "#666666" "" . dzenStrip,
-    ppVisible = dzenColor "#719e4b" "#252525" . preIcon "dvis.xbm",
+    ppCurrent = dzenColor "#719e4b" "#333333" . preIcon env "dcur.xbm",
+    ppUrgent  = dzenColor "#a53333" "" . preIcon env "durg.xbm" . dzenColor "#666666" "" . dzenStrip,
+    ppVisible = dzenColor "#719e4b" "#252525" . preIcon env "dvis.xbm",
     ppHidden  = dzenColor "#444444" "" . wrapSpace,
     ppWsSep   = "^p(2)",
     ppSep     = dzenColor "#aaaaaa" "" "^p(3)|^p(3)",
-    ppLayout  = dzenColor "#c0712c" "" . layoutNameToIcon
+    ppLayout  = dzenColor "#c0712c" "" . layoutNameToIcon env
 } where
     wsSorter = getSortByXineramaPhysicalRule horizontalScreenOrderer
 
@@ -259,7 +267,7 @@ myConf env xmproc =
             setXProperty "__XMONAD_STARTUP_DONE__" "1",
         manageHook = manageSpawn <+> myManageHook <+> dynamicMasterHook,
         layoutHook = myLayoutHook env,
-        logHook = myLogHook xmproc,
+        logHook = myLogHook env xmproc,
         focusFollowsMouse = False,
         modMask = mod4Mask,
         normalBorderColor = "#000000",
@@ -312,6 +320,11 @@ xpconfig env = def {
     height = fromIntegral $ envPromptHeight env
 }
 
+whenSingleScreen :: X () -> X ()
+whenSingleScreen action = do
+    n <- gets (length . W.screens . windowset)
+    when (n == 1) action
+
 myKeys env xmproc = [
     ("M-m",               spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi"),
     ("M-S-m",             io exitSuccess),
@@ -337,11 +350,9 @@ myKeys env xmproc = [
     ("M-g n",             promptWSGroupAdd xpconfig' "name group: "),
     ("M-g g",             promptWSGroupView xpconfig' "go to group: "),
     ("M-g d",             promptWSGroupForget xpconfig' "drop group: "),
-#ifndef CONFIG_WORK
-    ("M-f",               layoutScreens 2 (TwoPane 0.5 0.5)),
-    ("M-S-f",             layoutScreens 2 (Mirror (TwoPane 0.5 0.5))),
+    ("M-f",               whenSingleScreen $ layoutScreens 2 (TwoPane 0.5 0.5)),
+    ("M-S-f",             whenSingleScreen $ layoutScreens 2 (Mirror (TwoPane 0.5 0.5))),
     ("M-v",               rescreen),
-#endif
     ("M-S-<Backspace>",   do
                               focusUrgent
                               spawnHere "~/.xmonad/noblink.sh"

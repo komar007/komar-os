@@ -1,10 +1,8 @@
-#include <xmonad_helper.inc>
+#include <bars_helper.inc>
 
 #define XMOBAR_FONT JetBrainsMono Nerd Font 12
 #define DZEN2_FONT JetBrainsMono Nerd Font:pixelsize=16
-#define XMONAD_FONT xft:JetBrainsMono Nerd Font:pixelsize=16
 #define DEFAULT_FONT JetBrainsMono Nerd Font:pixelsize=16
 #define ICON_OFFSET -2
 #define HEIGHT 18
-#define HEIGHT_TABS 24
 #define YPOS 0

@@ -1,4 +1,4 @@
-#include <xmonad.rc>
+#include <bars.rc>
 
 Config {
     font = xstr(XMOBAR_FONT),
