@@ -69,25 +69,30 @@ import XMonad.Util.WorkspaceCompare
     getSortByXineramaPhysicalRule,
   )
 
-data Env = Env
-  { envFont :: String,
-    envPromptHeight :: Int,
-    envTabsHeight :: Int,
-    envHiRes :: Bool,
-    envMainWsGroup :: [String]
+data Cfg = Cfg
+  { cfgFont :: String,
+    cfgPromptHeight :: Int,
+    cfgTabsHeight :: Int,
+    cfgHiRes :: Bool,
+    cfgMainWsGroup :: [String]
   }
   deriving (Show, Generic)
 
 dropEnvPrefix :: String -> String
-dropEnvPrefix ('e' : 'n' : 'v' : c : cs) = toLower c : cs
+dropEnvPrefix ('c' : 'f' : 'g' : c : cs) = toLower c : cs
 dropEnvPrefix name = name
 
-instance FromJSON Env where
+instance FromJSON Cfg where
   parseJSON =
     genericParseJSON
       defaultOptions
         { fieldLabelModifier = dropEnvPrefix
         }
+
+data Env = Env
+  { cfg :: Cfg,
+    home :: String
+  }
 
 loadEnv :: IO Env
 loadEnv = do
@@ -98,7 +103,7 @@ loadEnv = do
     Nothing -> do
       hPutStrLn stderr "Invalid JSON in config.json"
       exitFailure
-    Just cfg -> pure cfg
+    Just cfg -> pure Env {cfg, home}
 
 main :: IO ()
 main = do
@@ -162,9 +167,10 @@ toggleStrutsOn wss = do
   windows (W.view cur)
 
 iconDir :: Env -> String
-iconDir env = case envHiRes env of
-  False -> "/home/komar/.xmonad/dzen2_img_small/"
-  True -> "/home/komar/.xmonad/dzen2_img_large/"
+iconDir env =
+  home env </> case cfgHiRes . cfg $ env of
+    False -> ".xmonad/dzen2_img_small/"
+    True -> ".xmonad/dzen2_img_large/"
 
 wrapSpace :: String -> String
 wrapSpace = wrap "^p(8)" "^p(1)"
@@ -172,8 +178,8 @@ wrapSpace = wrap "^p(8)" "^p(1)"
 preIcon :: Env -> String -> String -> String
 preIcon env i = wrap ("^i(" ++ iconDir env ++ i ++ ")") "^p(1)"
 
-layoutNameToIcon :: Env -> String -> String
-layoutNameToIcon env n = "^i(" ++ iconDir env ++ "lay" ++ n ++ ".xbm)"
+layoutIcon :: Env -> String -> String
+layoutIcon env n = "^i(" ++ iconDir env ++ "lay" ++ n ++ ".xbm)"
 
 myLogHook :: Env -> GHC.Internal.IO.Handle.Types.Handle -> X ()
 myLogHook env pipe =
@@ -182,16 +188,17 @@ myLogHook env pipe =
       { ppSort = fmap (. filterOutWs [scratchpadWorkspaceTag]) $ wsSorter,
         ppOutput = hPutStrLn pipe,
         ppTitle = dzenColor "#5d728d" "" . shorten 100,
-        ppCurrent = dzenColor "#719e4b" "#333333" . preIcon env "dcur.xbm",
-        ppUrgent = dzenColor "#a53333" "" . preIcon env "durg.xbm" . dzenColor "#666666" "" . dzenStrip,
-        ppVisible = dzenColor "#719e4b" "#252525" . preIcon env "dvis.xbm",
+        ppCurrent = dzenColor "#719e4b" "#333333" . preIcon' "dcur.xbm",
+        ppUrgent = dzenColor "#a53333" "" . preIcon' "durg.xbm" . dzenColor "#666666" "" . dzenStrip,
+        ppVisible = dzenColor "#719e4b" "#252525" . preIcon' "dvis.xbm",
         ppHidden = dzenColor "#444444" "" . wrapSpace,
         ppWsSep = "^p(2)",
         ppSep = dzenColor "#aaaaaa" "" "^p(3)|^p(3)",
-        ppLayout = dzenColor "#c0712c" "" . layoutNameToIcon env
+        ppLayout = dzenColor "#c0712c" "" . layoutIcon env
       }
   where
     wsSorter = getSortByXineramaPhysicalRule horizontalScreenOrderer
+    preIcon' = preIcon env
 
 scratchpads :: [NamedScratchpad]
 scratchpads =
@@ -255,7 +262,7 @@ myConditions =
 tabTheme :: Env -> Theme
 tabTheme env =
   def
-    { fontName = "xft:" ++ (envFont env),
+    { fontName = "xft:" ++ (cfgFont . cfg $ env),
       activeColor = "#111111",
       inactiveColor = "#000000",
       urgentColor = "#222222",
@@ -265,7 +272,7 @@ tabTheme env =
       activeTextColor = "#c4a000",
       inactiveTextColor = "#aaaaaa",
       urgentTextColor = "#dd0000",
-      decoHeight = fromIntegral $ envTabsHeight env
+      decoHeight = fromIntegral $ cfgTabsHeight . cfg $ env
     }
 
 data TopicItem = TI
@@ -335,7 +342,7 @@ myStartupHook env =
   doOnce
     ( toggleStrutsOn ["c1", "c2", "c3"]
         <+> setWs "web1"
-        <+> addPhysicalWSGroup def "w" (envMainWsGroup env)
+        <+> addPhysicalWSGroup def "w" (cfgMainWsGroup . cfg $ env)
         <+> viewWSGroup "w"
     )
     <+> setSessionStarted
@@ -386,7 +393,7 @@ myDzenUrgencyHook env =
           "-ta",
           "r",
           "-fn",
-          envFont env,
+          cfgFont . cfg $ env,
           "-x",
           "830"
         ]
@@ -444,13 +451,13 @@ keepCurrentScreen action = do
 xpconfig :: Env -> XPConfig
 xpconfig env =
   def
-    { font = envFont env,
+    { font = cfgFont . cfg $ env,
       bgColor = "#000000",
       fgColor = "#aaaaaa",
       bgHLight = "#cccccc",
       fgHLight = "#000000",
       promptBorderWidth = 0,
-      height = fromIntegral $ envPromptHeight env
+      height = fromIntegral $ cfgPromptHeight . cfg $ env
     }
 
 whenSingleScreen :: X () -> X ()
