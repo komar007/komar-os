@@ -390,7 +390,7 @@ instance UrgencyHook MyDzenUrgencyHook where
 myDzenUrgencyHook :: Env -> MyDzenUrgencyHook
 myDzenUrgencyHook env =
   MyDzenUrgencyHook
-    { Main.duration = seconds 1,
+    { Main.duration = seconds 5,
       Main.args =
         [ "-bg",
           "black",
@@ -401,7 +401,7 @@ myDzenUrgencyHook env =
           "-fn",
           dzenFont env,
           "-x",
-          "830"
+          "-1000"
         ]
     }
 
