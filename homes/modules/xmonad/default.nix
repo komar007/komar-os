@@ -17,7 +17,7 @@ in
   options.xmonad.config = {
     font = lib.mkOption {
       type = lib.types.str;
-      default = "xft:JetBrainsMono Nerd Font:pixelsize=16";
+      default = "JetBrainsMono Nerd Font:pixelsize=16";
     };
     promptHeight = lib.mkOption {
       type = lib.types.int;

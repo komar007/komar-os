@@ -255,7 +255,7 @@ myConditions =
 tabTheme :: Env -> Theme
 tabTheme env =
   def
-    { fontName = envFont env,
+    { fontName = "xft:" ++ (envFont env),
       activeColor = "#111111",
       inactiveColor = "#000000",
       urgentColor = "#222222",
@@ -374,8 +374,8 @@ instance UrgencyHook MyDzenUrgencyHook where
       flash name index =
         dzenWithArgs (dzenColor "#a53333" "" index ++ dzenColor "#444444" "" ": " ++ dzenColor "#5d728d" "" (show name)) a d
 
-myDzenUrgencyHook :: MyDzenUrgencyHook
-myDzenUrgencyHook =
+myDzenUrgencyHook :: Env -> MyDzenUrgencyHook
+myDzenUrgencyHook env =
   MyDzenUrgencyHook
     { Main.duration = seconds 1,
       Main.args =
@@ -386,7 +386,7 @@ myDzenUrgencyHook =
           "-ta",
           "r",
           "-fn",
-          "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*",
+          envFont env,
           "-x",
           "830"
         ]

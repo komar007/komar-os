@@ -27,7 +27,7 @@ in
   home.pointerCursor.size = 16;
 
   xmonad.config = {
-    font = "xft:Terminess Nerd Font Mono:pixelsize=12";
+    font = "Terminess Nerd Font Mono:pixelsize=12";
     promptHeight = 12;
     tabsHeight = 16;
     hiRes = false;
