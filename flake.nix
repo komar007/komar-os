@@ -72,7 +72,6 @@
       url = "github:komar007/dot-tmux";
       inputs.flake-utils.follows = "flake-utils";
       inputs.treefmt-nix.follows = "treefmt-nix";
-      inputs.nixpkgs-nixfmt.follows = "nixpkgs";
     };
   };
 
