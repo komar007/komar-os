@@ -133,6 +133,10 @@
                   aeson
                 ]
               ))
+              # HLS cannot work with GHC from a differet nixpkgs build because of ABI
+              # incompatibility, even if the versions match, so it is provided here and the editor
+              # is expected to pick it up from PATH.
+              pkgs.haskell-language-server
             ];
           };
         }
