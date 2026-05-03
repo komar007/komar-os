@@ -105,6 +105,12 @@ loadEnv = do
       exitFailure
     Just cfg -> pure Env {cfg, home}
 
+dzenFont :: Env -> String
+dzenFont env = cfgFont . cfg $ env
+
+xmonadFont :: Env -> [Char]
+xmonadFont env = "xft:" ++ (cfgFont . cfg $ env)
+
 main :: IO ()
 main = do
   checkTopicConfig myTopicNames myTopicConfig
@@ -262,7 +268,7 @@ myConditions =
 tabTheme :: Env -> Theme
 tabTheme env =
   def
-    { fontName = "xft:" ++ (cfgFont . cfg $ env),
+    { fontName = xmonadFont env,
       activeColor = "#111111",
       inactiveColor = "#000000",
       urgentColor = "#222222",
@@ -393,7 +399,7 @@ myDzenUrgencyHook env =
           "-ta",
           "r",
           "-fn",
-          cfgFont . cfg $ env,
+          dzenFont env,
           "-x",
           "830"
         ]
@@ -451,7 +457,7 @@ keepCurrentScreen action = do
 xpconfig :: Env -> XPConfig
 xpconfig env =
   def
-    { font = cfgFont . cfg $ env,
+    { font = xmonadFont env,
       bgColor = "#000000",
       fgColor = "#aaaaaa",
       bgHLight = "#cccccc",
