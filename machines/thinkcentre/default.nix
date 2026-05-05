@@ -2,9 +2,10 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./virtualization.nix
+
     ../modules/grub2.nix
     ../modules/splashscreen.nix
-
     ../modules/sops
     ../modules/openssh.nix
     ../modules/xserver.nix
@@ -75,11 +76,6 @@
     enable = true;
     document-root = "/var/www";
   };
-
-  programs.virt-manager.enable = true;
-  users.users.komar.extraGroups = [ "libvirtd" ];
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
 
   system.stateVersion = "23.11";
 }
