@@ -47,6 +47,7 @@ let
         configurationName = name;
         inherit inputs nixosUserConfig;
         pkgsUnstable = pkgsUnstable system;
+        pkgsDirenvInstant = inputs.direnv-instant.packages.${system};
         dotNvimModule = inputs.dot-nvim.homeManagerModules.${system}.default;
         tmuxModule = inputs.dot-tmux.homeManagerModules.${system}.default;
         tmuxAlacrittyModule = inputs.dot-tmux.homeManagerModules.${system}.alacrittyKeyBinds;
