@@ -41,6 +41,7 @@
     wine
     jazz2
     calibre
+    flashgbx
   ];
 
   home.stateVersion = "23.11";

@@ -19,6 +19,7 @@
   home.packages = with pkgs; [
     exiftool
     signal-desktop
+    flashgbx
   ];
 
   home.stateVersion = "24.11";

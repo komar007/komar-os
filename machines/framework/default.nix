@@ -31,6 +31,10 @@
     criticalPowerAction = "Hibernate";
   };
 
+  users.users.komar.extraGroups = [
+    "dialout"
+  ];
+
   networking = {
     hostName = "nixos-frmwrk";
     networkmanager.enable = true;

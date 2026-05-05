@@ -57,6 +57,10 @@
       };
     };
 
+  users.users.komar.extraGroups = [
+    "dialout"
+  ];
+
   networking = {
     hostName = "nixos-thnkctre";
     networkmanager.enable = true;
