@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, pkgsUnstable, ... }:
 {
   imports = [
     ../common_desktop.nix
@@ -26,6 +26,8 @@
   };
 
   home.packages = with pkgs; [
+    pkgsUnstable.codex
+
     super-slicer-beta
 
     exiftool
