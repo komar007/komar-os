@@ -240,6 +240,9 @@ bind -x '"\C-g":_search_global_history'
 bind -x '"\C-r":_search_global_history "--exact --no-extended --bind ctrl-r:up"'
 
 PROMPT_COMMAND="_prompt_command"
+# Because we have just started with a clean PROMPT_COMMAND above (even on .bashrc reload),
+# direnv-instant needs to be tricked into re-adding itself to it.
+unset __DIRENV_INSTANT_HOOKED
 
 # ENVIRONMENT VARIABLES
 
