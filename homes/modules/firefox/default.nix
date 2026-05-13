@@ -9,7 +9,7 @@ let
   ffUtils = import ./utils.nix { inherit config lib; };
   firefoxAddons = pkgs.nur.repos.rycee.firefox-addons;
 
-  homeAssistant = firefoxAddons.buildFirefoxXpiAddon {
+  home-assistant = firefoxAddons.buildFirefoxXpiAddon {
     pname = "home-assistant";
     version = "0.5.0";
     addonId = "home-assistant@bokub.dev";
@@ -20,6 +20,20 @@ let
       description = "";
       license = licenses.mit;
       mozPermissions = [ ];
+      platforms = platforms.all;
+    };
+  };
+  consumer-rights-wiki = firefoxAddons.buildFirefoxXpiAddon {
+    pname = "consumer-rights-wiki";
+    version = "1.0.35";
+    addonId = "@crw-extension-firefox";
+    url = "https://addons.mozilla.org/firefox/downloads/file/4790089/consumer_rights_wiki-1.0.35.xpi";
+    sha256 = "sha256-AJfCXbBowkajU1FRw71fPOC7nyCYjvZaOkhFVW+ZO0M=";
+    meta = with lib; {
+      homepage = "https://github.com/FULU-Foundation/CRW-Extension";
+      description = "";
+      license = licenses.mit;
+      mozPermissions = [ "tabs" ];
       platforms = platforms.all;
     };
   };
@@ -76,7 +90,7 @@ in
             (ffUtils.extensionIconEntry firefoxAddons.ublock-origin)
             "unified-extensions-button"
             "fxa-toolbar-menu-button"
-            (ffUtils.extensionIconEntry homeAssistant)
+            (ffUtils.extensionIconEntry home-assistant)
           ];
           "toolbar-menubar" = [ "menubar-items" ];
           "vertical-tabs" = [ "tabbrowser-tabs" ];
@@ -216,7 +230,8 @@ in
     extensions.packages = with firefoxAddons; [
       firenvim
       ublock-origin
-      homeAssistant
+      home-assistant
+      consumer-rights-wiki
       container-proxy
     ];
   };
