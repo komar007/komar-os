@@ -7,6 +7,7 @@ let
     port = 22;
     user = "komar";
     forwardX11 = true;
+    forwardX11Trusted = true;
   };
 in
 {
