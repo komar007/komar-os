@@ -72,10 +72,7 @@ in
     }
   );
 
-  config.home.file.".wallpaper.png".source = builtins.fetchurl {
-    url = "https://raw.githubusercontent.com/D3Ext/aesthetic-wallpapers/refs/heads/main/images/minimal_gradient.png";
-    sha256 = "sha256:1rp0w67a7v3fivjlh3ima2agbis6r1gj822mfln6z5n056c415jn";
-  };
+  config.home.file.".wallpaper.png".source = ./anshul-cT0ol6ogBeM-unsplash.jpg;
 
   config.services.picom.enable = true;
   config.services.picom = {
