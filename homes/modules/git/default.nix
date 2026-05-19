@@ -79,7 +79,11 @@ in
       default = "matching";
     };
     merge = {
+      renamelimit = 10000;
       conflictStyle = "zdiff3";
+    };
+    diff = {
+      renamelimit = 10000;
     };
   };
 
