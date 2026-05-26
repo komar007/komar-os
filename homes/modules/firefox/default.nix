@@ -114,6 +114,12 @@ in
       #browser, body, #main-window, #nav-bar, #navigator-toolbox {
         background-color: rgba(0, 0, 0, 0) !important;
       }
+      #tabbrowser-tabbox {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+      }
+      #tabbrowser-tabbox .browserContainer {
+        border-radius: 16px !important;
+      }
       #nav-bar {
         background: linear-gradient(
           0deg,
