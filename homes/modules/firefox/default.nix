@@ -137,6 +137,11 @@ in
         border-inline: none !important;
         background-color: rgba(0, 0, 0, 0.7) !important;
       }
+
+      /* remove close tab icons */
+      tab.tabbrowser-tab .tab-close-button {
+        display: none !important;
+      }
     '';
 
     userContent = lib.strings.concatStringsSep "\n" config.firefox.userContent;
