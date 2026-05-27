@@ -39,6 +39,22 @@ in
     tig
   ];
 
+  programs.git.settings.tig = {
+    "mouse" = true;
+
+    "show-untracked" = false;
+    "vertical-split" = false;
+
+    "main-view-date" = "custom";
+    "main-view-date-format" = "%Y-%m-%d";
+    "main-view" = "date:relative author:full commit-title:graph=true,refs=true";
+    "diff-view" = "line-number:display=false text:commit-title-overflow=true";
+    "git-colors" = false;
+    "truncation-delimiter" = "~";
+
+    "commit-order" = "author-date";
+  };
+
   programs.git.settings."tig \"bind\"" = {
     main = mainDiffBinds;
     diff = mainDiffBinds;
@@ -50,20 +66,6 @@ in
 
   home.file.".config/tig/config" = {
     text = ''
-      set mouse = true
-
-      set show-untracked = false
-      set vertical-split = false
-
-      set main-view-date = custom
-      set main-view-date-format = "%Y-%m-%d"
-      set main-view = date:relative author:full commit-title:graph=true,refs=true
-      set diff-view = line-number:display=false text:commit-title-overflow=true
-      set git-colors = no
-      set truncation-delimiter  = ~
-
-      set commit-order = author-date
-
       # Color base: https://github.com/ninjabreakbot/tig-gruvbox
 
       # General colors
