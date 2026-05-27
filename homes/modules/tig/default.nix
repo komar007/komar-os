@@ -1,46 +1,47 @@
 { pkgs, ... }:
+let
+  yank = pkgs.writeShellApplication {
+    name = "yank";
+    runtimeInputs = with pkgs; [
+      tmux
+      xsel
+    ];
+    text = ''tmux set-buffer "$1" && xsel --primary -i <<< "$1"'';
+  };
+  showJiraIssue = pkgs.writeShellApplication {
+    name = "show-jira-issue";
+    runtimeInputs = with pkgs; [ jira-cli-go ];
+    text = ''
+      SUBJECT=$(git show -s --format=%s "$1")
+      ISSUE=$(sed -r 's/^(Revert(\^[0-9]+)? ")?\[[BIOF]\] *\[?([A-Z]+-[0-9]+).*/\3/' <<< "$SUBJECT")
+      jira issue view --comments 100 "$ISSUE"
+    '';
+  };
+  mainDiffBinds = [
+    "R ?git revert %(commit)"
+    "P ?git pg %(commit)"
+    "F ?git commit --fixup %(commit)"
+    "Y @${pkgs.lib.getExe yank} %(commit)"
+    "J >${pkgs.lib.getExe showJiraIssue} %(commit)"
+  ];
+in
 {
   home.packages = with pkgs; [
     tig
   ];
 
-  home.file.".config/tig/config".text =
-    let
-      showJiraIssue = (
-        pkgs.writeShellApplication {
-          name = "show-jira-issue";
-          runtimeInputs = with pkgs; [ jira-cli-go ];
-          text = ''
-            SUBJECT=$(git show -s --format=%s "$1")
-            ISSUE=$(sed -r 's/^(Revert(\^[0-9]+)? ")?\[[BIOF]\] *\[?([A-Z]+-[0-9]+).*/\3/' <<< "$SUBJECT")
-            jira issue view --comments 100 "$ISSUE"
-          '';
-        }
-      );
-      yank = (
-        pkgs.writeShellApplication {
-          name = "yank";
-          runtimeInputs = with pkgs; [
-            tmux
-            xsel
-          ];
-          text = ''tmux set-buffer "$1" && xsel --primary -i <<< "$1"'';
-        }
-      );
-    in
-    ''
+  programs.git.settings."tig \"bind\"" = {
+    main = mainDiffBinds;
+    diff = mainDiffBinds;
+    generic = [
+      "<Ctrl-f> move-page-down"
+      "<Ctrl-b> move-page-up"
+    ];
+  };
+
+  home.file.".config/tig/config" = {
+    text = ''
       set mouse = true
-
-      bind generic <Ctrl-f> move-page-down
-      bind generic <Ctrl-b> move-page-up
-
-      bind main R ?git revert %(commit)
-      bind main P ?git pg %(commit)
-      bind main Y @${pkgs.lib.getExe yank} %(commit)
-      bind reflog Y @${pkgs.lib.getExe yank} %(commit)
-      bind main J >${pkgs.lib.getExe showJiraIssue} %(commit)
-      bind reflog J >${pkgs.lib.getExe showJiraIssue} %(commit)
-      bind main F ?git commit --fixup %(commit)
 
       set show-untracked = false
       set vertical-split = false
@@ -154,4 +155,5 @@
       color palette-12  72 default
       color palette-13 106 default
     '';
+  };
 }
