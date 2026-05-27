@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgsUnstable, ... }:
 let
   yank = pkgs.writeShellApplication {
     name = "yank";
@@ -17,12 +17,21 @@ let
       jira issue view --comments 100 "$ISSUE"
     '';
   };
+  showGerritChange = pkgs.writeShellApplication {
+    name = "show-gerrit-change";
+    runtimeInputs = with pkgsUnstable; [ git-gr ];
+    text = ''
+      CHID=$(git show -s --format=%B "$1" | git interpret-trailers --parse | sed -n 's/^Change-Id: //p')
+      git gr view "$CHID"
+    '';
+  };
   mainDiffBinds = [
     "R ?git revert %(commit)"
     "P ?git pg %(commit)"
     "F ?git commit --fixup %(commit)"
     "Y @${pkgs.lib.getExe yank} %(commit)"
     "J >${pkgs.lib.getExe showJiraIssue} %(commit)"
+    "G >${pkgs.lib.getExe showGerritChange} %(commit)"
   ];
 in
 {
