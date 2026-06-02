@@ -131,6 +131,10 @@ in
       #sidebar-main, #sidebar-launcher-splitter {
         background-color: rgba(0, 0, 0, 0.7) !important;
       }
+      .split-view-splitter {
+        background-color: transparent !important;
+        border: none !important;
+      }
 
       /* semi-transparent "tabs from other devices" et al. */
       #sidebar {
