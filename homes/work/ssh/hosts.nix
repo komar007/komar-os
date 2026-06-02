@@ -14,32 +14,35 @@ let
       serverAliveInterval = 5;
     });
 in
-builtins.foldl' lib.recursiveUpdate { } [
-  (secretMatchBlock "thinkcentre" (hostname: {
-    host = "thinkcentre-tunnel";
-    inherit hostname;
-    port = 2022;
-    user = "komar";
-    serverAliveInterval = 30;
-    serverAliveCountMax = 3;
-    remoteForwards = [
-      {
-        bind.port = (import ./matchblock.nix).port;
-        host.address = "localhost";
-        host.port = 22;
-      }
-    ];
-    extraOptions = {
-      "ExitOnForwardFailure" = "yes";
-      "RemoteForward" = "9999"; # cannot be done using remoteForwards, host cannot be null
+builtins.foldl' lib.recursiveUpdate
+  {
+    programs.ssh.matchBlocks.adb_devs = {
+      host = "devs.adbglobal.com";
+      hostname = "devs.adbglobal.com";
+      user = "M.Trybus";
     };
-  }))
-  (secretMatchBlock "adb_devs" (hostname: {
-    host = hostname;
-    inherit hostname;
-    user = "M.Trybus";
-  }))
-  (prismeDeployment "integration" "adb-users")
-  (prismeDeployment "nightly" "adb-admins")
-  (prismeDeployment "perftest" "ubuntu")
-]
+  }
+  [
+    (secretMatchBlock "thinkcentre" (hostname: {
+      host = "thinkcentre-tunnel";
+      inherit hostname;
+      port = 2022;
+      user = "komar";
+      serverAliveInterval = 30;
+      serverAliveCountMax = 3;
+      remoteForwards = [
+        {
+          bind.port = (import ./matchblock.nix).port;
+          host.address = "localhost";
+          host.port = 22;
+        }
+      ];
+      extraOptions = {
+        "ExitOnForwardFailure" = "yes";
+        "RemoteForward" = "9999"; # cannot be done using remoteForwards, host cannot be null
+      };
+    }))
+    (prismeDeployment "integration" "adb-users")
+    (prismeDeployment "nightly" "adb-admins")
+    (prismeDeployment "perftest" "ubuntu")
+  ]
