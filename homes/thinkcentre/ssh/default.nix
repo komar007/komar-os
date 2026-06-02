@@ -13,6 +13,7 @@ in
     Port = 22;
     User = "komar";
     ForwardX11 = true;
+    ForwardX11Trusted = true;
   };
   programs.ssh.settings.adb-jumphost = {
     HostName = "192.168.5.68";
