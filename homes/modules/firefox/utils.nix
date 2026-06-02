@@ -30,6 +30,7 @@ rec {
   extensionSettingsFile =
     let
       profileDir = config.programs.firefox.profiles.${profileName}.path;
+      extDataDir = "${config.programs.firefox.configPath}/${profileDir}/browser-extension-data";
     in
-    pkg: ".mozilla/firefox/${profileDir}/browser-extension-data/${extensionId pkg}/storage.js";
+    pkg: "${extDataDir}/${extensionId pkg}/storage.js";
 }

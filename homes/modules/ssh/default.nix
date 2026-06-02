@@ -9,9 +9,9 @@ let
     enable = true;
     enableDefaultConfig = false;
 
-    matchBlocks."*" = {
-      serverAliveInterval = 100;
-      serverAliveCountMax = 3;
+    settings."*" = {
+      ServerAliveInterval = 100;
+      ServerAliveCountMax = 3;
     };
   };
 

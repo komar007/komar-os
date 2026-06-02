@@ -1,46 +1,37 @@
 { config, lib, ... }:
 let
   p = config.sops.placeholder;
-  secretMatchBlock = sopsAddressId: block: {
+  secretMatchBlock = host: sopsAddressId: block: {
     sops.secrets."public_addr/${sopsAddressId}" = { };
-    programs.ssh.matchBlocks.${"__smb__" + sopsAddressId} = block p."public_addr/${sopsAddressId}";
+    programs.ssh.settings.${host} = block p."public_addr/${sopsAddressId}";
   };
   prismeDeployment =
-    name: user:
-    secretMatchBlock "prisme/${name}" (hostname: {
-      host = name;
-      inherit hostname user;
-      port = 2222;
-      serverAliveInterval = 5;
+    name: User:
+    secretMatchBlock name "prisme/${name}" (HostName: {
+      inherit HostName User;
+      Port = 2222;
+      ServerAliveInterval = 5;
     });
 in
 builtins.foldl' lib.recursiveUpdate
   {
-    programs.ssh.matchBlocks.adb_devs = {
-      host = "devs.adbglobal.com";
-      hostname = "devs.adbglobal.com";
-      user = "M.Trybus";
+    programs.ssh.settings."devs.adbglobal.com" = {
+      HostName = "devs.adbglobal.com";
+      User = "M.Trybus";
     };
   }
   [
-    (secretMatchBlock "thinkcentre" (hostname: {
-      host = "thinkcentre-tunnel";
-      inherit hostname;
-      port = 2022;
-      user = "komar";
-      serverAliveInterval = 30;
-      serverAliveCountMax = 3;
-      remoteForwards = [
-        {
-          bind.port = (import ./matchblock.nix).port;
-          host.address = "localhost";
-          host.port = 22;
-        }
+    (secretMatchBlock "thinkcentre-tunnel" "thinkcentre" (HostName: {
+      inherit HostName;
+      Port = 2022;
+      User = "komar";
+      ServerAliveInterval = 30;
+      ServerAliveCountMax = 3;
+      RemoteForward = [
+        "[localhost]:${toString (import ./matchblock.nix).Port} [localhost]:22"
+        "9999"
       ];
-      extraOptions = {
-        "ExitOnForwardFailure" = "yes";
-        "RemoteForward" = "9999"; # cannot be done using remoteForwards, host cannot be null
-      };
+      ExitOnForwardFailure = true;
     }))
     (prismeDeployment "integration" "adb-users")
     (prismeDeployment "nightly" "adb-admins")

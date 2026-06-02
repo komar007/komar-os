@@ -23,9 +23,9 @@
     HandleLidSwitch = "suspend-then-hibernate";
     HandlePowerKey = "hibernate";
   };
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=1800
-  '';
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "30min";
+  };
   services.upower = {
     enable = true;
     criticalPowerAction = "Hibernate";

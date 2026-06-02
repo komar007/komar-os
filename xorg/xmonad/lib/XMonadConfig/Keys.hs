@@ -59,7 +59,7 @@ myKeys env =
     ("M-g d", promptWSGroupForget xpconfig' "drop group: "),
     ("M-f", whenSingleScreen $ layoutScreens 2 (TwoPane 0.5 0.5)),
     ("M-S-f", whenSingleScreen $ layoutScreens 2 (Mirror (TwoPane 0.5 0.5))),
-    ("M-v", rescreen),
+    ("M-v", XMonad.rescreen),
     ( "M-S-<Backspace>",
       do
         focusUrgent

@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  pkgsUnstable,
   nixosUserConfig,
   inputs,
   ...
@@ -74,7 +73,7 @@ in
     cmake
     gcc
 
-    pkgsUnstable.btop # 1.4.6 fixes a sorting issue in 1.4.5
+    btop
     htop
 
     timg

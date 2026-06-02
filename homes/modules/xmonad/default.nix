@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  pkgsUnstable,
   ...
 }:
 let
@@ -96,5 +95,5 @@ in
     };
   };
 
-  config.services.picom.package = pkgsUnstable.picom;
+  config.services.picom.package = pkgs.picom;
 }

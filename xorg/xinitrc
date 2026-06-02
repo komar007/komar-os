@@ -40,7 +40,7 @@ pkill -9 -f panels_wrapper.sh
 	picom &
 )) &
 
-ulimit -s 16000 && xmonad
+xmonad
 
 # clean up xmonad's mess
 pkill -9 -f panels_wrapper.sh

@@ -1,35 +1,28 @@
 { config, ... }:
 let
   utils = import ../../modules/ssh/utils.nix { };
-  workMatchBlock = import ../../work/ssh/matchblock.nix;
-  adbJumphost = {
-    host = "adb-jumphost";
-    hostname = "192.168.5.68";
-    port = 22;
-    user = "M.Trybus";
-  };
 in
 {
   home.file.".ssh/id_rsa.pub".source = ./ssh_id;
   home.file.".ssh/id_rsa".source =
     config.lib.file.mkOutOfStoreSymlink "/run/secrets/users/${config.home.username}/ssh_key";
 
-  programs.ssh.matchBlocks.work-pc = {
-    host = "work-vpn";
-    hostname = "192.168.134.42";
-    proxyJump = adbJumphost.host;
-    port = 22;
-    user = "komar";
-    forwardX11 = true;
+  programs.ssh.settings.work-vpn = {
+    HostName = "192.168.134.42";
+    ProxyJump = "adb-jumphost";
+    Port = 22;
+    User = "komar";
+    ForwardX11 = true;
   };
-  programs.ssh.matchBlocks.adb-jumphost = adbJumphost;
-  programs.ssh.matchBlocks.work-pc-tunnel = workMatchBlock // {
-    host = "work";
+  programs.ssh.settings.adb-jumphost = {
+    HostName = "192.168.5.68";
+    Port = 22;
+    User = "M.Trybus";
   };
-  programs.ssh.matchBlocks.voron = {
-    host = "voron";
-    hostname = "192.168.88.94";
-    user = "biqu";
+  programs.ssh.settings.work = import ../../work/ssh/matchblock.nix;
+  programs.ssh.settings.voron = {
+    HostName = "192.168.88.94";
+    User = "biqu";
   };
 
   ssh.authorizedKeys = [

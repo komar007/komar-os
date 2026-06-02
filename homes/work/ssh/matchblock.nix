@@ -1,8 +1,8 @@
-# A programs.ssh.matchBlocks item to use on the machine this host creates a tunnel to itself on
+# A programs.ssh.settings item to use on the machine this host creates a tunnel to itself on
 {
-  hostname = "localhost";
-  port = 9022;
-  user = "komar";
-  forwardX11 = true;
-  forwardX11Trusted = true;
+  HostName = "localhost";
+  Port = 9022;
+  User = "komar";
+  ForwardX11 = true;
+  ForwardX11Trusted = true;
 }

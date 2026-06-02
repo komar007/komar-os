@@ -1,13 +1,11 @@
 { config, ... }:
 let
-  workMatchBlock = import ../../work/ssh/matchblock.nix;
   thinkcentre = {
-    host = "thinkcentre";
-    hostname = "192.168.88.2";
-    port = 22;
-    user = "komar";
-    forwardX11 = true;
-    forwardX11Trusted = true;
+    HostName = "192.168.88.2";
+    Port = 22;
+    User = "komar";
+    ForwardX11 = true;
+    ForwardX11Trusted = true;
   };
 in
 {
@@ -15,14 +13,12 @@ in
   home.file.".ssh/id_ed25519".source =
     config.lib.file.mkOutOfStoreSymlink "/run/secrets/users/${config.home.username}/ssh_key";
 
-  programs.ssh.matchBlocks.thinkcentre = thinkcentre;
-  programs.ssh.matchBlocks.work-via-thinkcentre = workMatchBlock // {
-    host = "work-via-thinkcentre";
-    proxyJump = thinkcentre.host;
+  programs.ssh.settings.thinkcentre = thinkcentre;
+  programs.ssh.settings.work-via-thinkcentre = import ../../work/ssh/matchblock.nix // {
+    ProxyJump = "thinkcentre";
   };
-  programs.ssh.matchBlocks.voron = {
-    host = "voron";
-    hostname = "192.168.88.94";
-    user = "biqu";
+  programs.ssh.settings.voron = {
+    HostName = "192.168.88.94";
+    User = "biqu";
   };
 }

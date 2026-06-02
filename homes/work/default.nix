@@ -2,11 +2,10 @@
   lib,
   config,
   pkgs,
-  pkgsUnstable,
   ...
 }:
 let
-  utils = import ../modules/k3s/utils.nix { pkgs = pkgsUnstable; };
+  utils = import ../modules/k3s/utils.nix { inherit pkgs; };
   ffUtils = import ../modules/firefox/utils.nix { inherit config lib; };
 in
 {
@@ -80,8 +79,8 @@ in
     uv
     temporal-cli
     mosquitto
-    pkgsUnstable.codex
-    pkgsUnstable.git-gr
+    codex
+    git-gr
 
     nerd-fonts.zed-mono
   ];

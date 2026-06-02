@@ -1,4 +1,4 @@
-{ pkgs, pkgsUnstable, ... }:
+{ pkgs, ... }:
 {
   home.packages =
     let
@@ -9,7 +9,7 @@
         ];
       };
     in
-    with pkgsUnstable;
+    with pkgs;
     [
       latestStableRust
 

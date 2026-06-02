@@ -45,7 +45,7 @@ in
   home.packages =
     (with pkgs; [
       xclip
-      xorg.xset
+      xset
 
       geeqie
       feh

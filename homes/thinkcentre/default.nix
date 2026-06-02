@@ -1,4 +1,4 @@
-{ pkgs, pkgsUnstable, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ../common_desktop.nix
@@ -26,7 +26,7 @@
   };
 
   home.packages = with pkgs; [
-    pkgsUnstable.codex
+    codex
 
     super-slicer-beta
 

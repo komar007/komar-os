@@ -72,6 +72,15 @@
     ];
   };
 
+  security.pam.loginLimits = [
+    {
+      domain = "komar";
+      item = "stack";
+      type = "soft";
+      value = "64000";
+    }
+  ];
+
   services.kanata = {
     enable = true;
     keyboards."generic".config = builtins.readFile ../kanata-generic.kbd;

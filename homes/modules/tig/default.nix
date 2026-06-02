@@ -1,4 +1,4 @@
-{ pkgs, pkgsUnstable, ... }:
+{ pkgs, ... }:
 let
   yank = pkgs.writeShellApplication {
     name = "yank";
@@ -19,7 +19,7 @@ let
   };
   showGerritChange = pkgs.writeShellApplication {
     name = "show-gerrit-change";
-    runtimeInputs = with pkgsUnstable; [ git-gr ];
+    runtimeInputs = with pkgs; [ git-gr ];
     text = ''
       CHID=$(git show -s --format=%B "$1" | git interpret-trailers --parse | sed -n 's/^Change-Id: //p')
       git gr view "$CHID"
