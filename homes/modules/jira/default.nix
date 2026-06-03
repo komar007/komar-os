@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -9,7 +10,7 @@ let
 in
 {
   imports = [
-    ../../modules/netrc.nix
+    inputs.hm-netrc.homeManagerModules.default
   ];
 
   options.jira = {
@@ -30,6 +31,7 @@ in
     server = "https://${config.jira.host}";
   };
 
+  config.netrc.enable = true;
   config.netrc.entries = [
     {
       # ... while it looks it up by host in netrc

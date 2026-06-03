@@ -60,6 +60,14 @@
       inputs.utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hm-netrc = {
+      url = "github:komar007/hm-netrc";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+      inputs.home-manager.follows = "home-manager";
+      inputs.sops-nix.follows = "sops-nix";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";
