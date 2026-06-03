@@ -91,11 +91,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779910622,
-        "narHash": "sha256-OM5Ds4mbOjT/LED+1qVZeP/J3AWtu29I+o5lvaW+qHk=",
+        "lastModified": 1780472998,
+        "narHash": "sha256-/9pfp5pCI9dc0Of4EYLQTCk7vA4prHtZv7jexf/NucI=",
         "owner": "komar007",
         "repo": "dot-tmux",
-        "rev": "54c316ee7ef1e456ada34d52ea0a805659bf56d1",
+        "rev": "6bce0cbec7945558f08d89dfd5387e52a294f17d",
         "type": "github"
       },
       "original": {
@@ -441,16 +441,16 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1776434932,
-        "narHash": "sha256-gyqXNMgk3sh+ogY5svd2eNLJ6oEwzbAeaoBrrxD0lKk=",
+        "lastModified": 1780203844,
+        "narHash": "sha256-K5sT4jTpGs15ADhviMKNBH38REpPf5Q6mM1+N6cArVE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c7f47036d3df2add644c46d712d14262b7d86c0c",
+        "rev": "b51242d7d43689db2f3be91bd05d5b24fbb469c4",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-25.11",
+        "ref": "nixos-26.05",
         "repo": "nixpkgs",
         "type": "github"
       }
