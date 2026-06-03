@@ -34,7 +34,6 @@ in
   });
 
   config.sops.templates = mergeAttrsFor config.sopsAnything.homeFiles (file: {
-    # TODO: what if .text is not available? can we use source instead?
-    ${idFor file}.content = config.home.file.${file}.text;
+    ${idFor file}.content = builtins.readFile config.home.file.${file}.source;
   });
 }
