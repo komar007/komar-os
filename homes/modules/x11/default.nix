@@ -19,9 +19,7 @@ let
   unclip = pkgs.writeShellApplication {
     name = "unclip";
     runtimeInputs = [ pkgs.xclip ];
-    text = ''
-      xclip -selection clipboard -o -
-    '';
+    text = builtins.readFile ./unclip.sh;
   };
   sc = pkgs.writeShellApplication {
     name = "sc";

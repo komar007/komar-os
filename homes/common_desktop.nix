@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-    ./modules/x11.nix
+    ./modules/x11
     ./modules/alacritty.nix
     ./modules/youtube-tui.nix
     ./modules/xmonad
