@@ -20,9 +20,19 @@ get_branch_upstream_ref() {
 }
 
 TO_UPSTREAM=0
+CONTINUE=0
+ABORT=0
 
 while [ $# -gt 0 ]; do
 	case "$1" in
+	--abort)
+		ABORT=1
+		shift
+		;;
+	--continue)
+		CONTINUE=1
+		shift
+		;;
 	--to-upstream)
 		TO_UPSTREAM=1
 		shift
@@ -40,6 +50,32 @@ while [ $# -gt 0 ]; do
 		;;
 	esac
 done
+
+if [ "$CONTINUE" -eq 1 ] && [ "$ABORT" -eq 1 ]; then
+	echo "--continue cannot be combined with --abort." >&2
+	exit 1
+fi
+
+if [ "$CONTINUE" -eq 1 ] || [ "$ABORT" -eq 1 ]; then
+	if [ "$TO_UPSTREAM" -eq 1 ]; then
+		echo "--continue/--abort cannot be combined with --to-upstream." >&2
+		exit 1
+	fi
+
+	if [ $# -gt 0 ]; then
+		echo "--continue/--abort does not accept a source branch argument." >&2
+		exit 1
+	fi
+fi
+
+if [ "$CONTINUE" -eq 1 ]; then
+	git rebase --continue
+	exit 0
+fi
+if [ "$ABORT" -eq 1 ]; then
+	git rebase --abort
+	exit 0
+fi
 
 CURRENT_BRANCH=$(git branch --show-current)
 if [ -z "$CURRENT_BRANCH" ]; then

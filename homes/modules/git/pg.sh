@@ -58,27 +58,48 @@ temp_shell() {
 	fi
 }
 
+if [ "$#" -eq 0 ]; then
+	if [ "$PREV" = "HEAD" ]; then
+		COLOR=red git_alias_msg 'cannot use git pick from detached HEAD; pass a commit instead'
+		exit 1
+	fi
+
+	APPLY_MODE=pick
+	APPLY_TARGET=$PREV
+	APPLY_FAILED_PROMPT="PICK FAILED"
+	CONTINUE_FAILED_PROMPT="PICK CONT FAILED"
+	CONTINUE_FAILED_MESSAGE="git pick --continue failed, backup changes or push yourself to $PUSH_TO and exit shell"
+	PUSH_SOURCE="partial $PREV"
+else
+	APPLY_MODE=cherry-pick
+	APPLY_TARGET=$1
+	APPLY_FAILED_PROMPT="CP FAILED"
+	CONTINUE_FAILED_PROMPT="CP CONT FAILED"
+	CONTINUE_FAILED_MESSAGE="git cherry-pick --continue failed, backup changes or push yourself to $PUSH_TO and exit shell"
+	PUSH_SOURCE="$1"
+fi
+
 git checkout -b "$PUSH_BRANCH" "$BASE_BRANCH"
 
 FAILED=0
-if ! git cherry-pick "$1"; then
+if ! git "$APPLY_MODE" "$APPLY_TARGET"; then
 	git status
 	git_alias_msg "fix conflicts and exit shell"
-	PS1_EXTRA="CP FAILED" temp_shell
-	git cherry-pick --continue || FAILED=1
+	PS1_EXTRA="$APPLY_FAILED_PROMPT" temp_shell
+	git "$APPLY_MODE" --continue || FAILED=1
 fi
 
 if [ "$FAILED" -eq 0 ]; then
 	if git push origin "$PUSH_TO"; then
-		COLOR=green git_alias_msg "successfully pushed $1"
+		COLOR=green git_alias_msg "successfully pushed $PUSH_SOURCE"
 	else
 		COLOR=red git_alias_msg "failed to push, backup changes or push yourself to $PUSH_TO and exit shell"
 		PS1_EXTRA="PUSH FAILED" temp_shell
 	fi
 else
-	COLOR=red git_alias_msg "cherry-pick --continue failed, backup changes or push yourself to $PUSH_TO and exit shell"
-	PS1_EXTRA="CP CONT FAILED" temp_shell
-	git cherry-pick --abort || true
+	COLOR=red git_alias_msg "$CONTINUE_FAILED_MESSAGE"
+	PS1_EXTRA="$CONTINUE_FAILED_PROMPT" temp_shell
+	git "$APPLY_MODE" --abort || true
 fi
 git checkout "$PREV"
 git branch -D "$PUSH_BRANCH"
