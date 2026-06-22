@@ -19,6 +19,10 @@ builtins.foldl' lib.recursiveUpdate
       HostName = "devs.adbglobal.com";
       User = "M.Trybus";
     };
+    programs.ssh.settings."prismetest" = {
+      HostName = "10.60.1.233";
+      User = "localadmin";
+    };
   }
   [
     (secretMatchBlock "thinkcentre-tunnel" "thinkcentre" (HostName: {
