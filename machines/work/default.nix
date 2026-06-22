@@ -41,6 +41,7 @@
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [
       80
+      1883
       18080
     ];
   };
