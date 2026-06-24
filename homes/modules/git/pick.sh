@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+GIT_PICK_COMMITMSG_PATTERN=${GIT_PICK_COMMITMSG_PATTERN:-'.'}
+
 if [ -n "${GIT_ALIAS_LIB:-}" ]; then
 	# shellcheck source=/dev/null
 	. "$GIT_ALIAS_LIB"
@@ -171,8 +173,6 @@ if ! git rev-parse --verify "$SOURCE_UPSTREAM" >/dev/null 2>&1; then
 	exit 1
 fi
 
-conventional_commit_pattern='^[a-z][a-z0-9-]*(\([^)]+\))?(!)?: .+'
-
 declare -A commit_subject=()
 declare -A matching_commits=()
 declare -a commits=()
@@ -180,7 +180,7 @@ declare -a commits=()
 while IFS=$'\t' read -r commit subject; do
 	commit_subject["$commit"]=$subject
 	commits+=("$commit")
-	if [[ $subject =~ $conventional_commit_pattern ]]; then
+	if [[ $subject =~ $GIT_PICK_COMMITMSG_PATTERN ]]; then
 		matching_commits["$commit"]=$subject
 	fi
 done < <(git log --reverse --format='%H%x09%s' "$SOURCE_UPSTREAM..$SOURCE_BRANCH")

@@ -1,11 +1,23 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   delta = pkgs.lib.getExe pkgs.delta;
   gitAliasLib = pkgs.writeText "git-alias-lib.sh" (builtins.readFile ./lib.sh);
 in
 {
-  programs.git.enable = true;
-  programs.git.settings.alias = {
+  options.git = {
+    gitPickPattern = lib.mkOption {
+      type = lib.types.str;
+      default = ''^[a-z][a-z0-9-]*(\([^)]+\))?(!)?: .+''; # conventional commits
+    };
+  };
+
+  config.programs.git.enable = true;
+  config.programs.git.settings.alias = {
     uncommit = "!git reset --soft HEAD^ && git reset";
     wip = "commit -a -m wip";
     unwip = "!${pkgs.writeShellScript "git-unwip" ''
@@ -41,6 +53,7 @@ in
             lolcat
           ];
           text = ''
+            export GIT_PICK_COMMITMSG_PATTERN="''${GIT_PICK_COMMITMSG_PATTERN:-${config.git.gitPickPattern}}"
             export GIT_ALIAS_LIB=${gitAliasLib}
           ''
           + builtins.readFile ./pick.sh;
@@ -57,10 +70,10 @@ in
     }";
     newdate = "commit --amend --no-edit --date=now";
   };
-  programs.git.includes = [
+  config.programs.git.includes = [
     { path = "~/.gitconfig.local"; }
   ];
-  programs.git.settings = {
+  config.programs.git.settings = {
     color = {
       ui = "auto";
     };
@@ -87,7 +100,7 @@ in
     };
   };
 
-  programs.git.settings.delta = {
+  config.programs.git.settings.delta = {
     navigate = true;
     dark = true;
     grep-match-word-style = "#000000 #fabd2f";
