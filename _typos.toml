@@ -1,0 +1,11 @@
+files.extend-exclude = [
+	"**/secrets.yaml"
+]
+
+default.extend-ignore-re = [
+	"git.gitPickPattern = ''.*''"
+]
+
+[default.extend-identifiers]
+mosquitto = "mosquitto"
+LESS_TERMCAP_ue = "LESS_TERMCAP_ue"
