@@ -17,6 +17,7 @@ in
   };
 
   config.programs.git.enable = true;
+  config.programs.git.lfs.enable = true;
   config.programs.git.settings.alias = {
     uncommit = "!git reset --soft HEAD^ && git reset";
     wip = "commit -a -m wip";
