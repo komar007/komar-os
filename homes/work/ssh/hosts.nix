@@ -40,4 +40,5 @@ builtins.foldl' lib.recursiveUpdate
     (prismeDeployment "integration" "adb-users")
     (prismeDeployment "nightly" "adb-admins")
     (prismeDeployment "perftest" "ubuntu")
+    (prismeDeployment "demo" "mtrybus")
   ]
