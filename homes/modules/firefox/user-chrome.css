@@ -4,26 +4,34 @@ tab.tabbrowser-tab:not([selected="true"]) image.tab-icon-overlay[role="presentat
 }
 
 /* semi-transparent side bar and top bar */
-#browser, body, #main-window, #nav-bar, #navigator-toolbox {
+#browser,
+body,
+#main-window,
+#nav-bar,
+#navigator-toolbox {
   background-color: rgba(0, 0, 0, 0) !important;
 }
+
 #tabbrowser-tabbox {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
+
 #tabbrowser-tabbox .browserContainer {
   border-radius: 16px !important;
 }
+
 #nav-bar {
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.7) 70%,
-    rgba(0, 0, 0, 1.0) 100%
-  );
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.7) 70%,
+      rgba(0, 0, 0, 1.0) 100%);
 }
-#sidebar-main, #sidebar-launcher-splitter {
+
+#sidebar-main,
+#sidebar-launcher-splitter {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
+
 .split-view-splitter {
   background-color: transparent !important;
   border: none !important;
@@ -36,6 +44,7 @@ tab.tabbrowser-tab:not([selected="true"]) image.tab-icon-overlay[role="presentat
   border-radius: 0 !important;
   margin: 0px !important;
 }
+
 #sidebar-splitter {
   border-inline: none !important;
   background-color: rgba(0, 0, 0, 0.7) !important;
@@ -51,6 +60,7 @@ tab.tabbrowser-tab .tab-close-button {
   --tab-min-height: 24px !important;
   --tab-block-margin: 0px !important;
 }
+
 tab.tabbrowser-tab {
   padding-block: 1px 0px !important;
 }
