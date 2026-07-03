@@ -105,64 +105,7 @@ in
       "devtools.chrome.enabled" = true;
     };
 
-    userChrome = ''
-      /* non-clickable "mute/unmute" playback buttons on background tabs */
-      tab.tabbrowser-tab:not([selected="true"]) image.tab-icon-overlay[role="presentation"] {
-        pointer-events: none;
-      }
-
-      /* semi-transparent side bar and top bar */
-      #browser, body, #main-window, #nav-bar, #navigator-toolbox {
-        background-color: rgba(0, 0, 0, 0) !important;
-      }
-      #tabbrowser-tabbox {
-        background-color: rgba(0, 0, 0, 0.7) !important;
-      }
-      #tabbrowser-tabbox .browserContainer {
-        border-radius: 16px !important;
-      }
-      #nav-bar {
-        background: linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.7) 0%,
-          rgba(0, 0, 0, 0.7) 70%,
-          rgba(0, 0, 0, 1.0) 100%
-        );
-      }
-      #sidebar-main, #sidebar-launcher-splitter {
-        background-color: rgba(0, 0, 0, 0.7) !important;
-      }
-      .split-view-splitter {
-        background-color: transparent !important;
-        border: none !important;
-      }
-
-      /* semi-transparent "tabs from other devices" et al. */
-      #sidebar {
-        outline: 0 !important;
-        background-color: rgba(0, 0, 0, 0.7) !important;
-        border-radius: 0 !important;
-        margin: 0px !important;
-      }
-      #sidebar-splitter {
-        border-inline: none !important;
-        background-color: rgba(0, 0, 0, 0.7) !important;
-      }
-
-      /* remove close tab icons */
-      tab.tabbrowser-tab .tab-close-button {
-        display: none !important;
-      }
-
-      /* thinner tabs to fit more tabs! */
-      :root {
-        --tab-min-height: 24px !important;
-        --tab-block-margin: 0px !important;
-      }
-      tab.tabbrowser-tab {
-        padding-block: 1px 0px !important;
-      }
-    '';
+    userChrome = builtins.readFile ./user-chrome.css;
 
     userContent = lib.strings.concatStringsSep "\n" config.firefox.userContent;
 
