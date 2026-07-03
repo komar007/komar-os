@@ -98,6 +98,7 @@ in
     diff = {
       renamelimit = 10000;
     };
+    init.defaultBranch = "main";
   };
 
   config.programs.git.settings.delta = {
