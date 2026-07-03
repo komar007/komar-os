@@ -23,11 +23,12 @@ else
 	fi
 	target="$(
 		best_matches "$targets" \
-			image/png \
-			image/jpeg \
-			image/.* \
-			text/html \
-			text/.*
+			'image/png' \
+			'image/jpeg' \
+			'image/.*' \
+			'text/html' \
+			'text/.*' \
+			'(UTF8_)?STRING'
 	)"
 	if [ -z "$target" ]; then
 		echo "$(tput setaf 0)no suitable targets available: $(tr '\n' ' ' <<<"$targets")$(tput sgr0)" >&2
