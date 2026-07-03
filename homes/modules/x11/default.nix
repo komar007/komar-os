@@ -18,7 +18,10 @@ let
   };
   unclip = pkgs.writeShellApplication {
     name = "unclip";
-    runtimeInputs = [ pkgs.xclip ];
+    runtimeInputs = with pkgs; [
+      xclip
+      ncurses
+    ];
     text = builtins.readFile ./unclip.sh;
   };
   sc = pkgs.writeShellApplication {

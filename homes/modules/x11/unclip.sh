@@ -30,9 +30,9 @@ else
 			text/.*
 	)"
 	if [ -z "$target" ]; then
-		echo "no suitable targets available: $(tr '\n' ' ' <<<"$targets")" >&2
+		echo "$(tput setaf 0)no suitable targets available: $(tr '\n' ' ' <<<"$targets")$(tput sgr0)" >&2
 		target=$(head -n 1 <<<"$targets")
-		echo "choosing $target" >&2
+		echo "$(tput setaf 0)choosing $target$(tput sgr0)" >&2
 	fi
 fi
 
