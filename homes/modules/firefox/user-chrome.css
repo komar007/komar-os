@@ -59,8 +59,22 @@ tab.tabbrowser-tab .tab-close-button {
 :root {
   --tab-min-height: 24px !important;
   --tab-block-margin: 0px !important;
+  --tab-border-radius: 3px !important;
 }
 
 tab.tabbrowser-tab {
   padding-block: 1px 0px !important;
+}
+
+tab.tabbrowser-tab[pinned="true"] .tab-background {
+  background-color: rgba(0, 100, 0, 0.3) !important;
+}
+
+.tab-group-label {
+  margin-right: 2px !important;
+  width: 100%;
+}
+
+.tab-group-label[expanded="true"] {
+  outline: none;
 }
