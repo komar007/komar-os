@@ -153,6 +153,15 @@ in
       tab.tabbrowser-tab .tab-close-button {
         display: none !important;
       }
+
+      /* thinner tabs to fit more tabs! */
+      :root {
+        --tab-min-height: 24px !important;
+        --tab-block-margin: 0px !important;
+      }
+      tab.tabbrowser-tab {
+        padding-block: 1px 0px !important;
+      }
     '';
 
     userContent = lib.strings.concatStringsSep "\n" config.firefox.userContent;
