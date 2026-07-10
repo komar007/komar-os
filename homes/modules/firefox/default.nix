@@ -58,6 +58,8 @@ in
 
     settings = {
       "browser.aboutwelcome.enabled" = false;
+      "network.trr.mode" = 2;
+      "network.trr.uri" = "https://mozilla.cloudflare-dns.com/dns-query";
       "extensions.autoDisableScopes" = 0;
       "ui.key.menuAccessKeyFocuses" = false;
       "browser.ml.linkPreview.enabled" = false;
