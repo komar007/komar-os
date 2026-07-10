@@ -25,7 +25,7 @@ not_allowed_msg = "✗"
 denied_msg = " "
 
 [status]
-format = "[$status]($style)[]($style inverted)"
+format = "[✗ $status]($style)[]($style inverted)"
 success_style = "fg:241"
 failure_style = "bg:red fg:16"
 disabled = false
