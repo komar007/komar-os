@@ -189,14 +189,15 @@ _FZF_ENTRY_JQ="$_JQ_COLORS$_FZF_ENTRY_JQ"
 # fzf preview window renderer
 read -r -d '' _FZF_PREVIEW_JQ <<-'EOF'
 	select(.id == $id)
-	| "$ \(.cmd)\n\n\(colors.meta)"
-	  + (if (.exit_code // 0) != 0 then "\(colors.fail)" else "" end)
-	  + "exit code: \(.exit_code)\(colors.meta)\n"
-	  + "execution time: \(.end - .start)s\n"
-	  + "@ \(.start | strftime("%a %d %b %Y %H:%M:%S"))\n"
-	  + "tmux session: \(.tmux_session)\n"
-	  + (if .prev_cwd then "previous CWD: \(.prev_cwd)\n" else "" end)
-	  + "CWD: \(.cwd)\n"
+	| "$ \(.cmd)\n\n"
+	  + (if (.exit_code // 0) != 0 then "\(colors.fail)" else "\(colors.meta)" end)
+	  + "exit code: \(.exit_code)\(colors.reset)\n"
+	  + "\(colors.meta)execution time: \(.end - .start)s\(colors.reset)\n"
+	  + "\(colors.meta)@ \(.start | strftime("%a %d %b %Y %H:%M:%S"))\(colors.reset)\n"
+	  + "\(colors.meta)tmux session: \(.tmux_session)\(colors.reset)\n"
+	  + (if .prev_cwd then "\(colors.meta)previous CWD: \(.prev_cwd)\(colors.reset)\n" else "" end)
+	  + "\(colors.meta)CWD: \(.cwd)\(colors.reset)\n"
+	  + "\(colors.meta)ID: \(.id)\(colors.reset)\n"
 EOF
 _FZF_PREVIEW_JQ="$_JQ_COLORS$_FZF_PREVIEW_JQ"
 
