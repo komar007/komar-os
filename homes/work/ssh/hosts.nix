@@ -6,12 +6,14 @@ let
     programs.ssh.settings.${host} = block p."public_addr/${sopsAddressId}";
   };
   prismeDeployment =
-    name: User:
-    secretMatchBlock name "prisme/${name}" (HostName: {
-      inherit HostName User;
-      Port = 2222;
+    name: address: User: Port:
+    secretMatchBlock name "prisme/${address}" (HostName: {
+      inherit HostName User Port;
       ServerAliveInterval = 5;
     });
+  prismeDeployment1vm = name: user: prismeDeployment name name user 2222;
+  prismeDeploymentSrv = name: user: prismeDeployment "${name}-services" name user 2222;
+  prismeDeploymentDbs = name: user: prismeDeployment "${name}-db" name user 2223;
 in
 builtins.foldl' lib.recursiveUpdate
   {
@@ -37,8 +39,11 @@ builtins.foldl' lib.recursiveUpdate
       ];
       ExitOnForwardFailure = true;
     }))
-    (prismeDeployment "integration" "adb-users")
-    (prismeDeployment "nightly" "adb-admins")
-    (prismeDeployment "perftest" "ubuntu")
-    (prismeDeployment "demo" "mtrybus")
+    (prismeDeployment1vm "integration" "adb-users")
+    (prismeDeployment1vm "nightly" "adb-admins")
+    (prismeDeployment1vm "perftest" "ubuntu")
+    (prismeDeployment1vm "demo" "mtrybus")
+
+    (prismeDeploymentSrv "optima-staging" "mtrybus")
+    (prismeDeploymentDbs "optima-staging" "ubuntu")
   ]
