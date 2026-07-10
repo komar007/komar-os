@@ -84,7 +84,7 @@ _expand() {
 
 # GLOBAL HISTORY
 
-# Trim the input from whitespace and convert to a json-friendlt string literal
+# Trim the input from whitespace and convert to a json-friendly string literal
 function _trim_jsonize_string() {
 	jq -MR --slurp '. | gsub("^\\s+|\\s+$";"")'
 }
@@ -103,6 +103,7 @@ function _or_null() {
 _LAST_HIST=""
 # Prepare a single-line json-formatted command history entry
 function _format_history_entry() {
+	ID="$1"
 	(
 		date +%s
 		[ -n "$TMUX" ] &&
@@ -120,7 +121,7 @@ function _format_history_entry() {
 			echo "$OLDPWD" | _trim_jsonize_string ||
 			echo null
 		echo "$_LAST_EXIT_CODE"
-		date +%s%N | _trim_jsonize_string
+		echo "$ID" | _trim_jsonize_string
 	) |
 		jq -Mc --slurp '{
 			cmd: .[3],
@@ -135,6 +136,14 @@ function _format_history_entry() {
 		  | select(.cmd != "")'
 }
 
+# produce a random ID that is relatively short and safe to use unescaped in various context,
+# expecially in regex.
+function _random_command_id() {
+	# 6-byte input guarantees no padding, getting rid of + and / makes the ID look more like a
+	# word and loses about 22.4% of entropy which we can live with.
+	head -c 6 /dev/urandom | base64 | tr '+/' 'ab'
+}
+
 # save the last history item in global history
 function _prompt_command() {
 	# TODO: for some reason $? does not work here when starship is initialized after setting
@@ -144,10 +153,13 @@ function _prompt_command() {
 	local hist
 	hist=$(history 1 | head)
 	if [ "$hist" = "$_LAST_HIST" ]; then
+		export -n _LAST_COMMAND_ID
 		return "$_LAST_EXIT_CODE"
 	fi
 	_LAST_HIST="$hist"
-	(_format_history_entry >>"$_GLOBAL_HISTORY_FILE")
+	_LAST_COMMAND_ID=$(_random_command_id)
+	export _LAST_COMMAND_ID
+	(_format_history_entry "$_LAST_COMMAND_ID" >>"$_GLOBAL_HISTORY_FILE")
 	return "$_LAST_EXIT_CODE"
 }
 
