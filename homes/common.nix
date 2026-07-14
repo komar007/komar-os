@@ -66,6 +66,7 @@ in
     yq
     fzf
     bat
+    tinyxxd
 
     unzip
 
