@@ -137,7 +137,7 @@ function _format_history_entry() {
 }
 
 # produce a random ID that is relatively short and safe to use unescaped in various context,
-# expecially in regex.
+# especially in regex.
 function _random_command_id() {
 	# 6-byte input guarantees no padding, getting rid of + and / makes the ID look more like a
 	# word and loses about 22.4% of entropy which we can live with.
