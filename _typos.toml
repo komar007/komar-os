@@ -1,5 +1,6 @@
 files.extend-exclude = [
-	"**/secrets.yaml"
+	"machines/*/secrets.yaml",
+	"homes/*/secrets.yaml",
 ]
 
 default.extend-ignore-re = [
