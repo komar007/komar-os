@@ -2,7 +2,12 @@
 
 set -euo pipefail
 
-GIT_PICK_COMMITMSG_PATTERN=${GIT_PICK_COMMITMSG_PATTERN:-'.'}
+declare -a commit_message_patterns=(
+	# conventional commits
+	'^[a-z][a-z0-9-]*(\([^)]+\))?(!)?: .+'
+	# ADB commit message policy
+	'^\[(B(UG)?|I(MPROVEMENT)?|F(EATURE)?|O(THER)?)\](\s*\[[A-Z]+-[0-9]+\])*' # typos:ignore-line
+)
 
 if [ -n "${GIT_ALIAS_LIB:-}" ]; then
 	# shellcheck source=/dev/null
@@ -127,6 +132,23 @@ if [ "$TO_UPSTREAM" -eq 1 ]; then
 	exit 0
 fi
 
+commit_message_pattern=${commit_message_patterns[0]}
+best_match_count=0
+
+for pattern in "${commit_message_patterns[@]}"; do
+	match_count=0
+	while IFS= read -r subject; do
+		if [[ $subject =~ $pattern ]]; then
+			((match_count += 1))
+		fi
+	done < <(git log -10 --format='%s' "$CURRENT_BRANCH")
+
+	if [ "$match_count" -gt "$best_match_count" ]; then
+		commit_message_pattern=$pattern
+		best_match_count=$match_count
+	fi
+done
+
 CURRENT_BRANCH_REF=$(git rev-parse --symbolic-full-name "$CURRENT_BRANCH")
 
 if [ -n "${1-}" ]; then
@@ -180,7 +202,7 @@ declare -a commits=()
 while IFS=$'\t' read -r commit subject; do
 	commit_subject["$commit"]=$subject
 	commits+=("$commit")
-	if [[ $subject =~ $GIT_PICK_COMMITMSG_PATTERN ]]; then
+	if [[ $subject =~ $commit_message_pattern ]]; then
 		matching_commits["$commit"]=$subject
 	fi
 done < <(git log --reverse --format='%H%x09%s' "$SOURCE_UPSTREAM..$SOURCE_BRANCH")

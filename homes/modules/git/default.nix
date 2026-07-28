@@ -9,13 +9,6 @@ let
   gitAliasLib = pkgs.writeText "git-alias-lib.sh" (builtins.readFile ./lib.sh);
 in
 {
-  options.git = {
-    gitPickPattern = lib.mkOption {
-      type = lib.types.str;
-      default = ''^[a-z][a-z0-9-]*(\([^)]+\))?(!)?: .+''; # conventional commits
-    };
-  };
-
   config.programs.git.enable = true;
   config.programs.git.lfs.enable = true;
   config.programs.git.settings.alias = {
@@ -54,7 +47,6 @@ in
             lolcat
           ];
           text = ''
-            export GIT_PICK_COMMITMSG_PATTERN="''${GIT_PICK_COMMITMSG_PATTERN:-${config.git.gitPickPattern}}"
             export GIT_ALIAS_LIB=${gitAliasLib}
           ''
           + builtins.readFile ./pick.sh;

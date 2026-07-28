@@ -51,9 +51,6 @@ in
     };
   };
 
-  # ADB commit message policy
-  git.gitPickPattern = ''^\[(B(UG)?|I(MPROVEMENT)?|F(EATURE)?|O(THER)?)\](\s*\[[A-Z]+-[0-9]+\])*'';
-
   dot-tmux.commonSessionNames = [
     "prisme-backend"
     "tss"
