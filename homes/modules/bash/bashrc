@@ -25,6 +25,11 @@ HISTCONTROL=
 unalias -a
 alias grep="grep --colour=auto"
 
+function help_as_man() {
+	builtin help -m "$@" | ${MANPAGER:-${PAGER:-less}}
+}
+alias help=help_as_man
+
 function less_set_title() {
 	dir="$(pwd)"
 	title="less"
