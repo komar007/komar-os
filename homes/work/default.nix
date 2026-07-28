@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  pkgsUnstable,
   ...
 }:
 let
@@ -82,7 +83,7 @@ in
     uv
     temporal-cli
     mosquitto
-    codex
+    pkgsUnstable.codex
     git-gr
 
     nerd-fonts.zed-mono
