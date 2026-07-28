@@ -1,10 +1,13 @@
 files.extend-exclude = [
-	"machines/*/secrets.yaml",
-	"homes/*/secrets.yaml",
+  # SOPS secrets with a lot of base64-encoded encrypted data
+  "machines/*/secrets.yaml",
+  "homes/*/secrets.yaml",
 ]
 
-default.extend-ignore-re = [
-	'''(?m)^.*# typos:ignore-line$'''
+[default]
+extend-ignore-re = [
+  # explicit whole-line ignore
+  '''(?m)^.*# typos:ignore-line$''',
 ]
 
 [default.extend-identifiers]

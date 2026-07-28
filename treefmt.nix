@@ -29,4 +29,6 @@ in
 
   programs.ormolu.enable = true;
   programs.ormolu.ghcOpts = [ "ImportQualifiedPost" ];
+
+  programs.taplo.enable = true;
 }
