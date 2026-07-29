@@ -106,6 +106,8 @@ in
       "privacy.userContext.newTabContainerOnLeftClick.enabled" = true;
       "devtools.debugger.remote-enabled" = true;
       "devtools.chrome.enabled" = true;
+      "devtools.screenshot.clipboard.enabled" = true;
+      "devtools.command-button-screenshot.enabled" = true;
     };
 
     userChrome = builtins.readFile ./user-chrome.css;
