@@ -187,7 +187,7 @@ in
           ];
         }
       ];
-      iconMapObj."227" = "https://crates.io/assets/cargo.png";
+      iconMapObj."227" = "https://crates.io/_app/immutable/assets/cargo.VCOwdw75.png";
     };
     search.engines."jira.adbglobal.com" = {
       definedAliases = [ "@jira" ];
