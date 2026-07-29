@@ -6,8 +6,18 @@ let
       mktemp
       xclip
       file
+      coreutils
+      jq
     ];
     text = ''
+      if [ "$#" -gt 0 ]; then
+        for filename in "$@"; do
+          path=$(realpath -- "$filename")
+          printf '%s' "$path" | jq -jR '"file://" + (@uri | gsub("%2[Ff]"; "/")) + "\r\n"'
+        done | xclip -selection clipboard -t text/uri-list -i
+        exit 0
+      fi
+
       T=$(mktemp)
       cleanup() { rm "$T"; }
       trap cleanup EXIT
