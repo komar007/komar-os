@@ -74,6 +74,7 @@ in
       "browser.newtabpage.activity-stream.newtabWallpapers.wallpaper" = "solid-color-picker-#171717";
       "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
       "sidebar.verticalTabs" = true;
+      "sidebar.animation.expand-on-hover.delay-duration-ms" = 600;
       "sidebar.animation.expand-on-hover.duration-ms" = 66;
       "sidebar.main.tools" = "syncedtabs,history,bookmarks";
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
