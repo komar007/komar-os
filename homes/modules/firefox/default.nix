@@ -199,6 +199,15 @@ in
       iconMapObj."128" = "https://jira.adbglobal.com/s/-mn5en6/820014/avp4c6/_/images/fav-jsw.png";
     };
 
+    search.engines."nvim-lspconfig" = {
+      definedAliases = [ "@lsp" ];
+      urls = [
+        {
+          template = "https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#{searchTerms}";
+        }
+      ];
+    };
+
     extensions.force = true;
     extensions.packages = with firefoxAddons; [
       firenvim
