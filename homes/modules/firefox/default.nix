@@ -5,7 +5,6 @@
   ...
 }:
 let
-  nixpkgsBaseVersion = builtins.head (builtins.match ''([0-9]+\.[0-9]+).*'' pkgs.lib.version);
   ffUtils = import ./utils.nix { inherit config lib; };
   firefoxAddons = pkgs.nur.repos.rycee.firefox-addons;
 
@@ -47,8 +46,10 @@ in
   };
 
   imports = [
+    ./search.nix
     ./extensions/darkmode.nix
   ];
+
   config.programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
   config.programs.firefox.enable = true;
   config.programs.firefox.profiles.${ffUtils.profileName} = {
@@ -114,99 +115,8 @@ in
 
     userContent = lib.strings.concatStringsSep "\n" config.firefox.userContent;
 
-    containersForce = true;
-
     search.force = true;
-    search.engines."Nix Packages" = {
-      definedAliases = [ "@np" ];
-      urls = [
-        {
-          template = "https://search.nixos.org/packages";
-          params = [
-            {
-              name = "query";
-              value = "{searchTerms}";
-            }
-            {
-              name = "channel";
-              value = nixpkgsBaseVersion;
-            }
-          ];
-        }
-      ];
-      iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
-    };
-    search.engines."Nix Options" = {
-      definedAliases = [ "@no" ];
-      urls = [
-        {
-          template = "https://search.nixos.org/options";
-          params = [
-            {
-              name = "query";
-              value = "{searchTerms}";
-            }
-            {
-              name = "channel";
-              value = nixpkgsBaseVersion;
-            }
-          ];
-        }
-      ];
-      iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
-    };
-    search.engines."Home Manager Options" = {
-      definedAliases = [ "@hmo" ];
-      urls = [
-        {
-          template = "https://home-manager-options.extranix.com/";
-          params = [
-            {
-              name = "query";
-              value = "{searchTerms}";
-            }
-            {
-              name = "release";
-              value = "release-${nixpkgsBaseVersion}";
-            }
-          ];
-        }
-      ];
-      iconMapObj."48" = "https://nixos.org/favicon-48x48.png";
-    };
-    search.engines."crates.io" = {
-      definedAliases = [ "@c" ];
-      urls = [
-        {
-          template = "https://crates.io/search";
-          params = [
-            {
-              name = "q";
-              value = "{searchTerms}";
-            }
-          ];
-        }
-      ];
-      iconMapObj."227" = "https://crates.io/_app/immutable/assets/cargo.VCOwdw75.png";
-    };
-    search.engines."jira.adbglobal.com" = {
-      definedAliases = [ "@jira" ];
-      urls = [
-        {
-          template = "https://jira.adbglobal.com/browse/{searchTerms}";
-        }
-      ];
-      iconMapObj."128" = "https://jira.adbglobal.com/s/-mn5en6/820014/avp4c6/_/images/fav-jsw.png";
-    };
-
-    search.engines."nvim-lspconfig" = {
-      definedAliases = [ "@lsp" ];
-      urls = [
-        {
-          template = "https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#{searchTerms}";
-        }
-      ];
-    };
+    containersForce = true;
 
     extensions.force = true;
     extensions.packages = with firefoxAddons; [
