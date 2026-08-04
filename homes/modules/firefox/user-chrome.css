@@ -71,7 +71,11 @@ tab.tabbrowser-tab {
 }
 
 tab.tabbrowser-tab[pinned="true"] .tab-background {
-  background-color: rgba(0, 100, 0, 0.3) !important;
+  background-color: rgba(0, 70, 0, 0.3) !important;
+}
+
+tab.tabbrowser-tab[pinned="true"] .tab-background[selected] {
+  background-color: rgba(80, 200, 50, 0.3) !important;
 }
 
 .tab-group-label {
