@@ -38,12 +38,14 @@
     bell.duration = 60;
 
     cursor.style.blinking = "Always";
+    cursor.blink_interval = 200;
+    cursor.blink_timeout = 0;
 
     mouse.hide_when_typing = true;
 
     colors = {
-      cursor.cursor = "CellForeground";
-      cursor.text = "CellBackground";
+      cursor.cursor = "#f374e7";
+      cursor.text = "#000000";
 
       normal.black = "#7c6f64";
       normal.blue = "#83a5d8";
