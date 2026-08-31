@@ -65,6 +65,7 @@ myKeys env =
         focusUrgent
         spawnHere "~/.xmonad/noblink.sh"
     ),
+    ("M-o", spawnHere "firefox $(unclip)"),
     ("M-S-<Return>", currentTopicAction myTopicConfig),
     ("M-S-C-<Return>", spawnHere "FSHF_REMOTE_CMD='tmux a || exec \"$SHELL\"' ~/.xmonad/terminal.sh terminal fshf"),
     ("M-<Backspace>", toggleLastNonScratch)
