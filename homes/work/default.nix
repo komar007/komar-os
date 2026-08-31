@@ -82,6 +82,7 @@ in
     mosquitto
     pkgsUnstable.codex
     git-gr
+    dive
 
     nerd-fonts.zed-mono
   ];
