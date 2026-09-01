@@ -85,17 +85,20 @@
         "flake-utils": [
           "flake-utils"
         ],
+        "home-manager": [
+          "home-manager"
+        ],
         "nixpkgs": "nixpkgs_2",
         "treefmt-nix": [
           "treefmt-nix"
         ]
       },
       "locked": {
-        "lastModified": 1785578263,
-        "narHash": "sha256-rrKBUxHthi48sLr2F+o/kaIbb/ksJG7snUhLboGRanA=",
+        "lastModified": 1788268973,
+        "narHash": "sha256-TXatY8bt74o2+HRMQnf0SjVm1nTPBwGmsjigVSpEvTs=",
         "owner": "komar007",
         "repo": "dot-tmux",
-        "rev": "1557de32cf2a8b13713e4ab1264598317633a14d",
+        "rev": "99ca5f1737592b569f181d9a6a546e75274b411f",
         "type": "github"
       },
       "original": {
@@ -507,11 +510,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1780203844,
-        "narHash": "sha256-K5sT4jTpGs15ADhviMKNBH38REpPf5Q6mM1+N6cArVE=",
+        "lastModified": 1788187754,
+        "narHash": "sha256-bu1QxmXKmPuvBLN7bHP355OV9Qo13x9WCiRDH62CqRM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b51242d7d43689db2f3be91bd05d5b24fbb469c4",
+        "rev": "5dfba6236110080a54247d6460bc2ff5dda939cc",
         "type": "github"
       },
       "original": {
