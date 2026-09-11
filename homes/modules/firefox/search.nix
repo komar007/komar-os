@@ -82,6 +82,14 @@ in
       ];
       iconMapObj."227" = "https://crates.io/_app/immutable/assets/cargo.VCOwdw75.png";
     };
+    "docs.rs" = {
+      definedAliases = [ "@cd" ];
+      urls = [
+        {
+          template = "https://docs.rs/{searchTerms}";
+        }
+      ];
+    };
     "jira.adbglobal.com" = {
       definedAliases = [ "@jira" ];
       urls = [
