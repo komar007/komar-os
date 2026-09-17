@@ -50,7 +50,7 @@ in
     ./extensions/darkmode.nix
   ];
 
-  config.programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
+  config.programs.firefox.configPath = lib.removePrefix "${config.home.homeDirectory}/" "${config.xdg.configHome}/mozilla/firefox";
   config.programs.firefox.enable = true;
   config.programs.firefox.profiles.${ffUtils.profileName} = {
     id = 0;

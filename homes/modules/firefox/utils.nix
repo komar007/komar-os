@@ -24,9 +24,8 @@ rec {
     in
     "${lib.strings.toLower escapedId}-browser-action";
 
-  # the storage.js file path (relative to the home directory) containing an extension's settings
-  # in other words, the path of the output produced by
-  # programs.firefox.profiles.<profile>.extensions.settings.<extensionId>.settings
+  # the storage.js file path containing an extension's settings, in other words, the path of the
+  # output produced by programs.firefox.profiles.<profile>.extensions.settings.<extensionId>.settings
   extensionSettingsFile =
     let
       profileDir = config.programs.firefox.profiles.${profileName}.path;
