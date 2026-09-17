@@ -39,7 +39,7 @@ builtins.foldl' lib.recursiveUpdate
       ];
       ExitOnForwardFailure = true;
     }))
-    (prismeDeployment1vm "integration" "adb-users")
+    (prismeDeployment1vm "integration" "mtrybus")
     (prismeDeployment1vm "nightly" "mtrybus")
     (prismeDeployment1vm "nightly-old" "adb-admins")
     (prismeDeployment1vm "perftest" "ubuntu")
