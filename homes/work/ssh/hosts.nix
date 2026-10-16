@@ -5,6 +5,9 @@ let
     sops.secrets."public_addr/${sopsAddressId}" = { };
     programs.ssh.settings.${host} = block p."public_addr/${sopsAddressId}";
   };
+
+  # PRISME 1.0 project @ ADB
+  # Deployments are on public addresses stored in sops
   prismeDeployment =
     name: address: User: Port:
     secretMatchBlock name "prisme/${address}" (HostName: {
@@ -14,6 +17,25 @@ let
   prismeDeployment1vm = name: user: prismeDeployment name name user 2222;
   prismeDeploymentSrv = name: user: prismeDeployment "${name}-services" name user 2222;
   prismeDeploymentDbs = name: user: prismeDeployment "${name}-db" name user 2223;
+
+  # CDN Cache project @ ADB
+  # Deployments are in the office network, private IP pool addresses are in plain-text
+  cdnDeployment = name: address: {
+    programs.ssh.settings.${name} = {
+      HostName = address;
+      User = "katowice";
+      ServerAliveInterval = 5;
+    };
+  };
+  # Vm deployments forward some specific ports to the host machine
+  cdnVm = name: port: {
+    programs.ssh.settings.${name} = {
+      HostName = "localhost";
+      Port = port;
+      User = "katowice";
+      ServerAliveInterval = 5;
+    };
+  };
 in
 builtins.foldl' lib.recursiveUpdate
   {
@@ -39,6 +61,7 @@ builtins.foldl' lib.recursiveUpdate
       ];
       ExitOnForwardFailure = true;
     }))
+
     (prismeDeployment1vm "integration" "mtrybus")
     (prismeDeployment1vm "nightly" "mtrybus")
     (prismeDeployment1vm "nightly-old" "adb-admins")
@@ -47,4 +70,12 @@ builtins.foldl' lib.recursiveUpdate
 
     (prismeDeploymentSrv "optima-staging" "mtrybus")
     (prismeDeploymentDbs "optima-staging" "ubuntu")
+
+    (cdnDeployment "cdn-caching-client" "192.168.136.53")
+    (cdnDeployment "cdn-caching-proxy" "192.168.136.52")
+    (cdnDeployment "cdn-caching-cdn" "192.168.136.87")
+
+    (cdnVm "vm-cdn-caching-client" 2224)
+    (cdnVm "vm-cdn-caching-proxy" 2223)
+    (cdnVm "vm-cdn-caching-cdn" 2222)
   ]
