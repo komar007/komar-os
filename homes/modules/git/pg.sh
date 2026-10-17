@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Push a single commit to gerrit by cherry-picking it on top of the main branch and pushing.
+# Push a single commit to gerrit by cherry-picking it on top of the remote upstream.
 #
 # Features:
 # - dirty work dir prevention,
@@ -8,15 +8,15 @@
 # - a chance to backup result of conflict fixing if it still doesn't apply,
 # - immediate exit without making changes when interactive shell is exited with error.
 
-set -e
+set -euo pipefail
 
 if [ -n "${GIT_ALIAS_LIB:-}" ]; then
 	# shellcheck source=/dev/null
-	. "$GIT_ALIAS_LIB"
+	source "$GIT_ALIAS_LIB"
 else
 	# shellcheck disable=SC1091
 	# shellcheck source=lib.sh
-	. "$(dirname "$0")/lib.sh"
+	source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 fi
 
 if git_alias_has_dirty_worktree; then
@@ -24,21 +24,16 @@ if git_alias_has_dirty_worktree; then
 	exit 1
 fi
 
-IS_GERRIT=$(git remote get-url origin | grep -q gerrit && echo 1 || echo 0)
-
 PREV=$(git rev-parse --abbrev-ref HEAD)
 PUSH_BRANCH=push_branch
-BASE_BRANCH=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || true)
-REMOTE_BRANCH=${BASE_BRANCH#origin/}
+UPSTREAM=$(git_alias_find_remote_upstream)
+read -r BASE_BRANCH REMOTE REMOTE_BRANCH <<<"$UPSTREAM"
+
+IS_GERRIT=$(git remote get-url "$REMOTE" | grep -q gerrit && echo 1 || echo 0)
 if [ "$IS_GERRIT" -eq 1 ]; then
 	PUSH_TO="HEAD:refs/for/$REMOTE_BRANCH"
 else
 	PUSH_TO="HEAD:$REMOTE_BRANCH"
-fi
-
-if [ -z "$BASE_BRANCH" ]; then
-	COLOR=red git_alias_msg "cannot resolve origin HEAD locally"
-	exit 1
 fi
 
 if ! git rev-parse --verify "$BASE_BRANCH" >/dev/null 2>&1; then
@@ -90,7 +85,7 @@ if ! git "$APPLY_MODE" "$APPLY_TARGET"; then
 fi
 
 if [ "$FAILED" -eq 0 ]; then
-	if git push origin "$PUSH_TO"; then
+	if git push "$REMOTE" "$PUSH_TO"; then
 		COLOR=green git_alias_msg "successfully pushed $PUSH_SOURCE"
 	else
 		COLOR=red git_alias_msg "failed to push, backup changes or push yourself to $PUSH_TO and exit shell"

@@ -11,11 +11,11 @@ declare -a commit_message_patterns=(
 
 if [ -n "${GIT_ALIAS_LIB:-}" ]; then
 	# shellcheck source=/dev/null
-	. "$GIT_ALIAS_LIB"
+	source "$GIT_ALIAS_LIB"
 else
 	# shellcheck disable=SC1091
 	# shellcheck source=lib.sh
-	. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+	source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 fi
 
 get_branch_upstream() {
