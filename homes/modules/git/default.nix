@@ -12,7 +12,7 @@ in
   config.programs.git.enable = true;
   config.programs.git.lfs.enable = true;
   config.programs.git.settings.alias = {
-    uncommit = "!git reset --soft HEAD^ && git reset";
+    uncommit = "!git reset -N HEAD^";
     wip = "commit -a -m wip";
     unwip = "!${pkgs.writeShellScript "git-unwip" ''
       if [ "$(git log -1 --pretty=format:%B | head -n 1)" = wip ]; then
