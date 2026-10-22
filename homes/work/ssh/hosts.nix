@@ -71,9 +71,9 @@ builtins.foldl' lib.recursiveUpdate
     (prismeDeploymentSrv "optima-staging" "mtrybus")
     (prismeDeploymentDbs "optima-staging" "ubuntu")
 
-    (cdnDeployment "cdn-caching-client" "192.168.136.53")
-    (cdnDeployment "cdn-caching-proxy" "192.168.136.52")
-    (cdnDeployment "cdn-caching-cdn" "192.168.136.87")
+    (cdnDeployment "cdn-caching-client" "client")
+    (cdnDeployment "cdn-caching-proxy" "proxy")
+    (cdnDeployment "cdn-caching-cdn" "cdn")
 
     (cdnVm "vm-cdn-caching-client" 2224)
     (cdnVm "vm-cdn-caching-proxy" 2223)
