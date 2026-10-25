@@ -10,13 +10,24 @@ Config {
         lowerOnStart = True,
         commands = [ Run Com  "/home/komar/.xmonad/morning.sh" [] "morning" 100,
                      Run Date "%a %b %_d %k:%M:%S" "date" 10
+#ifdef CONFIG_LAPTOP
+                   , Run Battery [
+                           "-t", "<icon=bat.xbm/><left>%",
+                           "-L", "25", "-H", "70",
+                           "--low", "#a53333", "--normal", "#aaaaaa", "--high", "#777777"
+                   ] 10
+#endif
         ],
         sepChar = "%",
         alignSep = "}{",
 #ifdef SIDE_LEFT
         template = "}{ <fc=#d79921>%date%</fc>"
 #else
-        template = "}{ %morning% <fc=#d79921>%date%</fc>"
+        #ifdef CONFIG_LAPTOP
+                template = "}{ %morning% <fc=#d79921>%date%</fc> %battery%"
+        #else
+                template = "}{ %morning% <fc=#d79921>%date%</fc>"
+        #endif
 #endif
 }
 
