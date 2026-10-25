@@ -5,9 +5,19 @@ tab.tabbrowser-tab:not([selected]) image.tab-icon-overlay[role="presentation"] {
 
 /* thinner tabs to fit more tabs! */
 :root {
-  --tab-min-height: 20px !important;
+  --tab-min-height: 23px !important;
   --tab-block-margin: 0px !important;
   --tab-border-radius: 3px !important;
+}
+
+tab.tabbrowser-tab>stack>vbox {
+  margin: 0 2px !important;
+}
+
+#tabbrowser-tabs:not([expanded]) tab.tabbrowser-tab>stack>vbox {
+  /* TODO: hack!, percentages seem to be defined in terms of the expanded area,
+   * so this width is absolute */
+  width: 2.5em !important;
 }
 
 tab.tabbrowser-tab {
@@ -20,4 +30,45 @@ tab.tabbrowser-tab[pinned="true"] .tab-background {
 
 tab.tabbrowser-tab[pinned="true"] .tab-background[selected] {
   background-color: rgba(80, 200, 50, 0.2) !important;
+}
+
+/* rounded corners of the browser viewport */
+#tabbrowser-tabbox .browserContainer {
+  border-radius: 12px !important;
+}
+
+/* transparent main window + semi-transparent parts */
+
+html,
+#navigator-toolbox,
+#nav-bar,
+.sidebar-panel,
+#sidebar-box,
+.sidebar-browser-stack {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+:root[sidebar-expand-on-hover] {
+  & #sidebar-container {
+    background: rgba(0, 0, 0, 0) !important;
+  }
+}
+
+body {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* sidebar when hovered (not permanently expanded) */
+html[sidebar-expand-on-hover] sidebar-main[expanded] {
+  background: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* history, tabs from other devices, etc */
+#sidebar {
+  background: rgba(50, 50, 50, 0.4) !important;
+  margin: 0 !important;
+}
+
+#sidebar-splitter {
+  width: 6px !important;
 }
