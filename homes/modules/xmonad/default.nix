@@ -85,10 +85,10 @@ in
         method = "dual_kawase";
         strength = 4;
       };
-      blur-background-exclude = ''window_type *= "menu"'';
+      blur-background-exclude = ''window_type *= "menu" || role = "Popup"'';
       shadow = true;
       # FIXME: exclude the windows firefox creates when dragging things
-      shadow-exclude = ''_NET_WM_STRUT || window_type *= "menu"'';
+      shadow-exclude = ''_NET_WM_STRUT || window_type *= "menu" || role = "Popup"'';
       shadow-offset-x = -18;
       shadow-offset-y = -18;
       crop-shadow-to-monitor = true;
