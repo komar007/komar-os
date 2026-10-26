@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -44,11 +44,13 @@
       1883
       18080
     ];
-    extraHosts = builtins.concatStringsSep "\n" [
-      "192.168.136.53 client client.internal"
-      "192.168.136.52 proxy proxy.internal"
-      "192.168.136.87 cdn cdn.internal"
-    ];
+    extraHosts = lib.strings.concatStrings (
+      map (s: "${s}\n") [
+        "192.168.136.53 client client.internal"
+        "192.168.136.52 proxy proxy.internal"
+        "192.168.136.87 cdn cdn.internal"
+      ]
+    );
   };
 
   maintainSshConnection.user = config.users.users.komar.name;
