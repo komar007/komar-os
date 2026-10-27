@@ -25,7 +25,7 @@ tab.tabbrowser-tab {
 }
 
 tab.tabbrowser-tab[pinned="true"] .tab-background {
-  background-color: rgba(75, 65, 102, 0.9) !important;
+  background-color: rgba(75, 65, 102, 0.3) !important;
 }
 
 tab.tabbrowser-tab[pinned="true"] .tab-background[selected] {
@@ -34,7 +34,12 @@ tab.tabbrowser-tab[pinned="true"] .tab-background[selected] {
 
 /* rounded corners of the browser viewport */
 #tabbrowser-tabbox .browserContainer {
+  background: rgba(0, 0, 0, 0) !important;
+  border: none !important;
   border-radius: 12px !important;
+  border-bottom-right-radius: 0 !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 /* transparent main window + semi-transparent parts */
