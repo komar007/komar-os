@@ -137,6 +137,7 @@ in
     "monkeytype.com"
     "nix.dev"
     "doc.rust-lang.org"
+    "crates.io"
   ];
 
   config.firefox.userContent = [
