@@ -78,6 +78,16 @@ html[sidebar-expand-on-hover] sidebar-main[expanded] {
   margin: 0 !important;
 }
 
+#sidebar-box {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-bottom: none !important;
+}
+
+#sidebar-box,
+#sidebar {
+  border-radius: 12px !important;
+}
+
 #sidebar-splitter {
   width: 6px !important;
 }
