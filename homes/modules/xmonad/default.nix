@@ -92,6 +92,9 @@ in
       shadow-offset-x = -18;
       shadow-offset-y = -18;
       crop-shadow-to-monitor = true;
+      opacity-rule = [
+        "85:window_type = 'dialog'"
+      ];
     };
   };
 
