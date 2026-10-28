@@ -3,6 +3,10 @@ tab.tabbrowser-tab:not([selected]) image.tab-icon-overlay[role="presentation"] {
   pointer-events: none;
 }
 
+image.tab-close-button {
+  display: none !important;
+}
+
 /* thinner tabs to fit more tabs! */
 :root {
   --tab-min-height: 23px !important;
