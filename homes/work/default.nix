@@ -12,6 +12,7 @@ in
 {
   imports = [
     ../common_desktop.nix
+    ../modules/thunderbird
 
     ../modules/firefox/containers/home.nix
     ../modules/qutebrowser.nix
@@ -75,8 +76,6 @@ in
     ];
 
   home.packages = with pkgs; [
-    thunderbird
-
     uv
     temporal-cli
     mosquitto

@@ -1,0 +1,51 @@
+#tabmail {
+	opacity: 0.85 !important;
+	border-radius: 12px;
+	border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+#spacesToolbar {
+	border: none !important;
+	background: rgba(0, 0, 0, 0.0) !important;
+}
+
+#navigation-toolbox {
+	background: rgba(0, 0, 0, 0.0) !important;
+}
+
+/* class: icons-beside-text, if it doesn't work */
+unified-toolbar {
+	border: none !important;
+}
+
+#status-bar {
+	background: rgba(0, 0, 0, 0.0) !important;
+	border: none !important;
+}
+
+#tabs-toolbar {
+	background: rgba(0, 0, 0, 0) !important;
+	margin-left: 1em !important;
+	box-shadow: none !important;
+}
+
+body {
+	background: rgba(0, 0, 0, 0.2) !important;
+}
+
+form>input[type="search"] {
+	border: 1px solid rgba(255, 255, 255, 0.4) !important;
+	border-radius: 20px !important;
+	padding-left: 1.2em !important;
+}
+
+form>div[aria-hidden="hidden"] {
+	padding-left: 10px !important;
+}
+
+#search-button {
+	border-top-right-radius: 20px !important;
+	border-bottom-right-radius: 20px !important;
+}
