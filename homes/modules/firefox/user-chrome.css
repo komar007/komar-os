@@ -38,7 +38,8 @@ tab.tabbrowser-tab[pinned="true"] .tab-background[selected] {
 
 /* rounded corners of the browser viewport */
 #tabbrowser-tabbox .browserContainer {
-  background: rgba(0, 0, 0, 0) !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  background-clip: padding-box !important;
   border: none !important;
   border-radius: 12px !important;
   border-bottom-right-radius: 0 !important;
