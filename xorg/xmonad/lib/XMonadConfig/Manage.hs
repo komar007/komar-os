@@ -17,6 +17,7 @@ import XMonad.Core
 import XMonad.Hooks.ManageDocks (manageDocks)
 import XMonad.Hooks.ManageHelpers (doFullFloat, isFullscreen)
 import XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
+import XMonadConfig.Dialogs (placeDialogsCentered)
 import XMonadConfig.Scratchpads (scratchpads)
 import XMonadConfig.Utils (shiftIfNoMatch)
 
@@ -25,6 +26,7 @@ myManageHook =
   namedScratchpadManageHook scratchpads
     <+> manageDocks
     <+> myConditions
+    <+> placeDialogsCentered
     <+> manageHook def
 
 myConditions :: ManageHook
