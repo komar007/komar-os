@@ -11,17 +11,17 @@ image.tab-close-button {
 :root {
   --tab-min-height: 23px !important;
   --tab-block-margin: 0px !important;
-  --tab-border-radius: 3px !important;
+  --tab-border-radius: 6px !important;
 }
 
 tab.tabbrowser-tab>stack>vbox {
-  margin: 0 2px !important;
+  margin: 0 5px !important;
 }
 
 #tabbrowser-tabs:not([expanded]) tab.tabbrowser-tab>stack>vbox {
   /* TODO: hack!, percentages seem to be defined in terms of the expanded area,
    * so this width is absolute */
-  width: 2.5em !important;
+  width: 2.3em !important;
 }
 
 tab.tabbrowser-tab {
