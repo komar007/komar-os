@@ -6,7 +6,6 @@ where
 
 import XMonad (Default (def), Mirror (Mirror), WorkspaceId, (|||))
 import XMonad.Hooks.ManageDocks (avoidStruts)
-import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.PerWorkspace (onWorkspaces)
 import XMonad.Layout.Renamed (named)
 import XMonad.Layout.ResizableTile (ResizableTall (ResizableTall))
@@ -21,7 +20,6 @@ import XMonadConfig.Env
 myLayoutHook env =
   workspaceDir "~"
     . avoidStruts
-    . smartBorders
     . (onWorkspaces fullscreenPreferredSpaces $ defaultWSet env golden 1)
     $ defaultSet env golden 1
 
@@ -57,7 +55,6 @@ myWide r n =
 
 myFull env =
   named "full"
-    . noBorders
     . tabbedBottom shrinkText
     $ tabTheme env
 
@@ -68,9 +65,9 @@ tabTheme env =
       activeColor = "#111111",
       inactiveColor = "#000000",
       urgentColor = "#222222",
-      activeBorderColor = "#5d728d",
-      inactiveBorderColor = "#5d728d",
-      urgentBorderColor = "#dd0000",
+      activeBorderWidth = 0,
+      inactiveBorderWidth = 0,
+      urgentBorderWidth = 0,
       activeTextColor = "#c4a000",
       inactiveTextColor = "#aaaaaa",
       urgentTextColor = "#dd0000",

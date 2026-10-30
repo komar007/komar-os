@@ -1,7 +1,6 @@
 module XMonadConfig.Scratchpads (scratchpads) where
 
 import XMonad (resource, (=?))
-import XMonad.Layout.NoBorders (hasBorder)
 import XMonad.StackSet qualified as W
 import XMonad.Util.NamedScratchpad
   ( NamedScratchpad (NS),
@@ -32,6 +31,4 @@ scratchpads =
       (terminalFloating 0.3 0.2 0.4 0.6)
   ]
   where
-    terminalFloating x y w h = do
-      hasBorder False
-      customFloating $ W.RationalRect x y w h
+    terminalFloating x y w h = customFloating $ W.RationalRect x y w h

@@ -24,7 +24,7 @@ in
     };
     tabsHeight = lib.mkOption {
       type = lib.types.int;
-      default = 24;
+      default = 20;
     };
     hiRes = lib.mkOption {
       type = lib.types.bool;

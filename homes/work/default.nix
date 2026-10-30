@@ -31,7 +31,7 @@ in
   xmonad.config = {
     font = "Terminess Nerd Font Mono:pixelsize=12";
     promptHeight = 12;
-    tabsHeight = 16;
+    tabsHeight = 12;
     hiRes = false;
     mainWsGroup = [
       "mail"
