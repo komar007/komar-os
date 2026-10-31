@@ -4,6 +4,7 @@ let
 in
 {
   programs.firefox.profiles.${ffUtils.profileName}.settings = {
+    "browser.newtabpage.activity-stream.topSitesRows" = 2;
     "browser.newtabpage.pinned" = [
       {
         label = "Gmail";
@@ -33,6 +34,11 @@ in
       {
         label = "Voron 2.4R2";
         url = "http://192.168.88.94";
+      }
+
+      {
+        label = "Meteo";
+        url = "https://app.meteo.pl/meteogram/50.29,18.67";
       }
       { }
       { }

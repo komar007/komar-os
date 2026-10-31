@@ -15,6 +15,7 @@ in
     ../modules/thunderbird
 
     ../modules/firefox/containers/home.nix
+    ../modules/firefox/pinned-sites-work.nix
     ../modules/qutebrowser.nix
     ../modules/vial
     ../modules/teams
