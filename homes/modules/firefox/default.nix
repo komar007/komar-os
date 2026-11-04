@@ -68,6 +68,7 @@ in
       "browser.aboutConfig.showWarning" = false;
       "browser.tabs.closeWindowWithLastTab" = false;
       "browser.tabs.fadeOutUnloadedTabs" = true;
+      "browser.tabs.allow_transparent_browser" = true;
       "browser.ctrlTab.sortByRecentlyUsed" = true;
       "browser.toolbars.bookmarks.visibility" = "never";
       "browser.newtabpage.activity-stream.showSponsored" = false;
@@ -141,6 +142,13 @@ in
   ];
 
   config.firefox.userContent = [
+    ''
+      @-moz-document url("about:newtab"), url("about:home") {
+        body {
+            background: rgba(0, 0, 0, 0) !important;
+        }
+      }
+    ''
     ''
       @-moz-document domain("teams.cloud.microsoft") {
         .fui-TeachingPopoverSurface {
