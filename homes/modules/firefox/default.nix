@@ -139,6 +139,7 @@ in
     "nix.dev"
     "doc.rust-lang.org"
     "crates.io"
+    "allegro.pl"
   ];
 
   config.firefox.userContent = [

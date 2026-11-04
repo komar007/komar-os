@@ -74,6 +74,7 @@ in
       p."public_addr/prisme/integration"
       p."public_addr/prisme/nightly"
       "i.pl.adbglobal.com"
+      "adbglobal.atlassian.net"
     ];
 
   home.packages = with pkgs; [
