@@ -92,3 +92,7 @@ html[sidebar-expand-on-hover] sidebar-main[expanded] {
 #sidebar-splitter {
   width: 6px !important;
 }
+
+.urlbar-background {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
