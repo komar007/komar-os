@@ -54,6 +54,8 @@ in
   };
 
   dot-tmux.commonSessionNames = [
+    "cdn"
+    "deployment"
     "prisme-backend"
     "tss"
   ];
