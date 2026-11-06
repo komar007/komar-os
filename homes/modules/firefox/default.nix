@@ -131,6 +131,7 @@ in
 
   config.firefoxDarkmode.exclude = [
     "teams.cloud.microsoft"
+    "gerrit.adbgroup.pl"
     "github.com"
     "developer.mozilla.org"
     "reddit.com"
@@ -143,6 +144,7 @@ in
   ];
 
   config.firefox.userContent = [
+    (builtins.readFile ./gerrit.css)
     ''
       @-moz-document url("about:newtab"), url("about:home") {
         body {

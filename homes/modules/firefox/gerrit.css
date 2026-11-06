@@ -1,0 +1,134 @@
+@-moz-document url-prefix("https://gerrit.adbgroup.pl/") {
+
+  /* Background opacity: 0 = fully transparent, 1 = fully opaque. */
+  :root {
+    --gerrit-removed-line-opacity: 0.3;
+    --gerrit-left-common-line-opacity: 0.8;
+    --gerrit-added-line-opacity: 0.8;
+    --gerrit-right-common-line-opacity: 0.4;
+    --gerrit-blank-line-opacity: 0.15;
+    --gerrit-diff-header-opacity: 0.8;
+    --gerrit-diff-header-blur: 3px;
+    --gerrit-metadata-opacity: 0.7;
+    --gerrit-overview-opacity: 0.85;
+  }
+
+  /* Clear every layer behind standalone and expanded inline diffs. Keep the
+   * theme colors intact so controls, comments and dialogs remain readable. */
+  html,
+  body,
+  gr-app,
+  gr-app-element,
+  gr-change-view,
+  gr-diff-view,
+  gr-file-list,
+  gr-diff-host,
+  gr-diff,
+  gr-diff-element,
+  .container:has(gr-file-list),
+  section:has(gr-file-list),
+  section.changeInfoSection,
+  .diffContainer,
+  #diffTable,
+  #diffTable tbody,
+  #diffTable tr {
+    background: transparent !important;
+  }
+
+  /* Give the change overview a readable surface without tinting inline diffs. */
+  .container:has(gr-file-list) .changeInfo {
+    background: rgb(from var(--background-color-secondary) r g b / var(--gerrit-metadata-opacity)) !important;
+  }
+
+  #commitMessage {
+    background: var(--background-color-primary) !important;
+  }
+
+  .tabs:has(> md-tabs),
+  section.tabContent,
+  section.changeLog {
+    background: rgb(from var(--background-color-primary) r g b / var(--gerrit-overview-opacity)) !important;
+  }
+
+  .tabs>md-tabs {
+    background: transparent !important;
+  }
+
+  /* Paint the file controls and rows individually so expanded code still has
+   * transparent ancestors all the way back to the page canvas. */
+  section.tabContent:has(> div:not([hidden]) > gr-file-list) {
+    background: transparent !important;
+  }
+
+  gr-file-list-header,
+  #container[aria-label="Files list"] .row,
+  #container[aria-label="Files list"]~.row {
+    background: rgb(from var(--background-color-primary) r g b / var(--gerrit-overview-opacity)) !important;
+  }
+
+  #container[aria-label="Files list"] .header-row,
+  #container[aria-label="Files list"] .file-row:hover {
+    background: rgb(from var(--background-color-secondary) r g b / var(--gerrit-overview-opacity)) !important;
+  }
+
+  #container[aria-label="Files list"] .file-row.selected {
+    background: var(--selection-background-color) !important;
+  }
+
+  /* The site's extra footer has more content than Gerrit's fixed footer height. */
+  footer:has(img[alt="ADB"]) {
+    height: auto !important;
+    display: flow-root !important;
+    flex-shrink: 0;
+  }
+
+  /* Frost the sticky diff toolbar while keeping its text and controls sharp. */
+  .stickyHeader:has(> .subHeader) {
+    background: rgb(from var(--background-color-primary) r g b / var(--gerrit-diff-header-opacity)) !important;
+    backdrop-filter: blur(var(--gerrit-diff-header-blur)) !important;
+    box-shadow: 0 6px 12px -4px rgb(0 0 0 / 0.8) !important;
+  }
+
+  /* The patch controls otherwise paint an opaque layer over the backdrop. */
+  .stickyHeader:has(> .subHeader)> :is(header, .subHeader, .fileNav) {
+    background: transparent !important;
+  }
+
+  /* Paint once, on the cells, including the gutters and +/- signs. These
+   * percentages are background opacity; text always stays fully opaque. */
+  gr-diff-row tr.side-by-side>td.left {
+    --gerrit-line-opacity: var(--gerrit-left-common-line-opacity);
+    --gerrit-line-color: var(--background-color-primary);
+  }
+
+  gr-diff-row tr.side-by-side>td.right {
+    --gerrit-line-opacity: var(--gerrit-right-common-line-opacity);
+    --gerrit-line-color: var(--background-color-primary);
+  }
+
+  gr-diff-row tr.side-by-side:has(> td.left.remove)>td.left {
+    --gerrit-line-opacity: var(--gerrit-removed-line-opacity);
+    --gerrit-line-color: var(--dark-remove-highlight-color);
+  }
+
+  gr-diff-row tr.side-by-side:has(> td.right.add)>td.right {
+    --gerrit-line-opacity: var(--gerrit-added-line-opacity);
+    --gerrit-line-color: var(--dark-add-highlight-color);
+  }
+
+  /* Empty counterparts of additions/removals, including their number gutters. */
+  gr-diff-row tr.side-by-side>td:is(.blank, .blankLineNum) {
+    --gerrit-line-opacity: var(--gerrit-blank-line-opacity);
+    --gerrit-line-color: var(--background-color-primary);
+  }
+
+  gr-diff-row tr.side-by-side>td:is(.left, .right) {
+    background: rgb(from var(--gerrit-line-color) r g b / var(--gerrit-line-opacity)) !important;
+  }
+
+  gr-diff-row tr.side-by-side .contentText,
+  gr-diff-row tr.side-by-side .lineNumButton,
+  gr-diff-row tr.side-by-side .intraline {
+    background-color: transparent !important;
+  }
+}
