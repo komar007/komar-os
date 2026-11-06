@@ -11,6 +11,7 @@
     --gerrit-diff-header-blur: 3px;
     --gerrit-metadata-opacity: 0.7;
     --gerrit-overview-opacity: 0.85;
+    --gerrit-dashboard-header-opacity: 0.5;
   }
 
   /* Clear every layer behind standalone and expanded inline diffs. Keep the
@@ -33,6 +34,11 @@
   #diffTable tbody,
   #diffTable tr {
     background: transparent !important;
+  }
+
+  /* Keep dashboard section headers blue, with a translucent background only. */
+  tr.groupHeader>td {
+    background: rgb(from var(--section-header-background-color) r g b / var(--gerrit-dashboard-header-opacity)) !important;
   }
 
   /* Give the change overview a readable surface without tinting inline diffs. */
