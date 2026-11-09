@@ -1,0 +1,5 @@
+@-moz-document domain("teams.cloud.microsoft") {
+  .fui-TeachingPopoverSurface {
+    display: none !important;
+  }
+}

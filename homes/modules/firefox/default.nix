@@ -144,7 +144,6 @@ in
   ];
 
   config.firefox.userContent = [
-    (builtins.readFile ./gerrit.css)
     ''
       @-moz-document url("about:newtab"), url("about:home") {
         body {
@@ -152,26 +151,8 @@ in
         }
       }
     ''
-    ''
-      @-moz-document domain("teams.cloud.microsoft") {
-        .fui-TeachingPopoverSurface {
-          display: none !important;
-        }
-      }
-    ''
-
-    ''
-      @-moz-document domain("home-manager-options.extranix.com") {
-        @media (prefers-color-scheme: dark) {
-          body {
-            background-color: transparent !important;
-          }
-
-          .table-striped > tbody > tr:nth-of-type(2n):not(:hover) {
-            background-color: #1e1e24 !important;
-          }
-        }
-      }
-    ''
+    (builtins.readFile ./user-content/gerrit.css)
+    (builtins.readFile ./user-content/hmo.css)
+    (builtins.readFile ./user-content/teams.css)
   ];
 }

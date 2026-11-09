@@ -1,0 +1,11 @@
+@-moz-document domain("home-manager-options.extranix.com") {
+  @media (prefers-color-scheme: dark) {
+    body {
+      background-color: transparent !important;
+    }
+
+    .table-striped>tbody>tr:nth-of-type(2n):not(:hover) {
+      background-color: #1e1e24 !important;
+    }
+  }
+}
