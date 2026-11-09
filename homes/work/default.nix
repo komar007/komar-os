@@ -2,7 +2,6 @@
   lib,
   config,
   pkgs,
-  pkgsUnstable,
   ...
 }:
 let
@@ -19,6 +18,7 @@ in
     ../modules/qutebrowser.nix
     ../modules/vial
     ../modules/teams
+    ../modules/codex
 
     ../modules/sops
 
@@ -79,11 +79,22 @@ in
       "adbglobal.atlassian.net"
     ];
 
+  programs.codex.settings =
+    let
+      repos = "${config.home.homeDirectory}/repos";
+    in
+    {
+      projects."${repos}/unistack".trust_level = "trusted";
+      projects."${repos}/prisme-backend".trust_level = "trusted";
+      projects."${repos}/tools".trust_level = "trusted";
+      projects."${repos}/tss".trust_level = "trusted";
+      projects."${repos}/cdn".trust_level = "trusted";
+    };
+
   home.packages = with pkgs; [
     uv
     temporal-cli
     mosquitto
-    pkgsUnstable.codex
     git-gr
     dive
 
