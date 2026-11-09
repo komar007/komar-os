@@ -30,6 +30,8 @@ in
     ${idFor file} = {
       target = file;
       source = config.lib.file.mkOutOfStoreSymlink config.sops.templates.${idFor file}.path;
+      # preserve the original file's overwrite policy
+      inherit (config.home.file.${file}) force;
     };
   });
 
