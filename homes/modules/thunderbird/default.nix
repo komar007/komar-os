@@ -17,4 +17,16 @@
 
     userChrome = builtins.readFile ./user-chrome.css;
   };
+
+  config.accounts.email.accounts.work = {
+    primary = true;
+    address = "M.Trybus@adbglobal.com";
+    realName = "Michał Trybus";
+    flavor = "outlook.office365.com";
+
+    thunderbird = {
+      enable = true;
+      profiles = [ "default" ];
+    };
+  };
 }
