@@ -10,6 +10,21 @@ let
 in
 {
   programs.firefox.profiles.${ffUtils.profileName}.search.engines = {
+    "searchnix" = {
+      definedAliases = [ "@nix" ];
+      urls = [
+        {
+          template = "https://stable.searchix.ovh/";
+          params = [
+            {
+              name = "query";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
+      iconMapObj."48" = "https://searchix.ovh/favicon.ico";
+    };
     "Nix Packages" = {
       definedAliases = [ "@np" ];
       urls = [

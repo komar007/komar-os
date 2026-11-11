@@ -152,6 +152,7 @@ in
       }
     ''
     (builtins.readFile ./user-content/gerrit.css)
+    (builtins.readFile ./user-content/searchix.css)
     (builtins.readFile ./user-content/hmo.css)
     (builtins.readFile ./user-content/teams.css)
   ];
