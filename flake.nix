@@ -116,9 +116,9 @@
           komarAt = cfg: (nixosUsersFor cfg).komar;
         in
         {
-          thinkcentre = home "thinkcentre" "x86_64-linux" (komarAt "thinkcentre");
-          framework = home "framework" "x86_64-linux" (komarAt "framework");
-          work = home "work" "x86_64-linux" (komarAt "work");
+          "komar@nixos-thnkctre" = home "thinkcentre" "x86_64-linux" (komarAt "thinkcentre");
+          "komar@nixos-frmwrk" = home "framework" "x86_64-linux" (komarAt "framework");
+          "komar@nixos-mtrybus" = home "work" "x86_64-linux" (komarAt "work");
           minimal = home "minimal" "x86_64-linux" null;
         };
 
