@@ -71,6 +71,11 @@
       inputs.home-manager.follows = "home-manager";
       inputs.sops-nix.follows = "sops-nix";
     };
+    hm-mutable-files = {
+      url = "github:komar007/hm-mutable-files";
+      inputs.systems.follows = "systems";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     dot-nvim = {
       url = "github:komar007/dot-nvim";

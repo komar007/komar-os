@@ -49,6 +49,7 @@ in
     ./modules/lsd.nix
     ./modules/rust.nix
     ./modules/comma.nix
+    inputs.hm-mutable-files.homeManagerModules.default
   ];
 
   dot-tmux.sessionShells =

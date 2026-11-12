@@ -48,5 +48,6 @@
       inline_suggestions = false;
     };
   };
+
+  home.file.".codex/config.toml".mutable = true;
 }
-#pkgsUnstable.codex
