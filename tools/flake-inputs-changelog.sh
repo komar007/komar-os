@@ -33,6 +33,6 @@ for i in $INPUTS; do
 	fi
 done
 if [ -n "$no_changes" ]; then
-	no_changes=$(sed -r 's/(.) /\1, /' <<<"$no_changes")
+	no_changes=$(sed -r 's/(.) /\1, /g' <<<"$no_changes")
 	echo "no changes in$no_changes"
 fi
