@@ -31,7 +31,9 @@ let
     "F ?git commit --fixup %(commit)"
     "Y @${pkgs.lib.getExe yank} %(commit)"
     "J >${pkgs.lib.getExe showJiraIssue} %(commit)"
-    "G >${pkgs.lib.getExe showGerritChange} %(commit)"
+    "<Ctrl-g> >${pkgs.lib.getExe showGerritChange} %(commit)"
+    "g move-first-line"
+    "G move-last-line"
   ];
 in
 {
