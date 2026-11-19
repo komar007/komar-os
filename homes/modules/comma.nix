@@ -23,7 +23,8 @@ let
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.makeWrapper ];
         postFixup = (old.postFixup or "") + ''
           wrapProgram $out/bin/comma \
-            --set-default COMMA_PICKER "${final.lib.getExe shortFirstFzf}"
+            --set-default COMMA_PICKER "${final.lib.getExe shortFirstFzf}" \
+            --set-default COMMA_CACHING 1
         '';
       });
     };

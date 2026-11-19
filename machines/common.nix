@@ -6,6 +6,8 @@
   ];
   nixpkgs.config.allowUnfree = true;
 
+  nix.channel.enable = false;
+  nixpkgs.flake.setNixPath = false;
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
   nix.registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
 
