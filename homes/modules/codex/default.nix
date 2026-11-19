@@ -24,6 +24,7 @@
       status_line = [
         "model-with-reasoning"
         "current-dir"
+        "run-state"
         "thread-name"
         "five-hour-limit"
         "weekly-limit"
@@ -48,6 +49,14 @@
       inline_suggestions = false;
     };
   };
+
+  programs.codex.context = ''
+    # Global working rules
+
+    - Unless instructed otherwise, always hand off the work in git workspaces by leaving file modifications
+      unstaged, file additions tracked but not staged (using git add -N), git-tracked file removals by
+      removing files from directory, but not staging removal.
+  '';
 
   home.file.".codex/config.toml".mutable = true;
 }
