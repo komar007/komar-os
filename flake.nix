@@ -103,9 +103,9 @@
           nixos = utils.nixosConfiguration;
         in
         {
-          thinkcentre = nixos "thinkcentre" "x86_64-linux";
-          framework = nixos "framework" "x86_64-linux";
-          work = nixos "work" "x86_64-linux";
+          nixos-thnkctre = nixos "thinkcentre" "x86_64-linux";
+          nixos-frmwrk = nixos "framework" "x86_64-linux";
+          nixos-mtrybus = nixos "work" "x86_64-linux";
         };
 
       homeConfigurations =
@@ -116,9 +116,9 @@
           komarAt = cfg: (nixosUsersFor cfg).komar;
         in
         {
-          "komar@nixos-thnkctre" = home "thinkcentre" "x86_64-linux" (komarAt "thinkcentre");
-          "komar@nixos-frmwrk" = home "framework" "x86_64-linux" (komarAt "framework");
-          "komar@nixos-mtrybus" = home "work" "x86_64-linux" (komarAt "work");
+          "komar@nixos-thnkctre" = home "thinkcentre" "x86_64-linux" (komarAt "nixos-thnkctre");
+          "komar@nixos-frmwrk" = home "framework" "x86_64-linux" (komarAt "nixos-frmwrk");
+          "komar@nixos-mtrybus" = home "work" "x86_64-linux" (komarAt "nixos-mtrybus");
           minimal = home "minimal" "x86_64-linux" null;
         };
 
