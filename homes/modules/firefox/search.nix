@@ -123,5 +123,20 @@ in
         }
       ];
     };
+    "nerdfonts" = {
+      definedAliases = [ "@nf" ];
+      urls = [
+        {
+          template = "https://www.nerdfonts.com/cheat-sheet";
+          params = [
+            {
+              name = "q";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
+      iconMapObj."16" = "https://www.nerdfonts.com/assets/img/favicon.ico";
+    };
   };
 }
