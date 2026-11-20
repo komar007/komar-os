@@ -5,7 +5,6 @@
   ...
 }:
 let
-  utils = import ../modules/k3s/utils.nix { inherit pkgs; };
   ffUtils = import ../modules/firefox/utils.nix { inherit config lib; };
 in
 {
@@ -58,9 +57,6 @@ in
     "deployment"
     "prisme-backend"
     "tss"
-  ];
-  dot-tmux.top.windows = [
-    (utils.kubetuiWithNamespace "prisme")
   ];
 
   sopsAnything.homeFiles = [
