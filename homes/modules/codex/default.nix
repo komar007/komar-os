@@ -18,9 +18,8 @@
       };
 
     tui = {
-      animations = false;
-      #ghost_suggestions = false;
       screen_reader_detection_done = true;
+      mouse_scroll_speed = 5;
       status_line = [
         "model-with-reasoning"
         "current-dir"
