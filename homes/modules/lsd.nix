@@ -9,7 +9,6 @@
       "group"
       "size"
       "date"
-      "git"
       "name"
     ];
   };
