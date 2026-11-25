@@ -68,6 +68,7 @@ in
     fzf
     bat
     tinyxxd
+    delta
 
     unzip
 
