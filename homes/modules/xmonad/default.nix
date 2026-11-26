@@ -85,7 +85,7 @@ in
       fade-out-step = 0.15;
       blur = {
         method = "dual_kawase";
-        strength = 4;
+        strength = 6;
       };
       blur-background-exclude = ''window_type *= "menu" || role = "Popup"'';
       shadow = true;
