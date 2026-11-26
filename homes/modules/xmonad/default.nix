@@ -77,6 +77,8 @@ in
   config.services.picom = {
     backend = "glx";
     settings = {
+      unredir-if-possible = false;
+      unredir-if-possible-exclude = [ "class_g = 'xsecurelock'" ];
       vsync = true;
       fading = true;
       fade-in-step = 0.15;
@@ -94,6 +96,7 @@ in
       crop-shadow-to-monitor = true;
       opacity-rule = [
         "85:window_type = 'dialog'"
+        "20:class_g = 'xsecurelock'"
       ];
     };
   };
