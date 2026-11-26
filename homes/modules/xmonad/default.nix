@@ -101,5 +101,9 @@ in
     };
   };
 
+  config.xdg.configFile."picom/picom.conf".onChange = ''
+    ${pkgs.procps}/bin/pkill -USR1 -u "$UID" -x picom || true
+  '';
+
   config.services.picom.package = pkgs.picom;
 }
